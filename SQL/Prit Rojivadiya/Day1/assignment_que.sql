@@ -1,41 +1,51 @@
-use db1;
+use demo;
 
-CREATE TABLE B_Employee (
-Employee_Id INT PRIMARY KEY IDENTITY(1,1),
-FirstName VARCHAR(10) NOT NULL,
-LastName VARCHAR(10) NOT NULL,
-Email VARCHAR(15) NOT NULL,
-MobileNo VARCHAR(10) NOT NULL,
-Salary INT NOT NULL,
-Comission INT NOT NULL CONSTRAINT unqCom UNIQUE
+CREATE TABLE Employees (
+EmployeeID int not null PRIMARY KEY IDENTITY (1,1),
+FirstName varchar(20) not null,
+LastName varchar(20) not null,
+Phone Numeric(10) CONSTRAINT chk_num CHECK(Phone LIKE '[6-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
+Email varchar(50) CONSTRAINT chk_mail CHECK(Email LIKE '%_@__%.__%'),
 )
 
-CREATE TABLE Inventory(
-Item_id INT PRIMARY KEY IDENTITY (1,1),
-Item_Name VARCHAR(15),
-Item_qty INT
+
+CREATE TABLE Cars(
+CarId int not null PRIMARY KEY IDENTITY (1,1),
+CarName varchar(15) not null,
+CarModel varchar(15) not null,
+CarPrice Money not null,
 )
 
 
 CREATE TABLE sales(
-srno INT PRIMARY KEY IDENTITY (1,1) ,
-EmployeeNo INT CONSTRAINT emp_fkForeig REFERENCES B_Employee(Employee_Id) on update NO ACTION,
-ItemNo INT CONSTRAINT item_fkForeig REFERENCES Inventory(Item_id) on update NO ACTION,
-SaleQty INT
+salesId int not null PRIMARY KEY IDENTITY (1,1) ,
+EmployeeNo int CONSTRAINT emp_fk REFERENCES Employees(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE,
+CarNo int CONSTRAINT car_fk REFERENCES Cars(CarId) ON UPDATE CASCADE ON DELETE CASCADE,
+SaleQty int not null
 )
- 
 
 
-INSERT INTO B_Employee VALUES ('Prit','Rojivadiya','prit@gmail.com','9925973311',1234,12)
-INSERT INTO B_Employee VALUES ('Man','Patel','man@gmail.com','9879265799',5647,56)
-INSERT INTO B_Employee VALUES ('Tirth','Mistry','turth@gmail.com','8546251447',4565,75)
-INSERT INTO Inventory VALUES ('Pepsi',100)
-INSERT INTO Inventory VALUES ('Coca-cola',50)
-INSERT INTO Inventory VALUES ('Sprite',30)
-INSERT INTO sales VALUES (1,1,20)
-INSERT INTO sales VALUES (2,2,30)
-INSERT INTO sales VALUES (2,3,10)
+CREATE TABLE Commision(
+commisionId int not null PRIMARY KEY IDENTITY(1,1),
+empID int CONSTRAINT empfk REFERENCES Employees(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE,
+commision int DEFAULT null,
+)
 
-select * from B_Employee
-select * from Inventory
-select * from sales
+
+INSERT INTO Employees VALUES 
+('Prit','Rojivadiya','9925973311','prit@gmail.com'),
+('Man','Patel','9925983311','man@gmail.com'),
+('Tirth','Mistry','9924973311','tirth@gmail.com');
+
+INSERT INTO Cars VALUES 
+('BMW','b1',1500000),
+('Audi','a1',1700000),
+('Kia','k1',1300000);
+
+INSERT INTO sales VALUES 
+(1,1,10),
+(2,2,20),
+(3,3,30);
+
+INSERT INTO Commision(empID,commision) SELECT EmployeeNo,SUM(SaleQty)*5000 FROM sales GROUP BY EmployeeNo;
+
