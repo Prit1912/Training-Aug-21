@@ -42,12 +42,16 @@ INSERT INTO Incentive VALUES (1,'01-FEB-13',5000),
 
 
 
--- Q0
+
 SELECT *
 FROM Employee as e
 	INNER JOIN Incentive i ON e.Emp_id = i.Emp_Ref_Id
 
---Q1
+
+
+
+-- Q1 Get difference between JOINING_DATE and INCENTIVE_DATE from employee and incentives table
+
 SELECT e.Emp_id,
 		e.Joining_Date,
 		i.Incentive_Date,
@@ -58,32 +62,33 @@ ORDER BY i.Incentive_Date
 
 
 
---Q2
+-- Q2 Select first_name, incentive amount from employee and incentives table for those employees who have incentives and incentive amount greater than 3000
+
 SELECT e.First_Name,i.Incentive_Amount
 FROM Employee e
 	INNER JOIN Incentive i ON e.Emp_id = i.Emp_Ref_Id
 WHERE i.Incentive_Amount>3000
 
 
---Q3
+
+-- Q3 Select first_name, incentive amount from employee and incentives table for all employees even if they didn’t get incentives.
+
 SELECT e.First_Name,i.Incentive_Amount
 FROM Employee e
 	LEFT OUTER JOIN Incentive i ON e.Emp_id = i.Emp_Ref_Id
 
---Q4
+
+
+/* Q4 Select first_name, incentive amount from employee and incentives table for all employees even 
+if they didn’t get incentives and set incentive amount as 0 for those employees who didn’t get incentives. */
+
 SELECT e.First_Name,ISNULL(i.Incentive_Amount,0)
 FROM Employee e
 	LEFT OUTER JOIN Incentive i ON e.Emp_id = i.Emp_Ref_Id
 
 
+-- Q5 Select EmployeeName, ManagerName from the employee table.
 
--- self join 
-
-SELECT *
-FROM Employee emp
-	JOIN Employee mgr ON emp.Manager_id = mgr.Emp_id
-
---Q5
 SELECT emp.First_Name as 'Employee',mgr.First_Name as 'Manager'
 FROM Employee emp
 	JOIN Employee mgr ON emp.Manager_id = mgr.Emp_id
