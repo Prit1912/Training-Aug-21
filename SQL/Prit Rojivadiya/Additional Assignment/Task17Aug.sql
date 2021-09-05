@@ -1,5 +1,3 @@
--- Task 17 August
-
 use Demo
 
 CREATE TABLE Branch
@@ -83,7 +81,7 @@ INSERT INTO BORROW VALUES (201,'Anil','vrce',1000),
 
 
 
--- Q1
+-- Q1 List Names of Customers who are Depositors and have Same Branch City as that of SUNIL
 
 SELECT d.C_name
 FROM Deposit d
@@ -93,7 +91,7 @@ WHERE d.B_name IN (SELECT Bname FROM Branch b WHERE b.City =
 
 
 
--- Q2
+-- Q2 List All the Depositors Having Depositors Having Deposit in All the Branches where SUNIL is Having Account
 
 SELECT C_name
 FROM Deposit
@@ -103,9 +101,27 @@ WHERE B_name IN (
 				)
 
 
+-- Q2 Using join
+
+SELECT C_name
+FROM Deposit
+WHERE B_name IN ( 
+				SELECT d.B_name FROM Deposit d 
+				JOIN BORROW b ON b.B_name = d.B_name
+				WHERE d.C_name = 'Sunil'
+				)
 
 
--- Q3
+-- Q2 Using join
+
+SELECT d1.C_name
+FROM Deposit d1
+	INNER JOIN Deposit d2 ON d1.B_name = d2.B_name
+	INNER JOIN BORROW b ON b.B_name = d2.B_name
+WHERE d1.C_name = 'Sunil'
+
+
+-- Q3 List the Names of Customers Living in the City where the Maximum Number of Depositors are Located
 
 -- SELECT c1.City,COUNT(d1.C_name) FROM Deposit d1,Customer c1 WHERE c1.Cname = d1.C_name GROUP BY c1.City 
 
@@ -120,7 +136,7 @@ SELECT c.Cname,c.City FROM Customer c WHERE c.City IN
 
 		
 
--- Q4
+-- Q4 List Names of Borrowers Having Deposit Amount Greater than 1000 and Loan Amount Greater than 2000
 
 SELECT b.C_name
 FROM BORROW b
@@ -134,7 +150,7 @@ FROM BORROW b
 WHERE b.Amount > 2000 and d.Amount > 1000
 
 
--- Q5
+-- Q5 List All the Customers Living in NAGPUR and Having the Branch City as MUMBAI or DELHI
 
 SELECT c.Cname
 FROM Customer c
@@ -153,7 +169,7 @@ WHERE c.City = 'Nagpur' AND b.City IN ('Mumbai','Delhi')
 
 
 
--- Q6
+-- Q6 Count the Number of Customers Living in the City where Branch is Located
 
 SELECT COUNT(c.Cname)
 FROM Customer c 
