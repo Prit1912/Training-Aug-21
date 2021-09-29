@@ -21,7 +21,7 @@
         <h1 class="text-danger display-4">Date Validation</h1>
         <form class="row mt-5">
             <div class="col-md-4 col-12">
-                <label class="form-label col-md-4" for="dt">Enter Date</label>
+                <label class="form-label" for="dt">Enter Date</label>
                 <input type="text" class="form-control col-md-4" id="dt" placeholder="MM-DD-YYYY">
                 <div id="error" style="display: none;">Invalid Date</div>
             </div>
@@ -47,10 +47,25 @@
                 var m = parseInt(arr[0]);
                 var d = parseInt(arr[1]);
                 var y = parseInt(arr[2]);
-                if (d >= 1 && d <= 31 && m >= 1 && m <= 12 && y > 0) {
+                var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+                if (m == 2) {
+                    var leapyear = false;
+                    if ((!(y % 4) && y % 100) || !(y % 400)) {
+                        leapyear = true;
+                    }
+                    if ((leapyear == false) && d >= 29) {
+                        return false;
+                    } else if (leapyear == true && d > 29) {
+                        return false;
+                    }
                     return true;
-                } else {
-                    return false;
+                } else if (m == 1 || (m > 2 && m<=12)) {
+                    if (d > monthDays[m - 1]) {
+                        console.log(d,m);
+                        return false;
+                    }
+                    return true;
                 }
             } else {
                 return false;
