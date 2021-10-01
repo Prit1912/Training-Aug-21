@@ -5,7 +5,7 @@ function validate() {
   var genders = document.getElementsByName("gender");
   var designation = document.getElementById("Designation").value;
   var salary = document.getElementById("Salary").value;
-  var locations = document.getElementsByName("location");
+  var locations = document.getElementById("location");
   var email = document.getElementById("Email").value;
   var doj = document.getElementById("doj").value;
   var contact = document.getElementById("Contact").value;
@@ -75,13 +75,6 @@ function validate() {
     document.getElementById("esalary").classList.add("invalid-feedback");
     document.getElementById("Salary").classList.add("is-invalid");
     return;
-  }
-
-  // location
-  for (let l in locations) {
-    if (locations[l].selected) {
-      console.log(locations[l].value);
-    }
   }
 
   // email validation
@@ -163,8 +156,55 @@ function validate() {
     return;
   }
 
-  // displaying data
-  // window.open("./FormData.html");
+  var tbl = document.getElementById("empTableBody");
 
+  var row = document.createElement("tr");
+
+  var rd1 = document.createElement("td");
+  rd1.innerHTML = empId;
+  row.appendChild(rd1);
+
+  var rd2 = document.createElement("td");
+  rd2.innerHTML = empName;
+  row.appendChild(rd2);
+
+  var rd3 = document.createElement("td");
+  rd3.innerHTML = age;
+  row.appendChild(rd3);
+
+  var rd4 = document.createElement("td");
+  for (let g in genders) {
+    if (genders[g].checked) {
+      rd4.innerHTML = genders[g].value;
+    }
+  }
+  row.appendChild(rd4);
+
+  var rd5 = document.createElement("td");
+  rd5.innerHTML = designation;
+  row.appendChild(rd5);
+
+  var rd6 = document.createElement("td");
+  rd6.innerHTML = salary;
+  row.appendChild(rd6);
+
+  var rd7 = document.createElement("td");
+  rd7.innerHTML = locations.value;
+  row.appendChild(rd7);
+
+  var rd8 = document.createElement("td");
+  rd8.innerHTML = email;
+  row.appendChild(rd8);
+
+  var rd9 = document.createElement("td");
+  rd9.innerHTML = doj;
+  row.appendChild(rd9);
+
+  var rd10 = document.createElement("td");
+  rd10.innerHTML = contact;
+  row.appendChild(rd10);
+
+  console.log(row);
+
+  tbl.appendChild(row);
 }
-
