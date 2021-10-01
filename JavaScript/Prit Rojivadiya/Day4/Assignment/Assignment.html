@@ -15,56 +15,24 @@
 
 <body>
     <div class="container">
-
-        <h3 class="display-3 text-danger">Timer - <span id="hr">0</span> : <span id="min">0</span> : <span
-                id="sec">0</span></h3>
-        <br>
-        <button class="btn btn-success" onclick="submitExam()">Submit</button>
-        <p class="mt-5 text-primary display-6" id="sts"></p>
+        <h1 class="display-5 text-primary">Instructions</h1>
+        <ul>
+            <li class="list-item">Instruction 1</li>
+            <li class="list-item">Instruction 2</li>
+            <li class="list-item">Instruction 3</li>
+            <li class="list-item">Instruction 4</li>
+            <li class="list-item">Instruction 5</li>
+            <li class="list-item">Instruction 6</li>
+            <li class="list-item">Instruction 7</li>
+        </ul>
+        <h5 class="text-primary">Subject: Web Programming</h5>
+        <h5>Time = 3 hours</h5>
+        <button onclick="openPaper()" class="btn btn-success">Start Exam</button>
     </div>
     <script>
-        var myTime;
-        function startExam() {
-            return new Promise((resolve, reject) => {
-                var s = 0;
-                var m = 0;
-                var h = 0;
-                myTime = setInterval(() => {
-                    if (s >= 60) {
-                        s = 0;
-                        m = m + 1;
-                    }
-                    if (m >= 60) {
-                        h = h + 1;
-                        m = 0;
-                        s = 0;
-                    }
-                    if (s == 10) {
-                        resolve();
-                    }
-                    document.getElementById('hr').innerHTML = h;
-                    document.getElementById('min').innerHTML = m;
-                    document.getElementById('sec').innerText = s;
-                    s = s + 1;
-                }, 1000);
-            })
+        function openPaper(){
+            window.open('./ExamPaper.html');
         }
-
-
-        startExam().then(() => {
-            submitExam();
-            document.getElementById('sts').innerHTML = "Auto Submitted"
-        })
-            .catch((error) => { console.log(error) })
-
-        function submitExam() {
-            clearInterval(myTime);
-            document.getElementById('hr').innerHTML = 0;
-            document.getElementById('min').innerHTML = 0;
-            document.getElementById('sec').innerText = 0;
-            document.getElementById('sts').innerHTML = "Submitted successfully"
-        }
-
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
