@@ -1,0 +1,1 @@
+static content goes in public folder
