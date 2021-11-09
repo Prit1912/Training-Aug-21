@@ -74,4 +74,14 @@ router1.put('/:empid/child/assignments/:assignId',verifyToken,(req,res)=>{
 })
 
 
+// Add an assignment to specific employee's assignments
+router1.post('/:empid/child/assignments',(req,res)=>{
+    empAssignments.updateOne({empId: req.params.empid},{
+        $push: { assignments: req.body }
+    },(err,doc)=>{
+        console.log(doc);
+        res.send('pushed successfully')
+    })
+})
+
 module.exports = router1;
