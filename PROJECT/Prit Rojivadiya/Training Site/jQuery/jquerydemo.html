@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+    <script>
+        $(document).ready(function () {
+            $("<button></button>").text("getvalue").click(function () {
+                alert("Hello world");
+            }).appendTo("body");
+            $("h1").text("Greeting of the day");
+            $("#list li").each(function (index, element) {
+                console.log(this);
+            })
+
+            var jsondata = [{ "ID": 1, "Name": "Reena", "Address": "Ahmedabad" },
+            { "ID": 2, "Name": "Rita", "Address": "Surat" }
+            ]
+            // $.each(jsondata,function(index,value){
+            //     $("#tbldata").append($("<tr></tr>").append($("<td></td>").text(value.ID)).append($("<td></td>").text(value.Name)));
+            // })
+
+            $.each(jsondata, function (index, value) {
+
+                // $(`<tr><td>${value.ID}</td><td>${value.Name}</td><td>${value.Address}</td></tr>`).appendTo("#tbldata")
+
+                $("<td>" + value.ID + "</td><td>" + value.Name + "</td><td>" + value.Address + "</td>")
+                .appendTo($('<tr></tr>').appendTo($('#tbldata')));
+                
+            })
+
+        });
+
+        function myfun() {
+            $("<button></button>").text("secondbutton").click(function () {
+                alert("Hello world");
+            }).appendTo("body");
+            $("<p></p>").html("<b>Welcome</b>").appendTo("body");
+            $("h1").text("First");
+            $("h2").text("2nd")
+        }
+    </script>
+
+</head>
+
+<body onload="myfun()">
+    <h1>IST</h1>
+    <h2>Second</h2>
+    <ul id="list">
+        <li>ISt</li>
+        <li>second</li>
+        <li>third</li>
+    </ul>
+    <table id="tbldata">
+        <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+
+        </tr>
+    </table>
+
+</body>
+
+</html>

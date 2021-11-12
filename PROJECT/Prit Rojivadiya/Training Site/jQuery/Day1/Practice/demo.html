@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="../../../styles/style1.css">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<style>
+    .changeBG{
+        background-color: red;
+    }
+</style>
+
+<body>
+   
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="../../../index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="../../../HTML/Day1/Assignment/Assignment.html">HTML</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="../../../CSS/Day1/Assignment/Assignment.html">CSS</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="../../../Bootstrap/Day1/CSS_components/Alerts_and_Progressbar.html">Bootstrap</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="../../../Javascript/Day1/Assignment/Assignment.html">Javascript</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active"  style="background-color: red;color: white;border-radius: 10px;"  aria-current="page" href="../../../jQuery/Day1/Assignment/Assignmnt.html">jQuery</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="maindiv">
+        <div class="sidebar">
+            <h2>jQuery</h2>
+            <br>
+            <h3>Day1</h3>
+            <br>
+            <ul>
+                <li> <i class="fas fa-folder"></i> Asssignment
+                    <ul>
+                        <li><a href="../../../jQuery/Day1/Assignment/Assignmnt.html"> Assignment.html </a></li>
+                    </ul>
+                </li>
+                <br>    
+                <li> <i class="fas fa-folder"></i> Practice
+                    <ul>
+                        <li><a href="../../../jQuery/Day1/Practice/demo.html"> <b> demo.html </b> </a> </li>
+                        <li><a href="../../../jQuery/Day1/Practice/Practice.html"> Practice.html </a> </li>
+                        <li><a href="../../../jQuery/Day1/Practice/Practice1.html"> Practice1.html </a> </li>
+                        <li><a href="../../../jQuery/Day1/Practice/Practice2.html"> Practice2.html </a> </li>
+                        <li><a href="../../../jQuery/Day1/Practice/Practice3.html"> Practice3.html </a> </li>
+                    </ul>
+                </li>
+            </ul>
+            <br>
+            <h3>Day2</h3>
+            <br>
+            <ul>
+                <li> <i class="fas fa-folder"></i> Asssignment
+                    <ul>
+                        <li><a href="../../../jQuery/Day2/Assignment/Assignment.html"> Assignment.html </a></li>
+                    </ul>
+                </li>
+                <br>    
+                <li> <i class="fas fa-folder"></i> Practice
+                    <ul>
+                        <li><a href="../../../jQuery/Day2/Practice/Ajax.html"> Ajax.html </a> </li>
+                        <li><a href="../../../jQuery/Day2/Practice/Ancestors_Descendants.html"> Ancestors_Descendants.html </a> </li>
+                        <li><a href="../../../jQuery/Day2/Practice/demo.asp"> demo.asp </a> </li>
+                        <li><a href="../../../jQuery/Day2/Practice/demo.txt"> demo.txt </a> </li>
+                        <li><a href="../../../jQuery/Day2/Practice/getJson.html"> getJson.html </a> </li>
+                        <li><a href="../../../jQuery/Day2/Practice/Sample.json"> Sample.json </a> </li>
+                        <li><a href="../../../jQuery/Day2/Practice/Siblings_Filtering.html"> Siblings_Filtering.html </a> </li>
+                    </ul>
+                </li>
+            </ul>
+            <br>
+          </div>
+        <div class="content">
+            <h1>Heading 1</h1>
+    <div class="div1">This is div 1</div>
+    <div id="div1"></div>
+    <ul id="lists">
+        <li>List 1</li>
+        <li>List 2
+            <ul class="subList">
+                <li>list 2.1</li>
+                <li>list 2.2</li>
+            </ul>
+        </li>
+        <li>List 3</li>
+        <li>List 4</li>
+        <li>List 5</li>
+    </ul>
+    <p id="para1">This is para 1</p>
+    <p id="para2">This is para 2</p>
+    <p id="para3">This is para 3</p>
+    <p id="para4">This is para 4</p>
+    <p id="para5">This is para 5</p>
+    <p id="para6">This is para 6</p>
+
+    <input type="text" placeholder="Enter name" value="Prit"/>
+
+    <button id="fi" >FadeIn</button>
+    <button id="fo">FadeOut</button>
+    <button id="ft">FadeToggle</button>
+    <button id="dt">displayToggle</button>
+    <br>
+
+    <div id="div2">Append prepend before after</div>
+
+    <button class="addClass">Add Class</button>
+    <button class="removeClass">Remove Class</button>
+    <button class="toggleClass">Toggle Class</button>
+
+
+    <script>
+        $(document).ready(function () {
+
+            // selectors
+            console.log($('h1').text());
+            $('h1').text("Updatetd heading 1");
+            $('.div1').text('updated text')
+            $('#div1').text('Added text using id selector')
+            console.log($('#lists > li').text())
+            console.log($('#lists').children('li').text())
+            console.log($('#lists,.sublist').text())
+            console.log($('#lists li:first').text())
+            console.log($('#lists li:last').text())
+            console.log($('#lists > li:odd').text())
+            console.log($('#lists > li:even').text())
+            console.log($('#lists').find('li').text())
+            console.log($('li').first().text())
+            console.log($('li').first().next().text())
+            console.log($('li').first().parent())
+
+
+            // events
+            $('#para1').click(function () {
+                $(this).hide();
+            })
+
+            $('#para2').dblclick(function () {
+                $(this).hide();
+            })
+
+            $('#para3').mouseenter(function () {
+                alert('mouse entered')
+            })
+
+            $('#para3').mouseleave(function () {
+                alert('mouse left')
+            })
+
+            $('#para4').mouseup(function () {
+                alert('mouse up')
+            })
+
+            $('#para4').mousedown(function () {
+                alert('mouse down')
+            })
+
+            // hover is combination of mouseenter and mouseleave
+
+            $("input").focus(function () {
+                $(this).css("background-color", "#cccccc");
+            });
+
+            $("input").blur(function () {
+                $(this).css("background-color", "red");
+            });
+
+            $("#para5").on({
+                mouseenter: function () {
+                    $(this).css("background-color", "lightgray");
+                },
+                mouseleave: function () {
+                    $(this).css("background-color", "lightblue");
+                },
+                click: function () {
+                    $(this).css("background-color", "yellow");
+                }
+            });
+
+            $('#fo').click(function(){
+                $('#para6').fadeOut(1000);
+            })
+            $('#fi').click(function(){
+                $('#para6').fadeIn(1000);
+            })
+            $('#ft').click(function(){
+                $('#para6').fadeToggle(1000);
+            })
+
+            $('#dt').click(function(){
+                $('#para6').toggle(1000);
+            })
+
+
+            // jQuery DOM manipulation
+            console.log($('input').val())
+            console.log($('input').attr('type'))
+            console.log($('li').first().next().html())
+            console.log($('li').first().next().text())
+
+
+            // jQuery add element
+
+            $('#div2').append(" -- appended text")
+            $('#div2').prepend("prepend text --")
+            $('#div2').before("before text --")
+            $('#div2').after("after text --")
+            $('#div2').empty()  // text inside div2 will be removed
+            $('#div2').remove()  // div tag will be removed
+
+
+            // jQuery CSS
+
+            $('.addClass').click(function(){
+                $('#para5').addClass('changeBG')
+            })
+            $('.removeClass').click(function(){
+                $('#para5').removeClass('changeBG')
+            })
+            $('.toggleClass').click(function(){
+                $('#para5').toggleClass('changeBG')
+            })
+
+            $('#para3').css("background-color","yellow") // for single property
+            $('#para3').css({"background-color":"yellow","border":"1px solid red"}) // for multiple property
+
+
+            // iterating element
+            $('#lists > li').each(function(index,element){
+                console.log(element);
+            })
+
+        })
+
+    </script>
+        </div>
+    </div>
+
+    
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+     crossorigin="anonymous"></script>
+
+</body>
+
+</html>

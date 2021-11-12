@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <style>
+        /* img:hover{
+            transform: rotate(360deg);
+            transition: transform 0.8s ease-in;
+        } */
+    img {
+      animation: rotate 5s linear infinite;
+    }
+
+    @keyframes rotate {
+      0%{
+        transform: rotate(0deg);  
+      }
+      25%{
+        transform: rotate(30deg);
+      }
+      50% {
+        transform: rotate(0deg);
+        margin-left: 100px;
+      }
+      75% {
+        transform: rotate(-30deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+    </style>
+</head>
+<body>
+    <nav class="mainnav">
+        <ul class="navbar">
+         <a href=""><li class="nav-item" style="background-color: rgb(0, 0, 255);color: white;border-radius: 10px;">Home</li></a>
+         <a href="./HTML/Day1/Assignment/Assignment.html"><li class="nav-item">HTML</li></a>
+         <a href="./CSS/Day1/Assignment/Assignment.html"><li class="nav-item">CSS</li></a>
+         <a href="./Bootstrap/Day1/CSS_components/Alerts_and_Progressbar.html"><li class="nav-item">Bootstrap</li></a>
+         <a href="./Javascript/Day1/Assignment/Assignment.html"><li class="nav-item">Javascript</li></a>
+         <a href="./jQuery/Day1/Assignment/Assignmnt.html"><li class="nav-item">jQuery</li></a>
+        </ul>
+    </nav>
+    <div class="maindiv">
+        <div class="sidebar">
+            <h1 style = "color: rgb(0, 0, 255);">Frontend Training</h1>
+            <br><br>
+            <ul>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp; HTML</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp; CSS</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp; Bootstrap</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp; Javascript</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp; jQuery</li>
+            </ul>
+        </div>
+        <div class="content">
+            <img src="./assets/radixweb_logo.png" alt="">
+        </div>
+    </div>
+    
+</body>
+</html>

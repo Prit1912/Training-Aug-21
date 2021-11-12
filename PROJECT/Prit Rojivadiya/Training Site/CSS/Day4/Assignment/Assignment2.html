@@ -1,0 +1,367 @@
+<!-- Create Responsive Layout with Navigation. Image will be shared through redmine. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../styles/style.css">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>    
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .content nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: #f1f1f1;
+            padding: 10px;
+            position: relative;
+        }
+
+        img {
+            width: 140px;
+        }
+
+        .content .nav-item {
+            display: inline-block;
+            padding: 15px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .content .nav-item:hover {
+            background-color: red;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .maindivs {
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .div1 {
+            flex: 20%;
+            padding: 20px;
+        }
+
+        .categories {
+            width: 100%;
+        }
+
+        .category {
+            list-style: none;
+            background-color: red;
+            color: white;
+            border-radius: 7px;
+            line-height: 20px;
+            margin: 10px 10px 10px 0px;
+            font-weight: bolder;
+            padding: 10px;
+        }
+        .category:hover{
+            transform: scale(1.1);
+            box-shadow: 3px 3px 7px 1px black;
+        }
+        .div2 {
+            flex: 60%;
+            padding: 20px 0px 0px 0px;
+        }
+
+        .para {
+            padding: 10px;
+            text-align: justify;
+        }
+        .para1{
+            padding: 20px 0px 20px 00px;
+        }
+
+        #imgcontent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .div3 {
+            flex: 20%;
+            padding: 20px;
+        }
+        .subdiv3{
+            margin: 10px;
+            flex: 20%;
+            background-color: red;
+            border-radius: 10px;
+            color: white;
+            padding: 20px;
+        }
+        .head2 {
+            padding: 0px 10px 10px 0px;
+        }
+
+        .ans {
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            background-color: red;
+            color: white;
+            line-height: 50px;
+        }
+
+      
+        @media screen and (max-width: 600px) {
+            .content nav {
+                flex-direction: column;
+            }
+
+            .content .navbar,
+            .content .logo {
+                text-align: center;
+            }
+
+            #imgcontent
+            {
+                flex-direction: column;
+            }
+        }
+
+        @media screen and (max-width: 360px) {
+            .content .nav-item {
+                display: block;
+            }
+
+            #imgcontent
+            {
+                flex-direction: column;
+            }
+            .div1{
+                flex: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    
+<nav class=".mainnav">
+    <ul class="navbar">
+        <a href="../../../index.html"><li class="nav-item">Home</li></a>
+        <a href="../../../HTML/Day1/Assignment/Assignment.html">
+            <li class="nav-item" >HTML</li>
+        </a>
+        <a href="./Assignment.html">
+            <li class="nav-item" style="background-color: red;color: white;border-radius: 10px;">CSS</li>
+        </a>
+        <a href="../../../Bootstrap/Day1/CSS_components/Alerts_and_Progressbar.html">
+            <li class="nav-item">Bootstrap</li>
+        </a>
+        <a href="../../../Javascript/Day1/Assignment/Assignment.html">
+            <li class="nav-item">Javascript</li>
+        </a>
+        <a href="../../../jQuery/Day1/Assignment/Assignmnt.html">
+            <li class="nav-item">jQuery</li>
+        </a>
+    </ul>
+</nav>
+<div class="maindiv">
+    <div class="sidebar">
+        <h2>CSS</h2>
+        <br>
+        <h3>Day1</h3>
+        <br>
+        <ul>
+            <li> <i class="fas fa-folder"></i> Asssignment
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Assignment/Assignment.html">  Assignment.html  </a></li>
+                </ul>
+            </li>
+            <br>    
+            <li> <i class="fas fa-folder"></i> Practice
+                <ul>
+                    <li> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fas fa-folder"></i> Fonts
+                        <ul>
+                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aileron-Regular.otf</li>
+                            <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GreatVibes-Regular.otf</li>
+                        </ul>
+                    </li>
+                    <li> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fas fa-folder"></i> Media
+                        <ul>
+                            <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Channa Mereya.mp3</li>
+
+                            <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My Video2.mp4</li>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prit12.png</li>
+                        </ul>
+                    </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/background.html">  background.html  </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/borders.html">  borders.html  </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/displayProperties.html"> displayProperties.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/selectors.html"> selectors.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/textProperties.html"> textProperties.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/Practice1.html"> Practice1.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/Practice2.html"> Practice2.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/Practice3.html"> Practice3.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/Practice4.html"> Practice4.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day1/Practice/Practice5.html"> Practice5.html </a> </li>
+                </ul>
+            </li>
+        </ul>
+        <br>
+        <h3>Day2</h3>
+        <br>
+        <ul>
+            <li> <i class="fas fa-folder"></i> Asssignment
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Assignment/index.html">  index.html  </a></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Assignment/About.html">  About.html  </a></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Assignment/Contact.html">  Contact.html  </a></li>
+                </ul>
+            </li>
+            <br>    
+            <li> <i class="fas fa-folder"></i> Practice
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Float_practice.html"> Float_practice.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Overflow_practice.html"> Overflow_practice.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Position_practice.html"> Position_practice.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Practice1.html"> Practice1.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Practice2.html"> Practice2.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Practice3.html"> Practice3.html </a> </li>
+                </ul>
+            </li>
+        </ul>
+        <br>
+        <h3>Day3</h3>
+        <br>
+        <ul>
+            <li> <i class="fas fa-folder"></i> Asssignment
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Assignment/Assignment.html">  Assignment.html  </a></li>
+                </ul>
+            </li>
+            <br>    
+            <li> <i class="fas fa-folder"></i> Practice
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/boxmodel_practice.html"> boxmodel_practice.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Flex_items.html"> flex_items.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Flexbox_containers.html"> flexbox_container.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice1.html"> Practice1.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice2.html"> Practice2.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice3.html"> Practice3.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice4.html"> Practice4.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice5.html"> Practice5.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice6.html"> Practice6.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice7.html"> Practice7.html </a> </li>
+                </ul>
+            </li>
+        </ul>
+        <br>
+        <h3>Day4</h3>
+        <br>
+        <ul>
+            <li> <i class="fas fa-folder"></i> Asssignment
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Assignment/Assignment1.html">  Assignment1.html  </a></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Assignment/Assignment2.html"><b>Assignment2.html </b> </a></li>
+                </ul>
+            </li>
+            <br>    
+            <li> <i class="fas fa-folder"></i> Practice
+                <ul>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Media_Query.html"> Media_Query.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice1.html"> Practice1.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice2.html"> Practice2.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice3.html"> Practice3.html </a> </li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice4.html"> Practice4.html </a> </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <nav>
+            <div class="logo">
+                <img src="./Assets/logo.png" alt="logo">
+            </div>
+            <div class="menus">
+                <ul class="navbar">
+                    <li class="nav-item">Home</li>
+                    <li class="nav-item">Services</li>
+                    <li class="nav-item">About</li>
+                    <li class="nav-item">Contact</li>
+                </ul>
+            </div>
+        </nav>
+        <div class="maindivs">
+            <div class="div1">
+                <ul class="categories">
+                    <li class="category">Category1</li>
+                    <li class="category">Category2</li>
+                    <li class="category">Category3</li>
+                    <li class="category">Category4</li>
+                </ul>
+            </div>
+            <div class="div2">
+                <h1 style="color: red;padding: 0px 10px 10px 10px;">Content</h1>
+                <p class="para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic nostrum voluptas magni
+                    pariatur, alias architecto nulla explicabo corrupti blanditiis a sed, quasi dolorem ad accusantium
+                    tenetur autem adipisci, necessitatibus natus.</p>
+                <p class="para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur ipsa fugiat rerum.
+                    Aperiam, odio, error ipsa dicta itaque voluptatibus voluptatem similique aliquam unde quos ut totam
+                    dolorum magni eum eligendi!</p>
+                <p class="para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur ipsa fugiat rerum.
+                    Aperiam, odio, error ipsa dicta itaque voluptatibus voluptatem similique aliquam unde quos ut totam
+                    dolorum magni eum eligendi!</p>
+                <div class="para" id="imgcontent">
+                    <div class="div4">
+                        <img src="./Assets/Prit12.png" alt="logoimg" style="padding: 10px;">
+                    </div>
+                    <div class="div5">
+                        <p class="para1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet accusamus
+                            voluptatibus facilis similique suscipit excepturi cupiditate, voluptate nisi illum, adipisci
+                            labore. Magni autem esse modi deleniti amet maiores aut mollitia!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="div3">
+                <div class="subdiv3">
+                    <h2 class="head2">Ques1</h2>
+                    <p class="ans">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam exercitationem aperiam
+                        accusamus! Reprehenderit ipsam facere debitis.</p>
+                    <h2 class="head2">Ques2</h2>
+                    <p class="ans">Lorem ipsum dolor sit amet consectetur adipisicing elit. In dolores, harum assumenda
+                        dolore atque aliquid. Vitae, sint?</p>
+                    <h2 class="head2">Ques3</h2>
+                    <p class="ans">Lorem ipsum dolor sit amet consectetur adipisicing elit. Non iste obcaecati reiciendis
+                        architecto iste corrupti esse.</p>
+                </div>
+            </div>
+        </div>
+        <footer>
+            Copyright &#169; Since 2021
+        </footer>
+    </div>
+</div>
+    
+</body>
+
+</html>

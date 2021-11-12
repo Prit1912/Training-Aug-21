@@ -1,0 +1,331 @@
+<!-- Create personalized resume, which must be attractive. 
+Use all the HTML tags and apply CSS which we have learned so far. 
+Add one short video of your project done into resume. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume</title>
+    <link rel="stylesheet" href="../../../styles/style.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <style type="text/css">
+        .resume {
+            width: 60%;
+            margin: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+            border: 2px solid black;
+            background-color: rgb(255, 255, 255);
+        }
+
+        h3 {
+            color: Blue;
+        }
+
+        p,
+        dd {
+            text-align: justify;
+        }
+
+        table {
+            text-align: center;
+            border-style: inset;
+        }
+
+        th,td,tr{
+            border: 1px solid black;
+        }
+
+        .skills li {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            background-color: rgb(216, 209, 209);
+            border-radius: 15px;
+            font-weight: 500;
+        }
+
+        .interests li{
+            display: inline;
+            padding: 10px;
+            margin: 8px;
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            .resume{
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul class="navbar">
+            <a href="../../../index.html"><li class="nav-item">Home</li></a>
+            <a href="../../../HTML/Day1/Assignment/Assignment.html">
+                <li class="nav-item" >HTML</li>
+            </a>
+            <a href="./Assignment.html">
+                <li class="nav-item" style="background-color: red;color: white;border-radius: 10px;">CSS</li>
+            </a>
+            <a href="../../../Bootstrap/Day1/CSS_components/Alerts_and_Progressbar.html">
+                <li class="nav-item">Bootstrap</li>
+            </a>
+            <a href="../../../Javascript/Day1/Assignment/Assignment.html">
+                <li class="nav-item">Javascript</li>
+            </a>
+            <a href="../../../jQuery/Day1/Assignment/Assignmnt.html">
+                <li class="nav-item">jQuery</li>
+            </a>
+        </ul>
+    </nav>
+    <div class="maindiv">
+        <div class="sidebar">
+            <h2>CSS</h2>
+            <br>
+            <h3>Day1</h3>
+            <br>
+            <ul>
+                <li> <i class="fas fa-folder"></i> Asssignment
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="./Assignment.html"> <b> Assignment.html </b> </a></li>
+                    </ul>
+                </li>
+                <br>    
+                <li> <i class="fas fa-folder"></i> Practice
+                    <ul>
+                        <li> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fas fa-folder"></i> Fonts
+                            <ul>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aileron-Regular.otf</li>
+                                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GreatVibes-Regular.otf</li>
+                            </ul>
+                        </li>
+                        <li> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fas fa-folder"></i> Media
+                            <ul>
+                                <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Channa Mereya.mp3</li>
+
+                                <li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My Video2.mp4</li>
+                                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prit12.png</li>
+                            </ul>
+                        </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/background.html"> background.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/borders.html"> borders.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/displayProperties.html"> displayProperties.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/selectors.html"> selectors.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/textProperties.html"> textProperties.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/Practice1.html"> Practice1.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/Practice2.html"> Practice2.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/Practice3.html"> Practice3.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/Practice4.html"> Practice4.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../Practice/Practice5.html"> Practice5.html </a> </li>
+                    </ul>
+                </li>
+            </ul>
+            <br>
+            <h3>Day2</h3>
+            <br>
+            <ul>
+                <li> <i class="fas fa-folder"></i> Asssignment
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Assignment/index.html">  index.html  </a></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Assignment/About.html">  About.html  </a></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Assignment/Contact.html">  Contact.html  </a></li>
+                    </ul>
+                </li>
+                <br>    
+                <li> <i class="fas fa-folder"></i> Practice
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Float_practice.html"> Float_practice.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Overflow_practice.html"> Overflow_practice.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Position_practice.html"> Position_practice.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Practice1.html"> Practice1.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Practice2.html"> Practice2.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day2/Practice/Practice3.html"> Practice3.html </a> </li>
+                    </ul>
+                </li>
+            </ul>
+            <br>
+            <h3>Day3</h3>
+            <br>
+            <ul>
+                <li> <i class="fas fa-folder"></i> Asssignment
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Assignment/Assignment.html">  Assignment.html  </a></li>
+                    </ul>
+                </li>
+                <br>    
+                <li> <i class="fas fa-folder"></i> Practice
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/boxmodel_practice.html"> boxmodel_practice.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Flex_items.html"> flex_items.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Flexbox_containers.html"> flexbox_container.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice1.html"> Practice1.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice2.html"> Practice2.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice3.html"> Practice3.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice4.html"> Practice4.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice5.html"> Practice5.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice6.html"> Practice6.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day3/Practice/Practice7.html"> Practice7.html </a> </li>
+                    </ul>
+                </li>
+            </ul>
+            <br>
+            <h3>Day4</h3>
+            <br>
+            <ul>
+                <li> <i class="fas fa-folder"></i> Asssignment
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Assignment/Assignment1.html">  Assignment1.html  </a></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Assignment/Assignment2.html">  Assignment2.html  </a></li>
+                    </ul>
+                </li>
+                <br>    
+                <li> <i class="fas fa-folder"></i> Practice
+                    <ul>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Media_Query.html"> Media_Query.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice1.html"> Practice1.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice2.html"> Practice2.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice3.html"> Practice3.html </a> </li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../Day4/Practice/Practice4.html"> Practice4.html </a> </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="resume">
+                <h3>Prit Rojivadiya</h3>
+                <cite>(Software Engineer)</cite>
+                <br><br>
+                <b>Phone: </b>(+91) 99259733XX <br>
+                <b>Mail: </b> pritrojivadiya@gmail.com <br>
+                <b>Github:</b> <a href="https://github.com/Prit1912?tab=repositories" target="_blank">https://github.com/Prit1912?tab=repositories</a><br>
+                <b>LinkedIn:</b> <a href="https://www.linkedin.com/in/prit-rojivadiya-0b505a1b7/" target="_blank">https://www.linkedin.com/in/prit-rojivadiya-0b505a1b7/</a>
+                <hr>
+        
+                <h3>Objective</h3>
+                <p>
+                    &nbsp; &nbsp; &nbsp; &nbsp;Willing to obtain responsible and challenging
+                    Software Developer’s position where I can use
+                    my skill sets, learn new skills and technology.
+                    <br>
+        
+                <h3>Education</h3>
+        
+                <table>
+                    <tr style="width: 100px">
+                        <th>Education</th>
+                        <th>Percentage</th>
+                        <th>Year</th>
+                        <th>Institute</th>
+        
+                    </tr>
+                    <tr style="width: 100px">
+                        <td>
+                            BE in Computer Engineering
+                        </td>
+                        <td>80%</td>
+                        <td>2018 - 2022</td>
+                        <td>GEC Gandhinagar</th>
+                    </tr>
+                    <tr style="width: 100px">
+                        <td>HSC</td>
+                        <td>88%</td>
+                        <td>2018</td>
+                        <td>AB school</th>
+                    </tr>
+                    <tr style="width: 100px">
+                        <td>SSC</td>
+                        <td>93%</td>
+                        <td>2016</td>
+                        <td>AB school</th>
+                    </tr>
+                </table>
+        
+                <h3>Skills</h3>
+                <ul class="skills">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                    <li>jquery</li>
+                    <li>Bootstrap</li>
+                    <li>ReactJS</li>
+                    <li>Material UI</li>
+                    <li>NodeJs</li>
+                    <li>Redux</li>
+                    <li>Java</li>
+                    <li>SQL server</li>
+        
+                </ul>
+        
+                <h3>Projects</h3>
+                <dl>
+                    <dt> <b> Recipe App </b> </dt>
+                    <dd>This is a web app developed using React JS in which you
+                        can search for any food recipe and similar results will
+                        be displayed. Food recipe API was used for this project.
+                        Technology: ReactJS
+                    </dd>
+                    <br>
+                    <dt> <b> Google Keep Clone </b> </dt>
+                    <dd>This is a simple web app developed using React JS
+                        which has a functionality of storing content with its title
+                        and it is similar to Google Keep. <br>
+                        Technology: ReactJS
+                    </dd>
+                    <br>
+                    <dt> <b> Tweet Quotes </b> </dt>
+                    <dd>
+                        This is completely vanilla JavaScript Project where
+                        random quotes are displayed each time you click on
+                        “New Quote” button and when you click on “Tweet”
+                        button Twitter will open automatically and that quote
+                        will be displayed on your Tweet Area.
+                        <br>
+                        <a href="https://prit1912.github.io/Tweet_Quotes/" target="_blank">Live Demo</a>
+                    </dd>
+                    <br>
+                </dl>
+        
+                <b> Music player using Python (Tkinter Library) </b> <br><br>
+                <video 
+                src="../Practice//Media/My Video2.mp4" 
+                width="100%" 
+                controls>
+                </video>
+        
+                <h3>Certificates</h3>
+                <ul>
+                    <li>Career Edge – Knockdown the Lockdown
+                        (Soft skill development program by TCS)
+                    </li>
+                    <li>Java Basic from hackerrank</li>
+                    <li>JavaScript Basic from hackerrank
+                    </li>
+                    <li>The Complete guide with React Hook and
+                        Redux from Udemy</li>
+                </ul>
+        
+                <h3>Interests</h3>
+                <ul class="interests">
+                    <li><b> &bigstar; </b>Playing Chess</li>
+                    <li><b> &bigstar; </b>Swimming</li>
+                    <li><b> &bigstar; </b>Photoshop</li>
+                    <li><b> &bigstar; </b>Logo Design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+</html>
