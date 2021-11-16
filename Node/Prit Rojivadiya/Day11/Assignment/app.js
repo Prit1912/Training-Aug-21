@@ -1,20 +1,18 @@
 const express = require('express');
 const app = express();
-const homeRouter = require('./routes/index');
-const assignmentRouter = require('./routes/assignment');
-const feesRouter = require('./routes/fees');
-const resultRouter = require('./routes/result');
-const userRouter = require('./routes/users');
+const mongoose = require('mongoose');
+const empRouter = require('./controller/Employee/employee.controller')
+const stuRouter = require('./controller/Student/student.controller')
+const loginRouter = require('./controller/login/auth.controller')
 
-app.set('view engine','ejs');
+mongoose.connect('mongodb://localhost/radix')
+    .then(()=>{console.log('connection successful')})
+    .catch((err)=>{console.log('error occured ',err)})
 
 app.use(express.json());
-app.use('/',homeRouter);
-app.use('/employees',assignmentRouter)
-const stuRouter = [feesRouter,resultRouter];
+app.use('/employees',empRouter);
 app.use('/students',stuRouter);
-app.use('/users',userRouter);
-
+app.use('/login',loginRouter);
 app.listen(8000,()=>{
-    console.log('listening at port 8000');
+    console.log('listening to port 8000');
 })
