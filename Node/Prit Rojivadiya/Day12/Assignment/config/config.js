@@ -1,5 +1,5 @@
 module.exports = {
-    secretKey: 'anything',
-    algorithm: 'HS256'
-}
-
+    secretKey: "keyPrivate",
+    algorithm: "HS256"
+  };
+  
