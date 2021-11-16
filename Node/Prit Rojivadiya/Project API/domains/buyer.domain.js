@@ -1,5 +1,6 @@
 const { buyers } = require('../models/buyer.model')
-const { courses } = require('../models/course.model')
+// const { courses } = require('../models/course.model')
+
 
 class BuyerDomain{
 
@@ -12,17 +13,20 @@ class BuyerDomain{
 
     // get buyer by id
     async getBuyer(req,res){
-        const buyer = await buyers.find({userId: req.params.id});
+        const buyer = await buyers.find({userId: req.user._id}).populate('courseId','-_id');
         if(buyer.length == 0) return res.status(404).send('buyer not found');
         res.send(buyer)
     }
 
     // add buyer
     async addBuyer(req,res){
-        const id = req.body.userId
+        const id = req.user._id
         let user = await buyers.find({userId: id})
         if(user.length == 0){
-            const buyer = new buyers(req.body)
+            const buyer = new buyers({
+                userId: id,
+                courseId: req.body.courseId
+            })
             try {
                 const result = await buyer.save();
                 res.send(result);
@@ -85,6 +89,21 @@ class BuyerDomain{
                                  .select('userId')
                                  .populate('userId')
         res.send(data);
+    }
+
+    // unenroll from course
+    async unenrollCourse(req,res){
+        const userid = req.params.uid;
+        const courseid = req.params.cid;
+
+        const buyer = await buyers.findOneAndUpdate({userId: userid},{
+            $pull: {courseId: courseid}
+        },{new: true})
+
+        if(!buyer){
+            return res.status(404).send('something went wrong')
+        }
+        res.send(buyer)
     }
 
 }

@@ -1,6 +1,8 @@
 const express = require('express');
 const CategoryDomain = require('../domains/category.domain')
 const router = express.Router();
+const adminAuth = require('../middleware/admin.middleware')
+const auth = require('../middleware/auth.middleware')
 
 class categoryController{
 
@@ -31,10 +33,21 @@ class categoryController{
 
 }
 
+router.use([auth,adminAuth]);
+
+// get all categories
 router.get('/',categoryController.get);
+
+// add category
 router.post('/',categoryController.add);
+
+// update category name
 router.put('/:id',categoryController.edit);
+
+// remove category
 router.delete('/:id',categoryController.delete);
+
+// get specific category
 router.get('/:id',categoryController.getById);
 
 module.exports = router

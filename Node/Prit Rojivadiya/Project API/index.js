@@ -7,6 +7,7 @@ const categoryRouter = require('./controllers/category.controller')
 const courseRouter = require('./controllers/course.controller')
 const buyerRouter = require('./controllers/buyer.controller')
 const userRouter = require('./controllers/user.controller')
+const authRouter = require('./controllers/auth.controller')
 
 mongoose.connect('mongodb://localhost/udemy')
     .then(()=>{console.log('connection successful')})
@@ -17,6 +18,7 @@ app.use('/categories',categoryRouter);
 app.use('/courses',courseRouter);
 app.use('/buyers',buyerRouter);
 app.use('/users',userRouter);
+app.use('/auth',authRouter);
 
 const port = 8000;
 app.listen(port,()=>{

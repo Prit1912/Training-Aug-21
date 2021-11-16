@@ -16,12 +16,20 @@ class CategoryDomain{
         res.send(category)
     }
 
+
     // add category
     async addCategory(req,res){
-        const c = req.body
+        const ct = await categories.find().sort({_id:-1});
+        let id;
+        if(ct.length == 0){
+            id = 1;
+        }else{
+            id = ct[0]._id + 1
+        }
+
         let category = new categories({
-            _id: c._id,
-            name: c.name
+            _id: id,
+            name: req.body.name
         })
         try {
             const result = await category.save();
@@ -29,6 +37,7 @@ class CategoryDomain{
           } catch (e) {
             res.send(e.message);
           }
+
     }
 
     // edit category

@@ -1,6 +1,9 @@
 const express = require('express');
 const BuyerDomain = require('../domains/buyer.domain')
 const router = express.Router();
+const userAuth = require('../middleware/user.middleware');
+const adminAuth = require('../middleware/admin.middleware')
+const auth = require('../middleware/auth.middleware')
 
 class BuyerController{
 
@@ -39,15 +42,30 @@ class BuyerController{
         buyerDomain.coursesSummary(req,res);
     }
 
+    static async unenroll(req,res){
+        const buyerDomain = new BuyerDomain();
+        buyerDomain.unenrollCourse(req,res);
+    }
 }
 
 router.get('/',BuyerController.get);
-router.get('/:id',BuyerController.getById);
-router.post('/',BuyerController.add);
-router.delete('/:id',BuyerController.delete);
-router.get('/all/summary',BuyerController.allBuyers);
-router.get('/all/:id/summary',BuyerController.oneBuyer);
+
+// user's courses
+router.get('/me/courses',[auth,userAuth],BuyerController.getById);
+
+// user enrollment in course
+router.post('/',[auth,userAuth],BuyerController.add);
+
+// summary of all buyers
+router.get('/all/summary',[auth,adminAuth],BuyerController.allBuyers);
+
+// summary of apecific buyers
+router.get('/all/summary/:id',[auth,adminAuth],BuyerController.oneBuyer);
+
 // get name of user who boutght specific course
-router.get('/courses/:id/summary',BuyerController.allCourses);
+router.get('/courses/summary/:id',[auth,adminAuth],BuyerController.allCourses);
+
+// unenroll from course
+router.delete('/unenroll/:uid/course/:cid',[auth,adminAuth],BuyerController.unenroll);
 
 module.exports = router

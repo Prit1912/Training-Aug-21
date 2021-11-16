@@ -23,6 +23,11 @@ const courseSchema = new mongoose.Schema(({
     price: {
         type: Number,
         required: function(){return this.isPaid}
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 }))
 

@@ -1,4 +1,7 @@
 const { users, validateUser } = require('../models/user.model')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 class UserDomain{
 
@@ -7,6 +10,14 @@ class UserDomain{
         const allUser = await users.find();
         if(allUser.length == 0) return res.status(404).send('There are no users added yet');
         res.send(allUser);
+    }
+
+    // get current user info
+    async getInfo(req,res){
+        const user = await users.findById(req.user._id).select('-password');
+        console.log(req.user)
+        console.log(user);
+        res.send(user);
     }
 
     // get user by id
@@ -21,15 +32,35 @@ class UserDomain{
         const c = req.body
         const { error } = validateUser(c);
         if(error) return res.status(500).send(error.details[0].message)
+
+        const usr = await users.findOne({email: c.email})
+        if(usr) return res.status(400).send('user already registered')
+
+        const allUser = await users.find().sort({_id:-1});
+        let id;
+        if(allUser.length == 0){
+            id = 1;
+        }else{
+            id = allUser[0]._id + 1
+        }
         let user = new users({
-            _id: c._id,
+            _id: id,
             name: c.name,
             email: c.email,
-            phone: c.phone
+            phone: c.phone,
+            password: c.password,
+            role: c.role
         })
+
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password,salt)
+
         try {
             const result = await user.save();
-            res.send(result);
+            const token = jwt.sign({_id: user._id, role: user.role},config.get("jwtPrivateKey"),{expiresIn: "1h"})
+            console.log(token)
+            // const token = users.generateAuthToken();
+            res.header('x-access-token',token).send(result);
           } catch (e) {
             res.send(e.message);
           }
@@ -63,12 +94,37 @@ class UserDomain{
         } 
     }
 
+
+    // update personal info
+    async updateMyProfile(req,res){
+
+        const { error } = validateUser(req.body);
+        if(error) return res.status(500).send(error.details[0].message)
+
+        try{
+            const user = await users.findByIdAndUpdate(req.user._id, {
+                $set: {
+                    name: req.body.name,
+                    email: req.body.email,
+                    phone: req.body.phone
+                }
+            },{new: true}).select('-password')
+            res.send(user);
+        }catch(e){
+            console.log(e);
+        } 
+    }
+
+
     // delete user
     async deleteUser(req,res){
         const id = req.params.id;
-        const user = await users.findByIdAndDelete(id);
+        const user = await users.findById(id);
+        console.log(user.isActive);
         if(!user) return res.status(404).send('user not found')
         else{
+            user.isActive = false;
+            await user.save();
             res.send('deleted successfully');
         }
     }

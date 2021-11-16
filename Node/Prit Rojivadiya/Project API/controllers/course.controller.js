@@ -1,6 +1,9 @@
 const express = require('express');
 const CourseDomain = require('../domains/course.domain')
 const router = express.Router();
+const auth = require('../middleware/auth.middleware');
+const adminAuth = require('../middleware/admin.middleware')
+const instAuth = require('../middleware/instructor.middleware')
 
 class courseController{
 
@@ -39,14 +42,35 @@ class courseController{
         courseDomain.courseSummary(req,res);
     }
 
+    static async getbyCategory(req,res){
+        const courseDomain = new CourseDomain();
+        courseDomain.getCourseByCategory(req,res);
+    }
 }
 
+// get all courses
 router.get('/',courseController.get);
-router.post('/',courseController.add);
-router.put('/:id',courseController.edit);
-router.delete('/:id',courseController.delete);
+
+// add course
+router.post('/',[auth,instAuth],courseController.add);
+
+// get categorywise courses
+router.get('/search',courseController.getbyCategory)
+
+// update course
+router.put('/:id',[auth,instAuth],courseController.edit);
+
+// remove course
+router.delete('/:id',[auth,adminAuth],courseController.delete);
+
+// get course by id
 router.get('/:id',courseController.getById);
-router.get('/all/summary',courseController.fullCourses);
-router.get('/:id/summary',courseController.oneCourseSummary);
+
+// get all courses summary
+router.get('/all/summary',[auth,adminAuth],courseController.fullCourses);
+
+// get particular course summary
+router.get('/:id/summary',[auth,adminAuth],courseController.oneCourseSummary);
+
 
 module.exports = router
