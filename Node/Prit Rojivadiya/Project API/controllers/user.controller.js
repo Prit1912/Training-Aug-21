@@ -3,6 +3,7 @@ const UserDomain = require('../domains/user.domain')
 const router = express.Router();
 const auth = require('../middleware/auth.middleware')
 const adminAuth = require('../middleware/admin.middleware')
+const instAuth = require('../middleware/instructor.middleware')
 
 class userController{
 
@@ -41,6 +42,11 @@ class userController{
         userDomain.updateMyProfile(req,res);
     }
 
+    static async getCourses(req,res){
+        const userDomain = new UserDomain();
+        userDomain.getMyCourses(req,res);
+    }
+
 }
 
 // get all users
@@ -51,6 +57,9 @@ router.get('/me',auth,userController.getMyInfo);
 
 // update profile
 router.put('/me/update',auth,userController.updateProfile) 
+
+// see uploaded courses
+router.get('/me/courses', [auth, instAuth], userController.getCourses)
 
 // add user
 router.post('/',userController.add);

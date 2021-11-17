@@ -25,8 +25,8 @@ class CourseDomain{
         if(!c){
             return res.status(404).send(`no courses available for ${cName} category`)
         }
-        const crs = await courses.find({category: c._id})
-        console.log(crs);
+        const crs = await courses.find({category: c._id}).populate('instructor',"name -_id").sort({name:1})
+        // console.log(crs);
         res.send(crs);
     }
 
@@ -56,7 +56,8 @@ class CourseDomain{
             name: req.body.name,
             category: req.body.category,
             isPaid: req.body.isPaid,
-            price: req.body.price
+            price: req.body.price,
+            instructor: req.user._id
         })
         try {
             const result = await course.save();
@@ -89,7 +90,13 @@ class CourseDomain{
         }
 
         try{
-            const course = await courses.findByIdAndUpdate(id, {$set: req.body},{new: true})
+            const course = await courses.findByIdAndUpdate(id, {$set: {
+                name:req.body.name,
+                category: req.body.category,
+                isPaid: req.body.isPaid,
+                price: req.body.price,
+                isActive: req.body.isActive
+            }},{new: true})
             res.send(course);
         }catch(e){
             console.log(e);
@@ -109,13 +116,13 @@ class CourseDomain{
 
     // summary of courses
     async coursesSummary(req,res){
-        const datas = await courses.find().populate('category','name -_id')
+        const datas = await courses.find().populate('category','name -_id').populate('instructor')
         res.send(datas);
     }
 
     // summary of course
     async courseSummary(req,res){
-        const datas = await courses.find({_id: req.params.id}).populate('category')
+        const datas = await courses.find({_id: req.params.id}).populate('category').populate('instructor')
         res.send(datas);
     }
 

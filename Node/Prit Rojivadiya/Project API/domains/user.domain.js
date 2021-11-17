@@ -2,6 +2,7 @@ const { users, validateUser } = require('../models/user.model')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const {courses} = require('../models/course.model')
 
 class UserDomain{
 
@@ -26,6 +27,15 @@ class UserDomain{
         if(!user) return res.status(404).send('user not found');
         res.send(user)
     }
+
+    // get instructor's uploaded courses
+    async getMyCourses(req,res){
+        const user = await users.findById(req.user._id).select('_id');
+        const c = await courses.find({instructor: user._id});
+        console.log(c);
+        res.send(c)
+    }
+
 
     // add user
     async addUser(req,res){

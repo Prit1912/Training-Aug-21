@@ -28,6 +28,10 @@ const courseSchema = new mongoose.Schema(({
         type: Boolean,
         required: true,
         default: true
+    },
+    instructor: {
+        type: Number,
+        ref: 'user'
     }
 }))
 
