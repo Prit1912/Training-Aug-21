@@ -3,7 +3,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
-const {users} = require('../models/user.model')
+const {users} = require('../../models/user.model')
 const router = express.Router();
 
 if(!config.get('jwtPrivateKey')){
@@ -27,7 +27,17 @@ router.post('/',async (req,res)=>{
 
     const token = jwt.sign({_id: user._id, role: user.role},config.get("jwtPrivateKey"),{expiresIn: "1h"})
     console.log(token)
-    res.send(token);
+    // res.send(token);
+    // console.log(user.role)
+    // console.log(req.protocol + '://' + req.get('host') + '/courses')
+    if(user.role == 'user'){
+        res.redirect(req.protocol + '://' + req.get('host')+ '/user')
+    }else if(user.role == 'instructor'){
+        res.redirect(req.protocol + '://' + req.get('host') + '/instructor')
+    }else if(user.role == 'admin'){
+        res.redirect(req.protocol + '://' + req.get('host') + '/admin')
+    }
+    
 })
 
 function validateUser(user){

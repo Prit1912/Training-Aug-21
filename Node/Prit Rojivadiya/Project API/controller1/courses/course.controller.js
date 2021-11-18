@@ -1,20 +1,20 @@
 const express = require('express');
-const CourseDomain = require('../domains/course.domain')
-const router = express.Router();
-const auth = require('../middleware/auth.middleware');
-const adminAuth = require('../middleware/admin.middleware')
-const instAuth = require('../middleware/instructor.middleware')
+const CourseDomain = require('../../domains/course.domain')
+const router = express.Router({ mergeParams: true });
+const auth = require('../../middleware/auth.middleware')
+const userAuth = require('../../middleware/user.middleware')
+
 
 class courseController{
 
     static async get(req,res){
         const courseDomain = new CourseDomain();
-        courseDomain.getCourses(req,res);
+        courseDomain.getAllCourses(req,res);
     }
 
     static async getById(req,res){
         const courseDomain = new CourseDomain();
-        courseDomain.getCourse(req,res);
+        courseDomain.getCourseById(req,res);
     }
 
     static async add(req,res){
@@ -46,31 +46,23 @@ class courseController{
         const courseDomain = new CourseDomain();
         courseDomain.getCourseByCategory(req,res);
     }
+
+    static async addToCart(req,res){
+        const courseDomain = new CourseDomain();
+        courseDomain.addCourseToCart(req,res);
+    }
 }
 
 // get all courses
 router.get('/',courseController.get);
 
-// add course
-router.post('/',[auth,instAuth],courseController.add);
-
 // get categorywise courses
 router.get('/search',courseController.getbyCategory)
-
-// update course
-router.put('/:id',[auth,instAuth],courseController.edit);
-
-// remove course
-router.delete('/:id',[auth,adminAuth],courseController.delete);
 
 // get course by id
 router.get('/:id',courseController.getById);
 
-// get all courses summary
-router.get('/all/summary',[auth,adminAuth],courseController.fullCourses);
-
-// get particular course summary
-router.get('/:id/summary',[auth,adminAuth],courseController.oneCourseSummary);
-
+// add course to cart
+router.post('/:courseid/addtocart',[auth,userAuth],courseController.addToCart);
 
 module.exports = router

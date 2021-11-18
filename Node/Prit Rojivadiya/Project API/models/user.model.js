@@ -49,7 +49,8 @@ function validateUser(user){
         email: Joi.string().email(),
         phone: Joi.number(),
         password: Joi.string().min(4),
-        role: Joi.string()
+        role: Joi.string(),
+        isActive: Joi.boolean()
     })
     return schema.validate(user);
 }

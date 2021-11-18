@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const {courses} = require('../models/course.model')
+const {cartitems} = require('../models/cart.model')
 
 class UserDomain{
 
@@ -15,6 +16,7 @@ class UserDomain{
 
     // get current user info
     async getInfo(req,res){
+        console.log(req.user)
         const user = await users.findById(req.user._id).select('-password');
         console.log(req.user)
         console.log(user);
@@ -95,7 +97,8 @@ class UserDomain{
                 $set: {
                     name: req.body.name,
                     email: req.body.email,
-                    phone: req.body.phone
+                    phone: req.body.phone,
+                    isActive: req.body.isActive
                 }
             },{new: true})
             res.send(user);
@@ -138,6 +141,22 @@ class UserDomain{
             res.send('deleted successfully');
         }
     }
+
+     // get list of user/instructor/admin
+     async getFullList(req,res){
+       const data = req.query.usertype;
+       const datas = await users.find({role:data});
+       res.send(datas);
+    }
+
+     // list of cart item of user
+     async getMyCart(req,res){
+        const id = req.user._id;
+        const items = await cartitems.findOne({userId: id})
+            .select('courseId -_id')
+            .populate('courseId','name price -_id')
+        res.send(items);
+     }
 
 }
 
