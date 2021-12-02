@@ -10,21 +10,16 @@ import StudentIDCard5 from './Assignment6';
 function App() {
   return (
     <>
-      <Greet />
-      <StudentIDCard />
-      <br />  
-      <StudentIDCard2 />
-      <br />
-      <StudentIDCard3 />
-      <br />
+      {/* <Greet /> */}
+      {/* <StudentIDCard /> */}
+      {/* <StudentIDCard2 /> */}
+      {/* <StudentIDCard3 /> */}
       <StudentIDCard4 />
-      <br />
-      <StudentIDCard5 >
+      {/* <StudentIDCard5 >
         <>
           <h1>This is child prop</h1>
         </>
-      </StudentIDCard5>
-      <br />
+      </StudentIDCard5> */}
     </>
   );
 }

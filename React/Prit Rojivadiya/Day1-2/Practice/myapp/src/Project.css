@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.person{
+    background: #eeeeee;
+    height: 10rem;
+    width: 17rem;
+    padding: 1rem;
+    margin: 2rem auto;
+    text-align: center;
+    transition: all 0.2s linear;
+}
+
+.person:hover{
+    box-shadow: 2px 5px 10px rgba(0,0,0,0.3);
+}
+
+.person img{
+    border-radius: 50%;
+    border: 0.1rem solid teal
+}
+
+.person h4{
+    text-transform: capitalize;
+    color: teal;
+}
+
+@media screen and (min-width: 768px) {
+    .person-list{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
