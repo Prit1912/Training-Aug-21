@@ -2,10 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
-const signupRouter = require('./controllers/signup/signup.controller')
-const loginRouter = require('./controllers/login/login.controller')
-const usersRouter = require('./controllers/users/users.controller')
 const courseRouter = require('./controllers/courses/course.controller')
+const userRouter = require('./controllers/users/user.controller');
+const adminRouter = require('./controllers/admin/admin.controller');
 
 // environment vaiables
 require('dotenv').config();
@@ -21,10 +20,11 @@ mongoose.connect(`mongodb://${host}/${database}`)
 app.use(express.json());
 app.use('/public',express.static('public'))
 
-app.use('/',courseRouter);
-app.use('/users',usersRouter)
-app.use('/signup',signupRouter);
-app.use('/login',loginRouter);
+app.use('/api/courses',courseRouter);
+app.use('/api/users',userRouter);
+app.use('/api/admin',adminRouter);
+
+
 
 app.listen(port,(err)=>{
     if(err){

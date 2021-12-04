@@ -27,6 +27,15 @@ class CategoryDomain{
             id = ct[0]._id + 1
         }
 
+        // check if category name already exists or not
+        const cate = ct.find((c)=>{
+            return c.name == req.body.name;
+        })
+
+        if(cate){
+            return res.status(500).send('category already added')
+        }
+
         let category = new categories({
             _id: id,
             name: req.body.name

@@ -1,6 +1,6 @@
 const { courses } = require('../models/course.model')
 const Joi = require('joi');
-const {categories} = require('../models/category.model')
+const {reviews} = require('../models/review.model')
 const {cartitems} = require('../models/cart.model')
 const { purchases } = require('../models/purchase.model');
 const {wishlistItems} = require('../models/wishlist.model')
@@ -20,10 +20,36 @@ class CourseDomain{
         res.send(course);
     }
 
+    // sort courses according to name, price, popularity
+    async sortCourses(req,res){
+        let queryParam = req.query.sortby;
+        if(queryParam == "name" || queryParam == "price"){
+            const course = await courses.find({category: req.params.cId}).sort(`${queryParam}`);
+            res.send(course);
+        }else if(queryParam == 'rating'){
+            const course = await courses.find({category: req.params.cId}).sort(`-${queryParam}`);
+            res.send(course);
+        }
+    }
+
+
     // get subcategorywise course
     async getSubCategorywiseCourse(req,res){
         const course = await courses.find({category: req.params.cId, subcategory: req.params.sId});
         res.send(course);
+    }
+
+
+    // sort courses of sub category
+    async sortSubcategoryCourses(req,res){
+        let queryParam = req.query.sortby;
+        if(queryParam == "name" || queryParam == "price"){
+            const course = await courses.find({category: req.params.cId, subcategory: req.params.sId}).sort(`${queryParam}`);
+            res.send(course);
+        }else if(queryParam == 'rating'){
+            const course = await courses.find({category: req.params.cId, subcategory: req.params.sId}).sort(`-${queryParam}`);
+            res.send(course);
+        }
     }
 
     // get course by id
@@ -94,6 +120,9 @@ class CourseDomain{
     // get enrolled courses by user
     async getEnrolledCourses(req,res){
         const course = await purchases.find({user: req.user._id}).select('courses').populate('courses');
+        if(course.length == 0){
+            res.send('not enrolled in any course');
+        }
         res.send(course);
     }
 
@@ -103,9 +132,47 @@ class CourseDomain{
         res.send(course);
     }
 
+    // rate & give review course
+    async rateCourse(req,res){
+
+        const r = await reviews.findOne({user: req.user._id,course: req.params.id});
+        if(r){
+            return res.status(500).send('already reviewed')
+        }
+
+        const courseID = req.params.id;
+        const userID = req.user._id;
+        const review = new reviews({
+            user: userID,
+            course: courseID,
+            rating: req.body.rating,
+            review: req.body.review
+        })
+
+        const course = await courses.findOne({_id: courseID});
+        let rate;
+        if(course.rating == 0){
+            rate = req.body.rating
+        }else{
+            rate = (course.rating + req.body.rating)/2
+        }
+        const rateCourse = await courses.findOneAndUpdate({_id: courseID},{
+            $set: {
+                rating: rate.toFixed(2)
+            }
+        })
+
+        try{
+            const result = await review.save();
+            res.send(result);
+        }catch(err){
+            res.send(err);
+        }
+    }
+
     // add instructor course
     async addInstructorCourses(req,res){
-        console.log(req.files);
+        // console.log(req.files);
         // console.log(`${req.files['image'][0].path}`);
         let videosPaths = [];
         const videos = req.files['videos'];
@@ -113,7 +180,7 @@ class CourseDomain{
             videosPaths.push(videos[i].path);
         }
 
-        if(req.body.isPaid == false){
+        if(req.body.isPaid === "false"){
             if(req.body.price){
                 return res.status(500).send('price is not required');
             }
@@ -131,24 +198,44 @@ class CourseDomain{
             id = c[0]._id + 1
         }
 
-        let course = new courses({
-            _id: id,
-            name: req.body.name,
-            description: req.body.description,
-            category: req.body.category,
-            courseImage: req.files['image'][0].path,
-            video: videosPaths,
-            subcategory: req.body.subcategory,
-            isPaid: req.body.isPaid,
-            price: req.body.price,
-            instructor: req.user._id
-        })
-        try {
-            const result = await course.save();
-            res.send(result);
-          } catch (e) {
-            res.send(e.message);
-          }   
+        if(req.body.isPaid){
+            let course = new courses({
+                _id: id,
+                name: req.body.name,
+                description: req.body.description,
+                category: req.body.category,
+                courseImage: req.files['image'][0].path,
+                videos: videosPaths,
+                subcategory: req.body.subcategory,
+                isPaid: req.body.isPaid,
+                price: req.body.price,
+                instructor: req.user._id
+            })
+            try {
+                const result = await course.save();
+                res.send(result);
+              } catch (e) {
+                res.send(e.message);
+              } 
+        }else{
+            let course = new courses({
+                _id: id,
+                name: req.body.name,
+                description: req.body.description,
+                category: req.body.category,
+                courseImage: req.files['image'][0].path,
+                videos: videosPaths,
+                subcategory: req.body.subcategory,
+                isPaid: req.body.isPaid,
+                instructor: req.user._id
+            })
+            try {
+                const result = await course.save();
+                res.send(result);
+              } catch (e) {
+                res.send(e.message);
+              } 
+        }  
     }
 
     // get instructor courses
@@ -169,6 +256,16 @@ class CourseDomain{
             return res.status(404).send('this course is not uploaded by you')
         }
         res.send(course);
+    }
+
+
+    // see course review
+    async seeCourseReview(req,res){
+        const review = await reviews.find({course: req.params.id});
+        if(review.length == 0){
+            return res.send('no reviews')
+        }
+        res.send(review);
     }
 
     // update instructor course
@@ -213,6 +310,17 @@ class CourseDomain{
         const course = await courses.findByIdAndUpdate(id,{
             $set: {
                 isActive: false
+            }
+        },{new: true})
+        res.send(course);
+    }
+
+    // restore instructor course
+    async restoreCourse(req,res){
+        const id = req.params.id;
+        const course = await courses.findByIdAndUpdate(id,{
+            $set: {
+                isActive: true
             }
         },{new: true})
         res.send(course);
@@ -300,6 +408,9 @@ class CourseDomain{
         const course = await courses.findOne({_id: req.params.id})
         // console.log(course._id)
         const users = await purchases.find({courses: course._id}).select('user -_id').populate('user')
+        if(users.length == 0){
+            return res.send('no one has purchased this course yet')
+        }
         res.send(users);
     }
 

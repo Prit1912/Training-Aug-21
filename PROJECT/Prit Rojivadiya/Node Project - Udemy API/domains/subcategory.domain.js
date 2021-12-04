@@ -5,7 +5,7 @@ class SubcategoryDomain{
     // get all subcategories
     async getSubCategory(req,res){
         const allSubCategories = await subcategories.find({category: req.params.cId});
-        if(allSubCategories.length == 0) return res.status(404).send('There are no categories added yet');
+        if(allSubCategories.length == 0) return res.status(404).send('There are no sub categories added yet');
         res.send(allSubCategories);
     }
 
@@ -24,6 +24,15 @@ class SubcategoryDomain{
             id = 1;
         }else{
             id = ct[0]._id + 1
+        }
+
+        // checking that subcategory name already exists or not
+        const subcate = ct.find((c)=>{
+            return c.name == req.body.name;
+        })
+
+        if(subcate){
+            return res.status(500).send('subcategory already added')
         }
 
         let subcategory = new subcategories({
@@ -45,7 +54,7 @@ class SubcategoryDomain{
         const subCategory = await subcategories.findOneAndUpdate({category: req.params.cId, _id:req.params.sId},{
             $set: {name: req.body.name}
         },{new:true});
-        if(subCategory.length == 0) return res.status(404).send('not found');
+        if(!subCategory) return res.status(404).send('not found');
         res.send(subCategory);
     }
 

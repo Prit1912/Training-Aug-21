@@ -6,9 +6,12 @@ class CartDomain{
 
     async seeMyCart(req,res){
         const id = req.user._id;
-        const items = await cartitems.findOne({userId: id})
+        const items = await cartitems.findOne({user: id})
             .select('courses -_id')
             .populate('courses','name price -_id')
+        if(!items){
+            return res.send('your cart is empty');
+        }
         res.send(items);
     }
 
@@ -20,6 +23,10 @@ class CartDomain{
         const items = await cartitems.findOneAndUpdate({user: userid},{
             $pull: {courses: courseid}
         },{new: true})
+
+        if(!items){
+            return res.status(500).send('item not in cart')
+        }
 
         res.send(items)
     }

@@ -21,7 +21,7 @@ const courseSchema = new mongoose.Schema(({
         type: String,
         required: true,
     },
-    video: {
+    videos: {
         type: [String],
         required: true
     },
@@ -42,6 +42,9 @@ const courseSchema = new mongoose.Schema(({
         type: Number,
         required: function(){return this.isPaid}
     },
+    offerPrice: {
+        type: Number
+    },
     isActive: {
         type: Boolean,
         default: true
@@ -49,6 +52,10 @@ const courseSchema = new mongoose.Schema(({
     instructor: {
         type: Number,
         ref: 'user'
+    },
+    rating: {
+        type: Number,
+        default: 0
     }
 }))
 

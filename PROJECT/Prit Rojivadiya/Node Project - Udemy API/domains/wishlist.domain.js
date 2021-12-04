@@ -3,6 +3,7 @@ const {wishlistItems} = require('../models/wishlist.model');
 
 class WishlisitDomain{
 
+    // get wishlist items
     async getWishlistItems(req,res){
         const items = await wishlistItems.find({user: req.user._id});
         if(items[0].courses.length == 0){
@@ -11,20 +12,38 @@ class WishlisitDomain{
         res.send(items);
     }
 
+    // get wishlist item by id
     async getWishlistItemById(req,res){
-        const item = await wishlistItems.findOne({$and: [{user: req.user._id},{courses: req.params.id}]}).select('courses').populate('courses');
-        if(!item) return res.status(404).send('this course is not in your wishlist')
+        const item = await wishlistItems.findOne({user: req.user._id}).select('courses').populate('courses');
+        if(!item){
+            return res.send('your wishlist is empty')
+        }
+        let course = item.courses.find((i)=>{
+            return i._id == req.params.id
+        })
+        if(!course) return res.status(404).send('this course is not in your wishlist')
         res.send(item);
     }
 
+    // remove course from wishlist
     async removeFromWishlist(req,res){
         const item = await wishlistItems.findOneAndUpdate({user: req.user._id},{
             $pull: {courses: req.params.id}
         },{new:true})
+        if(!item.courses.includes(req.params.id)){
+            return res.send('course not in your wishlist')
+        }
         res.send(item);
     }
 
+    // add course to cart from wishlist
     async wishlistToCart(req,res){
+
+        let avail = await wishlistItems.find({user: req.user._id,courses: req.params.id})
+        if(avail.length == 0){
+            return res.status(500).send('item not in your wishlist')
+        }
+
         const user = await cartitems.findOne({user: req.user._id});
         if(!user){
             const ci = new cartitems({
@@ -51,9 +70,8 @@ class WishlisitDomain{
             const itm = await wishlistItems.findOneAndUpdate({user: req.user._id},{
                 $pull: {courses: req.params.id}
             },{new:true})
-            res.send(itm)
         }catch(err){
-            res.send(err);
+            console.log(error);
         }
     }
 
