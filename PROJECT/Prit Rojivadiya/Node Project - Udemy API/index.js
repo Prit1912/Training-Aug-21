@@ -21,7 +21,7 @@ app.use(express.json());
 app.use('/public',express.static('public'))
 
 app.use('/api/courses',courseRouter);
-app.use('/api/users',userRouter);
+app.use('/api/user',userRouter);
 app.use('/api/admin',adminRouter);
 
 

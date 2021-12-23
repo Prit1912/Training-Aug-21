@@ -25,6 +25,10 @@ const courseSchema = new mongoose.Schema(({
         type: [String],
         required: true
     },
+    resources: {
+        type: String,
+        required: true
+    },
     category: {
         type: Number,
         ref: 'category',
