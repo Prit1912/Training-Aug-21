@@ -5,76 +5,77 @@ const { cartitems } = require("../models/cart.model");
 const { purchases } = require("../models/purchase.model");
 const { wishlistItems } = require("../models/wishlist.model");
 // const path = require("path");
-const cloudinary = require('cloudinary').v2; 
-const fs = require('fs');
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
 
-cloudinary.config({ 
-    cloud_name: 'da6qjbsjz', 
-    api_key: '764771321348841', 
-    api_secret: 'y5UWiPHq6I6OQI9l6Mb5BDfN7kE',
-    secure: true
-  })
+cloudinary.config({
+  cloud_name: "da6qjbsjz",
+  api_key: "764771321348841",
+  api_secret: "y5UWiPHq6I6OQI9l6Mb5BDfN7kE",
+  secure: true,
+});
 
+// image upload
+async function uploadToCloudinary(locaFilePath, instId) {
+  var mainFolderName = "udemy";
 
-      // image upload
-      async function uploadToCloudinary(locaFilePath,instId) {
-        var mainFolderName = "udemy";
-    
-        var filePathOnCloudinary = mainFolderName + `/instructor${instId}/images` + locaFilePath;
-    
-        return cloudinary.uploader
-          .upload(locaFilePath, { public_id: filePathOnCloudinary })
-          .then((result) => {
-            fs.unlinkSync(locaFilePath);
-            // fs.unlink(locaFilePath);
-    
-            return {
-              message: "Success",
-              url: result.url,
-            };
-          })
-          .catch((error) => {
-            console.log(error);
-            fs.unlinkSync(locaFilePath);
-            // fs.unlink(locaFilePath);
-            return { message: "Fail" };
-          });
-      }
-    
-      // upload videos
-      async function uploadVideosToCloudinary(locaFilePath, instId) {
-        var mainFolderName = "udemy" ;
-    
-        var filePathOnCloudinary = mainFolderName + `/instructor${instId}/videos` + locaFilePath;
-    
-        return cloudinary.uploader
-          .upload(locaFilePath, {
-            resource_type: "video",
-            public_id: filePathOnCloudinary,
-          })
-          .then((result) => {
-            fs.unlinkSync(locaFilePath);
-            // fs.unlink(locaFilePath);
-    
-            return {
-              message: "Success",
-              url: result.url,
-            };
-          })
-          .catch((error) => {
-            console.log(error);
-            fs.unlinkSync(locaFilePath);
-            // fs.unlink(locaFilePath);
-            return { message: "Fail" };
-          });
-      }
+  var filePathOnCloudinary =
+    mainFolderName + `/instructor${instId}/images` + locaFilePath;
 
+  return cloudinary.uploader
+    .upload(locaFilePath, { public_id: filePathOnCloudinary })
+    .then((result) => {
+      fs.unlinkSync(locaFilePath);
+      // fs.unlink(locaFilePath);
 
-      // upload resources
+      return {
+        message: "Success",
+        url: result.url,
+      };
+    })
+    .catch((error) => {
+      console.log(error);
+      fs.unlinkSync(locaFilePath);
+      // fs.unlink(locaFilePath);
+      return { message: "Fail" };
+    });
+}
+
+// upload videos
+async function uploadVideosToCloudinary(locaFilePath, instId) {
+  var mainFolderName = "udemy";
+
+  var filePathOnCloudinary =
+    mainFolderName + `/instructor${instId}/videos` + locaFilePath;
+
+  return cloudinary.uploader
+    .upload(locaFilePath, {
+      resource_type: "video",
+      public_id: filePathOnCloudinary,
+    })
+    .then((result) => {
+      fs.unlinkSync(locaFilePath);
+      // fs.unlink(locaFilePath);
+
+      return {
+        message: "Success",
+        url: result.url,
+      };
+    })
+    .catch((error) => {
+      console.log(error);
+      fs.unlinkSync(locaFilePath);
+      // fs.unlink(locaFilePath);
+      return { message: "Fail" };
+    });
+}
+
+// upload resources
 async function uploadResourcesToCloudinary(locaFilePath, instId) {
   var mainFolderName = "udemy";
 
-  var filePathOnCloudinary = mainFolderName + `/instructor${instId}/resources` + locaFilePath;
+  var filePathOnCloudinary =
+    mainFolderName + `/instructor${instId}/resources` + locaFilePath;
 
   return cloudinary.uploader
     .upload(locaFilePath, {
@@ -362,11 +363,11 @@ class CourseDomain {
         }  
     }*/
 
-    // add insturctor course
+  // add insturctor course
   async addInstructorCourses(req, res) {
     // console.log(req.files);
     // console.log(`${req.files['image'][0].path}`);
-    
+
     if (req.body.isPaid === "false") {
       if (req.body.price) {
         return res.status(500).send("price is not required");
@@ -389,25 +390,32 @@ class CourseDomain {
 
     for (var i = 0; i < req.files["videos"].length; i++) {
       var locaFilePath = req.files["videos"][i].path;
+      var orgName = req.files["videos"][i].originalname;
       console.log(locaFilePath);
       const newPath = locaFilePath.replace(/\\/g, "/");
       console.log(newPath);
-      var result = await uploadVideosToCloudinary(newPath,req.user._id);
+      var result = await uploadVideosToCloudinary(newPath, req.user._id);
       console.log(result);
-      videoUrlList.push(result.url);
+      videoUrlList.push({
+        name: orgName,
+        url: result.url,
+      });
       console.log(videoUrlList);
     }
 
     var locaFilePath = req.files["image"][0].path;
     console.log(locaFilePath);
     const newPath = locaFilePath.replace(/\\/g, "/");
-    var imgresult = await uploadToCloudinary(newPath,req.user._id);
+    var imgresult = await uploadToCloudinary(newPath, req.user._id);
     console.log(imgresult);
 
     var resourcePath = req.files["resources"][0].path;
     console.log(resourcePath);
     const newResourcePath = resourcePath.replace(/\\/g, "/");
-    var resourceResult = await uploadResourcesToCloudinary(newResourcePath, req.user._id);
+    var resourceResult = await uploadResourcesToCloudinary(
+      newResourcePath,
+      req.user._id
+    );
     console.log(resourceResult);
 
     if (req.body.isPaid) {
@@ -416,9 +424,15 @@ class CourseDomain {
         name: req.body.name,
         description: req.body.description,
         category: req.body.category,
-        courseImage: imgresult.url,
+        courseImage: {
+          name: req.files["image"][0].originalname,
+          url: imgresult.url,
+        },
         videos: videoUrlList,
-        resources: resourceResult.url,
+        resources: {
+          name: req.files["resources"][0].originalname,
+          url: resourceResult.url,
+        },
         subcategory: req.body.subcategory,
         isPaid: req.body.isPaid,
         price: req.body.price,
@@ -436,9 +450,15 @@ class CourseDomain {
         name: req.body.name,
         description: req.body.description,
         category: req.body.category,
-        courseImage: imgresult.url,
+        courseImage: {
+          name: req.files["image"][0].originalname,
+          url: imgresult.url,
+        },
         videos: videoUrlList,
-        resources: resourceResult.url,
+        resources: {
+          name: req.files["resources"][0].originalname,
+          url: resourceResult.url,
+        },
         subcategory: req.body.subcategory,
         isPaid: req.body.isPaid,
         instructor: req.user._id,

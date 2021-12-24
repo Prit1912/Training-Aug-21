@@ -18,15 +18,15 @@ const courseSchema = new mongoose.Schema(({
         maxlength: 1000
     },
     courseImage: {
-        type: String,
+        type: Object,
         required: true,
     },
     videos: {
-        type: [String],
+        type: [Object],
         required: true
     },
     resources: {
-        type: String,
+        type: Object,
         required: true
     },
     category: {
