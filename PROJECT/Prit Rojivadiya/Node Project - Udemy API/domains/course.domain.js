@@ -7,11 +7,13 @@ const { wishlistItems } = require("../models/wishlist.model");
 // const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+require('dotenv').config();
+// console.log(process.env)
 
 cloudinary.config({
-  cloud_name: "da6qjbsjz",
-  api_key: "764771321348841",
-  api_secret: "y5UWiPHq6I6OQI9l6Mb5BDfN7kE",
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.cloud_api_key,
+  api_secret: process.env.cloud_api_secret,
   secure: true,
 });
 
@@ -110,6 +112,21 @@ class CourseDomain {
     const course = await courses.find({ category: req.params.cId });
     if (course.length == 0) return res.send("no course found");
     res.send(course);
+  }
+
+  // filter courses
+  async filterCourses(req,res){
+    let minPrice = req.query.min;
+    let maxPrice = req.query.max;
+    const course = await courses.find({});
+    let newArr = course.filter((c)=>{
+      return (c.price > minPrice && c.price < maxPrice);
+    })
+    if(newArr.length == 0){
+      res.send('no courses found');
+      return;
+    }
+    res.send(newArr);
   }
 
   // sort courses according to name, price, popularity
@@ -248,7 +265,7 @@ class CourseDomain {
     const course = await purchases
       .find({ user: req.user._id }, { courses: req.params.id })
       .populate("courses");
-    if (course.length == 0) return res.send("you have not enrolled in course");
+    if (course[0].courses.length == 0) return res.send("you have not enrolled in course");
     res.send(course);
   }
 
@@ -386,6 +403,12 @@ class CourseDomain {
       id = c[0]._id + 1;
     }
 
+    var locaFilePath = req.files["image"][0].path;
+    console.log(locaFilePath);
+    const newPath = locaFilePath.replace(/\\/g, "/");
+    var imgresult = await uploadToCloudinary(newPath, req.user._id);
+    console.log(imgresult);
+
     var videoUrlList = [];
 
     for (var i = 0; i < req.files["videos"].length; i++) {
@@ -403,11 +426,7 @@ class CourseDomain {
       console.log(videoUrlList);
     }
 
-    var locaFilePath = req.files["image"][0].path;
-    console.log(locaFilePath);
-    const newPath = locaFilePath.replace(/\\/g, "/");
-    var imgresult = await uploadToCloudinary(newPath, req.user._id);
-    console.log(imgresult);
+
 
     var resourcePath = req.files["resources"][0].path;
     console.log(resourcePath);

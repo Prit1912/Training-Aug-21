@@ -71,7 +71,8 @@ class UserDomain{
             expiresIn: "1h"
         })
         console.log(token)
-        res.send(token);
+        res.header('x-access-token',token).send(token);
+        // res.send(token);
         console.log(user.role)
     }
 

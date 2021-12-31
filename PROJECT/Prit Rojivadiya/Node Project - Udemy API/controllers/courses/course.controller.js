@@ -22,6 +22,11 @@ class courseController{
         courseDomain.sortCourses(req,res);
     }
 
+    static async filter(req,res){
+        const courseDomain = new CourseDomain();
+        courseDomain.filterCourses(req,res);
+    }
+
     static async getBySubId(req,res){
         const courseDomain = new CourseDomain();
         courseDomain.getSubCategorywiseCourse(req,res);
@@ -59,6 +64,9 @@ router.get('/:cId', courseController.getById)
 
 // sort by name / price / pouplarity
 router.get('/:cId/sort', courseController.sortBy)
+
+// filter by price
+router.get('/:cId/filter',courseController.filter)
 
 // get subcategorywise courses
 router.get('/:cId/:sId', courseController.getBySubId)

@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
           filetype = 'mp4';
           cb(null,Date.now() + '.' + filetype);
         }else{
-          cb(new Error('file type is invalid'),false)
+          cb('video file type is invalid',false)
         }
       }else if(file.fieldname == 'image'){
         if(file.mimetype === 'image/png') {
@@ -34,18 +34,19 @@ var storage = multer.diskStorage({
           filetype = 'jpg';
           cb(null,Date.now() + '.' + filetype);
         }else{
-            cb(new Error('file type is invalid'),false)
+            cb('image file type is invalid',false)
         }
       } else if (file.fieldname == "resources") {
         if (file.mimetype === "application/zip") {
           filetype = "zip";
           cb(null, Date.now() + "." + filetype);
         } else {
-          cb(new Error("file type is invalid"), false);
+          cb("zip file type is invalid", false);
         }
       }
     }
   });
+  
   var upload = multer({storage: storage});
 
 
@@ -94,7 +95,13 @@ router.get('/',courseController.getInstCourses);
 
 // add course
 // router.post('/',/*upload.single('courseImage'),*/ videoUpload.array('video',4),courseController.addInstCourse)
-router.post('/', upload.fields([{name: 'image',maxCount: 1},{name: 'videos',maxCount: 8}, { name: "resources", maxCount: 1 }]),courseController.addInstCourse)
+router.post('/', upload.fields([{name: 'image',maxCount: 1},{name: 'videos',maxCount: 8}, { name: "resources", maxCount: 1 }]),courseController.addInstCourse,(err,req,res,next)=>{
+  if(err){
+    res.status(500).send(err);
+  }else{
+    next()
+  }
+})
 
 // check who buy the course
 router.get('/:id/summary', courseController.buyersSummary)

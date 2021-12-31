@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 const courseRouter = require('./controllers/courses/course.controller')
 const userRouter = require('./controllers/users/user.controller');
@@ -18,6 +19,7 @@ mongoose.connect(`mongodb://${host}/${database}`)
     .catch((err)=>{console.log(err)})
 
 app.use(express.json());
+app.use(cors());
 app.use('/public',express.static('public'))
 
 app.use('/api/courses',courseRouter);
