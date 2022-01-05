@@ -1,4 +1,4 @@
-const { offers } = require('../models/offer.model')
+const { offers, validateOffer } = require('../models/offer.model')
 const { courses } = require('../models/course.model')
 
 
@@ -39,6 +39,11 @@ class OfferDomain{
             id = 1;
         }else{
             id = allOffers[0]._id + 1;
+        }
+
+        let {error} = validateOffer(req.body);
+        if(error){
+            return res.send(error.details[0].message)
         }
 
         // check that course is not inactive nor free

@@ -40,7 +40,7 @@ class UserDomain{
             const result = await user.save();
             const token = jwt.sign({_id: user._id, role: user.role},config.secretKey,{
                 algorithm: config.algorithm,
-                expiresIn: "1h"
+                expiresIn: "7d"
             })
             console.log(token)
             res.header('x-access-token',token).send(result);
@@ -53,6 +53,7 @@ class UserDomain{
     // signin user
     async signinUser(req,res){
         const c = req.body
+        console.log(c)
         const { error } = validateUser(c);
         if(error) return res.status(400).send(error.details[0].message)
     
@@ -68,12 +69,13 @@ class UserDomain{
     
         const token = jwt.sign({_id: user._id, role: user.role},config.secretKey,{
             algorithm: config.algorithm,
-            expiresIn: "1h"
+            expiresIn: "7d"
         })
         console.log(token)
-        res.header('x-access-token',token).send(token);
-        // res.send(token);
-        console.log(user.role)
+        res.json({
+            token,
+            user
+        });
     }
 
     // validating email and pasword befor login process
@@ -125,8 +127,13 @@ class UserDomain{
     // reset password
     async resetUserPassword(req,res){
         const token = req.params.token;
+        try{
         const decoded = jwt.verify(token,config.secretKey);
         req.user = decoded;
+        }catch(err){
+            return res.send(err)
+        }
+        
         const salt = await bcrypt.genSalt(10);
         let newPassword = await bcrypt.hash(req.body.password,salt)
         try{
@@ -135,7 +142,7 @@ class UserDomain{
             },{new: true});
             res.send(user);
         }catch(err){
-            res.send(err);
+            res.send('error occured');
         }
     }
 

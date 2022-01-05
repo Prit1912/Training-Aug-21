@@ -22,7 +22,7 @@ class WishlisitDomain{
             return i._id == req.params.id
         })
         if(!course) return res.status(404).send('this course is not in your wishlist')
-        res.send(item);
+        res.send(course);
     }
 
     // remove course from wishlist
@@ -30,9 +30,9 @@ class WishlisitDomain{
         const item = await wishlistItems.findOneAndUpdate({user: req.user._id},{
             $pull: {courses: req.params.id}
         },{new:true})
-        if(!item.courses.includes(req.params.id)){
-            return res.send('course not in your wishlist')
-        }
+        // if(!item.courses.includes(req.params.id)){
+        //     return res.send('course not in your wishlist')
+        // }
         res.send(item);
     }
 

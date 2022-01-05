@@ -63,7 +63,7 @@ router.use([auth,permit(role.user,role.instructor,role.admin)])
 
 // render page based on user role
 router.get('/',(req,res)=>{
-    res.send(`${req.user.role} home page`);
+    res.send(req.user)
 })
 
 // display profile

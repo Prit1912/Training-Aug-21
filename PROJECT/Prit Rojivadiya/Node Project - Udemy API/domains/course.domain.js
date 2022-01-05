@@ -1,6 +1,6 @@
-const { courses } = require("../models/course.model");
+const { courses, validateCourse } = require("../models/course.model");
 const Joi = require("joi");
-const { reviews } = require("../models/review.model");
+const { reviews, validateReview } = require("../models/review.model");
 const { cartitems } = require("../models/cart.model");
 const { purchases } = require("../models/purchase.model");
 const { wishlistItems } = require("../models/wishlist.model");
@@ -263,9 +263,10 @@ class CourseDomain {
   // get enrolled course by id
   async getEnrolledCourseById(req, res) {
     const course = await purchases
-      .find({ user: req.user._id }, { courses: req.params.id })
-      .populate("courses");
-    if (course[0].courses.length == 0) return res.send("you have not enrolled in course");
+      .find({ user: req.user._id ,courses: req.params.id })
+      .populate("courses")
+      .select({courses: req.params.id})
+    if (course.length == 0) return res.send("you have not enrolled in course");
     res.send(course);
   }
 
@@ -277,6 +278,11 @@ class CourseDomain {
     });
     if (r) {
       return res.status(500).send("already reviewed");
+    }
+
+    let {error} = validateReview(req.body);
+    if(error){
+      return res.send(error.details[0].message);
     }
 
     const courseID = req.params.id;
@@ -385,7 +391,7 @@ class CourseDomain {
     // console.log(req.files);
     // console.log(`${req.files['image'][0].path}`);
 
-    if (req.body.isPaid === "false") {
+    if (req.body.isPaid === "false" ) {
       if (req.body.price) {
         return res.status(500).send("price is not required");
       }
@@ -395,12 +401,26 @@ class CourseDomain {
       }
     }
 
+    let {error} = validateCourse(req.body)
+    if(error){
+      return res.send(error.details[0].message)
+    }
+
     const c = await courses.find().sort({ _id: -1 });
     let id;
     if (c.length == 0) {
       id = 1;
     } else {
       id = c[0]._id + 1;
+    }
+
+    if(!req.files["image"]){
+      res.status(500).send('image is required');
+      return;
+    }else if(!req.files["videos"]){
+      res.status(500).send('videos are required');
+    }else if(!req.files["resources"]){
+      res.status(500).send('resource file is required');
     }
 
     var locaFilePath = req.files["image"][0].path;
@@ -514,6 +534,10 @@ class CourseDomain {
 
   // see course review
   async seeCourseReview(req, res) {
+    const course = await courses.findOne({ instructor: req.user._id, _id: req.params.id });
+    if (!course) {
+      return res.status(404).send("this course is not uploaded by you");
+    }
     const review = await reviews.find({ course: req.params.id });
     if (review.length == 0) {
       return res.send("no reviews");
@@ -569,8 +593,8 @@ class CourseDomain {
   // delete instructor course
   async deleteInstructorCourse(req, res) {
     const id = req.params.id;
-    const course = await courses.findByIdAndUpdate(
-      id,
+    const course = await courses.findOneAndUpdate(
+      {_id:id,instructor:req.user._id},
       {
         $set: {
           isActive: false,
@@ -578,7 +602,7 @@ class CourseDomain {
       },
       { new: true }
     );
-    if (!course) return res.send("course not found");
+    if (!course) return res.send("course not uploaded by you");
     res.send(course);
   }
 

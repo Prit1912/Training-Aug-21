@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema(({
@@ -20,4 +21,12 @@ const categorySchema = new mongoose.Schema(({
 
 const subcategories = mongoose.model('subcategory',categorySchema);
 
-module.exports = {subcategories}
+function validateSubCategory(subcategory){
+    const schema = Joi.object({
+        name: Joi.string().min(2).required()
+    })
+    return schema.validate(subcategory);
+}
+
+
+module.exports = {subcategories, validateSubCategory}

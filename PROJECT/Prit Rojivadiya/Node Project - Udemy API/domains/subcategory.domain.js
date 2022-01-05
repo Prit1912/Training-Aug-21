@@ -1,4 +1,4 @@
-const { subcategories } = require('../models/subcategory.model')
+const { subcategories, validateSubCategory } = require('../models/subcategory.model')
 
 class SubcategoryDomain{
 
@@ -24,6 +24,12 @@ class SubcategoryDomain{
             id = 1;
         }else{
             id = ct[0]._id + 1
+        }
+
+        // validation
+        let {error} = validateSubCategory(req.body);
+        if(error){
+            return res.send(error.details[0].message);
         }
 
         // checking that subcategory name already exists or not

@@ -78,15 +78,10 @@ router.get('/:cId/:sId/sort', courseController.sortBySub)
 router.get('/:cId/:sId/:courseId', courseController.getByCourseId)
 
 // add to wishlist
-router.post('/:cId/:courseId/addtowishlist', [auth, permit(role.user)], courseController.addToWishlist);
-
-// add to wishlist
-router.post('/:cId/:sId/:courseId/addtowishlist', [auth, permit(role.user)], courseController.addToWishlist);
+router.post('/:courseId/addtowishlist', [auth, permit(role.user)], courseController.addToWishlist);
 
 // add to cart
-router.post('/:cId/:courseId/addtocart', [auth, permit(role.user)], courseController.addToCart);
+router.post('/:courseId/addtocart', [auth, permit(role.user)], courseController.addToCart);
 
-// add to cart
-router.post('/:cId/:sId/:courseId/addtocart', [auth, permit(role.user)], courseController.addToCart);
 
 module.exports = router;

@@ -49,9 +49,10 @@ class CartDomain{
             })
             try {
                 const result = await purchaser.save();
+                await cartitems.findOneAndDelete({user: userid});
                 res.send(result);
               } catch (e) {
-                res.send(e.message);
+                return res.send(e.message);
               }
         }
         else{
@@ -59,19 +60,20 @@ class CartDomain{
                 const b = await purchases.findOneAndUpdate({user: userid},{
                     $addToSet: {"courses": items.courses}
                 },{new: true})
+                await cartitems.findOneAndDelete({user: userid});
                 await b.save();
                 res.send(b);
             }catch(err){
                 console.log(err.message)
-                res.status(500).send('something wrong')
+                return res.status(500).send('something wrong')
             }
         }
 
-        try{
-            await cartitems.findOneAndDelete({user: userid});
-        }catch(err){
-            return res.status(500).send('something went wrong')
-        }
+        // try{
+        //     await cartitems.findOneAndDelete({user: userid});
+        // }catch(err){
+        //     return res.status(500).send('something went wrong')
+        // }
     }
 
 }

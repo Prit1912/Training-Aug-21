@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema(({
@@ -65,4 +66,17 @@ const courseSchema = new mongoose.Schema(({
 
 const courses = mongoose.model('course',courseSchema);
 
-module.exports = {courses}
+function validateCourse(course){
+    const schema = Joi.object({
+        name: Joi.string().min(2).required(),
+        description: Joi.string().min(2).required(),
+        category: Joi.number().required(),
+        subcategory: Joi.number(),
+        isPaid: Joi.string().required(),
+        price: Joi.number()
+    })
+    return schema.validate(course);
+}
+
+
+module.exports = {courses, validateCourse}

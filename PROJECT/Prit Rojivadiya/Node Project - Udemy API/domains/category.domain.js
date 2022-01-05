@@ -1,4 +1,4 @@
-const { categories } = require('../models/category.model')
+const { categories,validateCategory } = require('../models/category.model')
 
 class CategoryDomain{
 
@@ -26,7 +26,10 @@ class CategoryDomain{
         }else{
             id = ct[0]._id + 1
         }
-
+        let {error} = validateCategory(req.body);
+        if(error){
+            return res.send(error.details[0].message)
+        }
         // check if category name already exists or not
         const cate = ct.find((c)=>{
             return c.name == req.body.name;
