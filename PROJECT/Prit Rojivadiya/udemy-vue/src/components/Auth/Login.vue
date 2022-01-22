@@ -1,0 +1,191 @@
+<template>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-10 col-sm-8 col-md-6 col-lg-4">
+        <h4 class="text-center">Log In to Your Udemy Account!</h4>
+        <hr />
+        <div v-if="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        <form class="row row-cols-lg-auto g-3 align-items-center">
+          <div class="col-12">
+            <label class="visually-hidden" for="username">username</label>
+            <div class="input-group">
+              <div class="input-group-text">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Email"
+                v-model="email"
+              />
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="visually-hidden" for="password">Password</label>
+            <div class="input-group">
+              <div class="input-group-text"><i class="fas fa-lock"></i></div>
+              <input
+                v-if="!showPassword"
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Password"
+                v-model="password"
+              />
+              <input
+                v-else
+                type="text"
+                class="form-control"
+                id="password"
+                placeholder="Password"
+                v-model="password"
+              />
+              <!-- <div class="input-group-text"> -->
+              <button
+                class="btn btn-sm btn-light border border-2"
+                @click="showPassword = !showPassword"
+              >
+                <i
+                  class="fas"
+                  :class="{
+                    'fa-eye-slash': !showPassword,
+                    'fa-eye': showPassword,
+                  }"
+                ></i>
+              </button>
+              <!-- </div> -->
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button
+              type="button"
+              class="btn btn-primary d-block w-100"
+              style="background-color: blueviolet"
+              @click="login"
+            >
+              Log In
+            </button>
+          </div>
+
+          <div class="col-12 text-center">
+            <p class="text-center">
+              or&nbsp;
+              <span style="color: blueviolet">
+                <router-link :to="{ name: 'forgotPassword' }"
+                  >forgot password?</router-link
+                ></span
+              >
+            </p>
+          </div>
+
+          <div class="col-12 text-center">
+            <p class="text-center">
+              Don't have an account?
+              <!-- <a href="./Signup.html"> Sign Up </a> -->
+              <router-link :to="{ name: 'signup' }">Sign up</router-link>
+            </p>
+          </div>
+
+          <!-- <div class="col-12 text-center">
+            <p class="text-center"><b> Other login options </b></p>
+            <div class="row">
+              <div class="col-4"><i class="fab fa-facebook fa-2x"></i></div>
+              <div class="col-4"><i class="fab fa-google fa-2x"></i></div>
+              <div class="col-4"><i class="fab fa-apple fa-2x"></i></div>
+            </div>
+          </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- <br />
+  <input type="text" v-model="email" />
+  <br />
+  <input type="text" v-model="password" />
+  <br />
+  <button @click="login">Login</button>
+  <br />
+  {{ error }}
+  <router-link :to="{ name: 'forgotPassword' }">forgot password?</router-link> -->
+</template>
+
+<script>
+// import { useField, useForm } from "vee-validate";
+// import * as yup from "yup";
+import userData from "../../services/users";
+export default {
+  name: "login",
+  data() {
+  //   let user = {
+  //     email: "",
+  //     password: "",
+  //   };
+
+  //   const validationSchema = yup.object({
+  //     email: yup
+  //       .string()
+  //       .email("must be a valid email")
+  //       .required("father's email is required"),
+  //     password: yup.string().min(4, "minimum 4 character required"),
+  //   });
+
+  //   const { handleSubmit } = useForm({
+  //     validationSchema,
+  //   });
+
+    // const { value: email, errorMessage: errorEmail } = useField("email");
+    // const { value: password, errorMessage: errorPassword } = useField("password");
+
+    // user.email = email;
+    // user.password = password;
+
+    // const submit = handleSubmit((values)=>{
+    //   console.log(values);
+    // })
+
+    return {
+      // user,
+      // submit,
+      // errorEmail,
+      // errorPassword,
+      email: "",
+      password: "",
+      error: "",
+      showPassword: false,
+    };
+  },
+  methods: {
+    login() {
+      let user = {
+        email: this.email,
+        password: this.password,
+      };
+      userData
+        .userLogin(user)
+        .then((res) => {
+          if (res.status == 200) {
+            this.error = "";
+            this.$store.dispatch("setToken", res.data.token);
+            this.$store.dispatch("setUser", res.data.user);
+            if (res.data.user.role == "user") {
+              this.$router.push("/");
+            } else if (res.data.user.role == "instructor") {
+              this.$router.push("/instructor");
+            } else if (res.data.user.role == "admin") {
+              this.$router.push("/admin");
+            }
+          }
+        })
+        .catch((err) => {
+          this.error = err.response.data;
+        });
+    },
+  },
+};
+</script>
+
+<style></style>
