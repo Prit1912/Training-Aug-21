@@ -18,37 +18,55 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link :to="{name:'adminHome'}">Home</router-link>
-          </li>
-         <li class="nav-item">
-            <router-link :to="{name: 'categories'}">Categories</router-link>
-          </li>
-           <li class="nav-item">
-            <router-link :to="{name: 'courses'}">Courses</router-link>
+            <router-link :to="{ name: 'adminHome' }">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{name: 'offers'}">Offers</router-link>
+            <router-link :to="{ name: 'categories' }">Categories</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{name: 'users'}">Users</router-link>
+            <router-link :to="{ name: 'courses' }">Courses</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'offers' }">Offers</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'users' }">Users</router-link>
           </li>
         </ul>
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-          <div v-if="this.$store.state.isLoggedIn && (this.$store.state.user.role=='admin')">
+          <div
+            v-if="
+              this.$store.state.user.isLoggedIn &&
+              this.$store.state.user.user.role == 'admin'
+            "
+          >
             <div>
-              <button class="btn btn-dark me-3" type="button" @click="this.$router.push({name: 'adminProfile'})" >Profile</button>
+              <button
+                class="btn btn-dark me-3"
+                type="button"
+                @click="this.$router.push({ name: 'adminProfile' })"
+              >
+                Profile
+              </button>
               <button class="btn btn-dark" type="button" @click="logout">
                 Logout
               </button>
             </div>
           </div>
           <div v-else>
-            <button class="btn btn-dark me-3" type="button" @click="this.$router.push('/signup')" >Signup</button>
+            <button
+              class="btn btn-dark me-3"
+              type="button"
+              @click="this.$router.push('/signup')"
+            >
+              Signup
+            </button>
             <button
               class="btn btn-dark"
               type="button"
-              @click="this.$router.push('/login')">
+              @click="this.$router.push('/login')"
+            >
               Login
             </button>
           </div>
@@ -63,8 +81,9 @@ export default {
   name: "navbar",
   methods: {
     logout() {
-      this.$store.dispatch("setToken", null),
-        this.$store.dispatch("setUser", null);
+      // this.$store.dispatch("user/setToken", null),
+      // this.$store.dispatch("user/setUser", null);
+      this.$store.dispatch("user/logout");
       this.$router.push("/login");
     },
   },

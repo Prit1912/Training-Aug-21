@@ -1,5 +1,7 @@
 import { createWebHashHistory, createRouter } from "vue-router";
-import {userStore} from '../store/user'
+// import userStore from '../store/modules/user'
+import store from '../store'
+console.log(store.state)
 
 // auth routes
 import Login from "../views/auth/Login.vue";
@@ -33,6 +35,7 @@ import InstFullCourse from "../views/instructor/courses/FullCourse.vue";
 import Reviews from '../views/instructor/courses/Reviews.vue';
 import Buyers from "../views/instructor/courses/Buyers.vue";
 import AddCourse from '../views/instructor/courses/AddCourse.vue';
+import UpdateCourse from '../views/instructor/courses/UpdateCourse.vue'
 
 // admin routes
 import AdminMain from "../views/admin/Main.vue";
@@ -49,6 +52,8 @@ import UpdateSubCategory from '../views/admin/categories/EditSubCategory.vue';
 import AdminCourseSummary from '../views/admin/courses/Summary.vue';
 import AdminCourseBuyers from '../views/admin/courses/Buyers.vue';
 import UpdateUser from '../views/admin/users/UpdateUser.vue';
+import AddOffer from '../views/admin/offers/AddOffer.vue';
+import UpdateOffer from '../views/admin/offers/UpdateOffer.vue';
 
 const routes = [
   {
@@ -180,6 +185,12 @@ const routes = [
         component: InstFullCourse,
       },
       {
+        path: 'my-courses/:id/update',
+        name: 'updateCourse',
+        component: UpdateCourse,
+        props: true,
+      },
+      {
         path: "my-courses/:id/reviews",
         name: 'reviews',
         component: Reviews,
@@ -245,6 +256,17 @@ const routes = [
         component: Offers
       },
       {
+        path: 'add-offer',
+        name: 'addOffer',
+        component: AddOffer
+      },
+      {
+        path: 'offers/:id',
+        name: 'updateOffer',
+        component: UpdateOffer,
+        props: true,
+      },
+      {
         path: 'courses',
         name: 'courses',
         component: Courses
@@ -282,14 +304,15 @@ const router = createRouter({
   routes,
 });
 
+
 router.beforeEach((to,from,next)=>{
   if(to.matched.some(record=>record.meta.requiresAuth)){
-    let token = userStore.state.token;
+    let token = store.state.user.token;
     if(!token){
       next('/login')
     }
-    let user = userStore.state.user;
-    let isLoggedIn = userStore.state.isLoggedIn;
+    let user = store.state.user.user;
+    let isLoggedIn = store.state.user.isLoggedIn;
 
     if(user && isLoggedIn && to.meta.role == user.role){
       next();

@@ -207,8 +207,9 @@ export default {
       newCourses: [],
     };
   },
-  created() {
+  created() { 
     // get all categories
+    this.$store.dispatch('courses/getAllCategories')
     categoryData.getAllCategories().then((res) => {
       this.categories = res.data;
     });

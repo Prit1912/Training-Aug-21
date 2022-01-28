@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-      <div v-if="courses.length == 0" >
-          <h3 class="my-5" >No courses uploaded</h3>
-      </div>
+    <div v-if="courses.length == 0">
+      <h3 class="my-5">No courses uploaded</h3>
+    </div>
     <div v-for="course in courses" :key="course._id">
       <div class="row text-center my-5 border border-3">
         <div class="col-md-3 col-12 align-self-center">
@@ -17,21 +17,41 @@
         <div class="col-md-3 col-12 align-self-center">
           <button
             class="btn btn-outline-dark m-2"
-            @click="this.$router.push({name: 'buyers', params:{id: course._id}})"
+            @click="
+              this.$router.push({ name: 'buyers', params: { id: course._id } })
+            "
           >
             Buyers
           </button>
           <button
             class="btn btn-outline-dark m-2"
-            @click="this.$router.push({name: 'reviews', params:{id: course._id}})"
+            @click="
+              this.$router.push({ name: 'reviews', params: { id: course._id } })
+            "
           >
             Reviews
           </button>
           <button
             class="btn btn-dark m-2"
-            @click="this.$router.push({name: 'instFullCourse', params:{id: course._id}})"
+            @click="
+              this.$router.push({
+                name: 'instFullCourse',
+                params: { id: course._id },
+              })
+            "
           >
             view course
+          </button>
+          <button
+            class="btn btn-dark"
+            @click="
+              this.$router.push({
+                name: 'updateCourse',
+                params: { id: course._id },
+              })
+            "
+          >
+            Update
           </button>
         </div>
       </div>

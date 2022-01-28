@@ -7,7 +7,10 @@
         <div v-if="error" class="alert alert-danger" role="alert">
           {{ error }}
         </div>
-        <form class="row row-cols-lg-auto g-3 align-items-center">
+        <form
+          @submit="submit"
+          class="row row-cols-lg-auto g-3 align-items-center"
+        >
           <div class="col-12">
             <label class="visually-hidden" for="username">username</label>
             <div class="input-group">
@@ -19,9 +22,10 @@
                 class="form-control"
                 id="username"
                 placeholder="Email"
-                v-model="email"
+                v-model="user.email"
               />
             </div>
+          <span class="error"> {{ errorEmail }} </span>
           </div>
           <div class="col-12">
             <label class="visually-hidden" for="password">Password</label>
@@ -33,7 +37,7 @@
                 class="form-control"
                 id="password"
                 placeholder="Password"
-                v-model="password"
+                v-model="user.password"
               />
               <input
                 v-else
@@ -41,10 +45,11 @@
                 class="form-control"
                 id="password"
                 placeholder="Password"
-                v-model="password"
+                v-model="user.password"
               />
               <!-- <div class="input-group-text"> -->
               <button
+              type="button"
                 class="btn btn-sm btn-light border border-2"
                 @click="showPassword = !showPassword"
               >
@@ -58,14 +63,12 @@
               </button>
               <!-- </div> -->
             </div>
+<p class="error">{{ errorPassword }}</p>
           </div>
-
           <div class="col-12">
             <button
-              type="button"
               class="btn btn-primary d-block w-100"
               style="background-color: blueviolet"
-              @click="login"
             >
               Log In
             </button>
@@ -114,63 +117,64 @@
 </template>
 
 <script>
-// import { useField, useForm } from "vee-validate";
-// import * as yup from "yup";
+import '../../assets/css/style.css'
+import { useField, useForm } from "vee-validate";
+import * as yup from "yup";
 import userData from "../../services/users";
 export default {
   name: "login",
   data() {
-  //   let user = {
-  //     email: "",
-  //     password: "",
-  //   };
-
-  //   const validationSchema = yup.object({
-  //     email: yup
-  //       .string()
-  //       .email("must be a valid email")
-  //       .required("father's email is required"),
-  //     password: yup.string().min(4, "minimum 4 character required"),
-  //   });
-
-  //   const { handleSubmit } = useForm({
-  //     validationSchema,
-  //   });
-
-    // const { value: email, errorMessage: errorEmail } = useField("email");
-    // const { value: password, errorMessage: errorPassword } = useField("password");
-
-    // user.email = email;
-    // user.password = password;
-
-    // const submit = handleSubmit((values)=>{
-    //   console.log(values);
-    // })
-
-    return {
-      // user,
-      // submit,
-      // errorEmail,
-      // errorPassword,
+    let user = {
       email: "",
       password: "",
+    };
+    const validationSchema = yup.object({
+      email: yup
+        .string()
+        .email("must be a valid email")
+        .required("Email is required"),
+      password: yup.string().min(4, "minimum 4 character required").required('Password is required'),
+    });
+
+    const { handleSubmit } = useForm({
+      validationSchema,
+    });
+
+    const { value: email, errorMessage: errorEmail } = useField("email");
+    const { value: password, errorMessage: errorPassword } =
+      useField("password");
+
+    user.email = email;
+    user.password = password;
+
+    const submit = handleSubmit((values) => {
+      console.log(values);
+      this.login(values);
+    });
+
+    return {
+      user,
+      submit,
+      errorEmail,
+      errorPassword,
       error: "",
       showPassword: false,
     };
   },
   methods: {
-    login() {
-      let user = {
-        email: this.email,
-        password: this.password,
-      };
+    login(user) {
       userData
         .userLogin(user)
         .then((res) => {
           if (res.status == 200) {
+            setTimeout(()=>{
+              this.$store.dispatch('user/logout')
+              this.$router.push({name: 'login'})
+            }, 604800000)
             this.error = "";
-            this.$store.dispatch("setToken", res.data.token);
-            this.$store.dispatch("setUser", res.data.user);
+            this.$store.dispatch("user/setToken", res.data.token);
+            this.$store.dispatch("user/setUser", res.data.user);
+            console.log(this.$store.state.user)
             if (res.data.user.role == "user") {
               this.$router.push("/");
             } else if (res.data.user.role == "instructor") {
@@ -188,4 +192,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

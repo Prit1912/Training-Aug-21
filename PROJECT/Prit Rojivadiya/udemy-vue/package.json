@@ -15,9 +15,11 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "jw-vue-pagination": "^1.0.3",
-    "vee-validate": "^3.4.14",
+    "vee-validate": "^4.5.7",
     "vue": "^3.0.0",
+    "vue-core-video-player": "^0.2.0",
     "vue-router": "^4.0.12",
+    "vue-video-player": "^5.0.2",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0",
     "yup": "^0.32.11"

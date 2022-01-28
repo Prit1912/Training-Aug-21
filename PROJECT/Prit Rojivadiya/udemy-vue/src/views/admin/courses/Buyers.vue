@@ -1,5 +1,25 @@
 <template>
-  {{buyers}}
+  <div class="container my-5">
+      <div v-if="buyers" >
+      <table class="table table-bordered">
+          <thead>
+              <tr>
+                  <th>Index</th>
+                  <th>Name</th>
+                  <th>Email</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr v-for="(buyer,index) of buyers" :key="index" >
+                  <td>{{index}}</td>
+                  <td>{{buyer.user.name}}</td>
+                  <td>{{buyer.user.email}}</td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+  <h1 v-if="error">{{error}}</h1>
+</div>
 </template>
 
 <script>
@@ -9,12 +29,15 @@ export default {
     props: ['id'],
     data(){
         return{
-            buyers: ""
+            buyers: "",
+            error: ""
         }
     },
     created(){
         courseData.showCourseBuyers(this.id).then((res)=>{
             this.buyers = res.data
+        }).catch((err)=>{
+            this.error = err.response.data;
         })
     }
 }

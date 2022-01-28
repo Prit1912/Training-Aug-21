@@ -1,11 +1,12 @@
 import http from '../http-common'
-import { userStore } from '../store/user.js';
+import store from '../store/index';
+// console.log(store.state)
 
 class cartServices{
     getCartItems(){
         return http.get("api/user/cart",{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         });
     }
@@ -13,7 +14,7 @@ class cartServices{
     removeCartItem(id){
         return http.delete(`api/user/cart/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -21,7 +22,7 @@ class cartServices{
     purchaseCourse(){
         return http.post(`api/user/cart/buy`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }

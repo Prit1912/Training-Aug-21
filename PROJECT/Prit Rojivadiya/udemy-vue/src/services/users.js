@@ -1,5 +1,5 @@
 import http from '../http-common'
-import { userStore } from '../store/user.js';
+import store from '../store/index';
 
 class userServices{
     userLogin(user){
@@ -21,7 +21,7 @@ class userServices{
     userInfo(){
         return http.get('api/user/profile',{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -29,7 +29,7 @@ class userServices{
     updateProfile(user){
         return http.put('api/user/profile/update',user,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -37,7 +37,7 @@ class userServices{
     getAllUsers(){
         return http.get('api/admin/users',{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -45,7 +45,7 @@ class userServices{
     blockUser(id){
         return http.delete(`api/admin/users/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -53,7 +53,7 @@ class userServices{
     unblockUser(id){
         return http.put(`api/admin/users/${id}/restore`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -61,7 +61,7 @@ class userServices{
     getUserInfo(id){
         return http.get(`api/admin/users/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -69,7 +69,7 @@ class userServices{
     updateUserByAdmin(id,updatedVal){
         return http.put(`api/admin/users/${id}`,updatedVal,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
 
@@ -78,7 +78,7 @@ class userServices{
     rateCourse(id,review){
         return http.post(`api/user/courses/${id}/review`,review,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }

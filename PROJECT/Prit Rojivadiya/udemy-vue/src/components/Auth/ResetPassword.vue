@@ -10,7 +10,7 @@
           {{error}}
         </div>
 
-        <form class="row row-cols-lg-auto g-3 align-items-center">
+        <form @submit="submit" class="row row-cols-lg-auto g-3 align-items-center">
           <div class="col-12">
             <label class="visually-hidden" for="password">Password</label>
             <div class="input-group">
@@ -20,9 +20,10 @@
                 class="form-control"
                 id="password"
                 placeholder="Password"
-                v-model="password"
+                v-model="user.password"
               />
             </div>
+            {{errorPassword}}
           </div>
 
           <div>
@@ -31,10 +32,8 @@
 
           <div class="col-12">
             <button
-              type="button"
               class="btn btn-primary d-block w-100"
               style="background-color: blueviolet"
-              @click="reset"
             >
               Reset
             </button>
@@ -54,23 +53,45 @@
 </template>
 
 <script>
+import { useField, useForm } from "vee-validate";
+import * as yup from "yup";
 import userData from '../../services/users'
 export default {
     name: 'resetPassword',
     data(){
+      let user = {
+        password: ""
+      }
+
+      const validationSchema = yup.object({
+        password: yup.string().min(4, "minimum 4 character required").required('Password is required'),
+      })
+
+      const { handleSubmit } = useForm({
+        validationSchema
+      })
+
+      const { value: password, errorMessage: errorPassword } = useField("password");
+
+      user.password = password;
+
+      const submit = handleSubmit((values)=>{
+        console.log(values);
+        this.reset(values);
+      })
+
         return{
-            password: "",
-            token: ""
+          user,
+          submit,
+          errorPassword,
+          token: ""
         }
     },
     mounted(){
         console.log(this.$router.currentRoute.value.params.token)
     },
     methods:{
-        reset(){
-            let user = {
-                password: this.password
-            }
+        reset(user){
             this.token = this.$router.currentRoute.value.params.token
             userData.resetPassword(user,this.token).then((res)=>{
                 console.log(res.data);

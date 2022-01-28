@@ -1,11 +1,11 @@
 import http from '../http-common'
-import { userStore } from '../store/user.js';
+import store from '../store/index.js';
 
 class courseService{
     getEnrolledCourses(){
         return http.get("api/user/courses",{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         });
     }
@@ -27,25 +27,29 @@ class courseService{
     }
 
     addCourseToWishlist(id){
+        console.log(store)
+        console.log(store.state.user)
         return http.post(`api/courses/${id}/addtowishlist`,{
             Headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
-
+    
     addCourseToCart(id){
+        console.log(store.state.user)
         return http.post(`api/courses/${id}/addtocart`,{
-            headers:{
-                'x-access-token': userStore.state.token
-            }
+            // headers:{
+            //     // 'x-access-token': store.state.user.token
+            //     'x-access-token': store.state.user.token
+            // }
         })
     }
 
     getInstructorCourses(){
         return http.get('api/courses/inst-courses',{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -53,7 +57,7 @@ class courseService{
     getInstructorCourseById(id){
         return http.get(`api/courses/inst-courses/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -61,7 +65,7 @@ class courseService{
     courseReview(id){
         return http.get(`api/courses/inst-courses/${id}/reviews`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -69,7 +73,7 @@ class courseService{
     courseBuyers(id){
         return http.get(`api/courses/inst-courses/${id}/summary`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -77,7 +81,15 @@ class courseService{
     uplodadCourse(course){
         return http.post(`api/courses/inst-courses`,course,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token,
+            }
+        })
+    }
+
+    updateInstCourse(id,course){
+        return http.put(`api/courses/inst-courses/${id}`,course,{
+            headers:{
+                'x-access-token': store.state.user.token,
             }
         })
     }
@@ -85,7 +97,7 @@ class courseService{
     getCoursesByAdmin(){
         return http.get(`api/admin/courses`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -93,7 +105,7 @@ class courseService{
     showCourseSummary(id){
         return http.get(`api/admin/courses/summary/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -101,7 +113,7 @@ class courseService{
     showCourseBuyers(id){
         return http.get(`api/admin/courses/summary/${id}/buyers`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -109,7 +121,7 @@ class courseService{
     deactivateCourse(id){
         return http.delete(`api/admin/courses/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -117,11 +129,10 @@ class courseService{
     activateCourse(id){
         return http.put(`api/admin/courses/${id}/restore`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })   
     }
-
 }
 
 export default new courseService();

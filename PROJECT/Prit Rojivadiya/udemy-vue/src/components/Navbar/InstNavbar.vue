@@ -32,7 +32,7 @@
         </ul>
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-          <div v-if="this.$store.state.isLoggedIn && (this.$store.state.user.role=='instructor')">
+          <div v-if="this.$store.state.user.isLoggedIn && (this.$store.state.user.user.role=='instructor')">
             <div>
               <button class="btn btn-dark me-3" type="button" @click="this.$router.push({name: 'instProfile'})" >Profile</button>
               <button class="btn btn-dark" type="button" @click="logout">
@@ -60,8 +60,9 @@ export default {
   name: "navbar",
   methods: {
     logout() {
-      this.$store.dispatch("setToken", null),
-        this.$store.dispatch("setUser", null);
+      // this.$store.dispatch("user/setToken", null),
+        // this.$store.dispatch("user/setUser", null);
+              this.$store.dispatch('user/logout');
       this.$router.push("/login");
     },
   },

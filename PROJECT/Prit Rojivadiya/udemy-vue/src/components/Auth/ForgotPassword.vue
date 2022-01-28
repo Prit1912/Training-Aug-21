@@ -8,7 +8,7 @@
         <div v-if="error" class="alert alert-danger" role="alert">
           {{error}}
         </div>
-        <form class="row row-cols-lg-auto g-3 align-items-center">
+        <form @submit="submit" class="row row-cols-lg-auto g-3 align-items-center">
           <div class="col-12">
             <label class="visually-hidden" for="username">username</label>
             <div class="input-group">
@@ -20,9 +20,10 @@
                 class="form-control"
                 id="username"
                 placeholder="Email"
-                v-model="email"
+                v-model="user.email"
               />
             </div>
+            <p class="error" >{{errorEmail}}</p>
           </div>
 
           <div>
@@ -31,10 +32,8 @@
 
           <div class="col-12">
             <button
-              type="button"
               class="btn btn-primary d-block w-100"
               style="background-color: blueviolet"
-              @click="sendMail"
             >
               Send Mail
             </button>
@@ -59,25 +58,46 @@
 </template>
 
 <script>
+import '../../assets/css/style.css';
+import { useField, useForm } from "vee-validate";
+import * as yup from "yup";
 import userData from '../../services/users'
 export default {
     name: 'forgotPassword',
     data(){
+      let user = {
+        email: ""
+      }
+
+      const validationSchema = yup.object({
+        email: yup.string().email().required()
+      })
+
+      const { handleSubmit } = useForm({
+        validationSchema
+      });
+
+      const { value: email, errorMessage: errorEmail } = useField("email");
+
+      user.email = email;
+
+      const submit = handleSubmit((values)=>{
+        console.log(values);
+        this.sendMail(values)
+      })
         return{
-            email: '',
+            user,
+            submit,
+            errorEmail,
             error: "",
             success: "",
         }
     },
     methods:{
-        sendMail(){
-            let user = {
-                email: this.email
-            }
+        sendMail(user){
             userData.forgotPassword(user).then((res)=>{
                 console.log(res.data);
                 this.error = ""
-                this.email = ''
                 this.success = "Mail sent successfully"
             }).catch((err)=>{
                 console.log(err.response)
@@ -90,5 +110,4 @@ export default {
 </script>
 
 <style>
-
 </style>

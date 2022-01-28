@@ -29,7 +29,7 @@
         </ul>
         <form class="d-flex">
           <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-          <div v-if="this.$store.state.isLoggedIn && this.$store.state.user.role == 'user' ">
+          <div v-if="this.$store.state.user.isLoggedIn && this.$store.state.user.user.role == 'user' ">
             <div>
               <button class="btn btn-dark me-3" type="button" @click="this.$router.push({name: 'profile'})" >Profile</button>
               <button class="btn btn-dark" type="button" @click="logout">
@@ -47,7 +47,7 @@
             </button>
           </div>
         </form>
-        <div v-if="this.$store.state.isLoggedIn && this.$store.state.user.role == 'user' " class="buttons mt-1">
+        <div v-if="this.$store.state.user.isLoggedIn && this.$store.state.user.user.role == 'user' " class="buttons mt-1">
           <button class="btn" @click="this.$router.push({name:'cart'})">
             <i class="fas fa-shopping-cart fa-2x"></i>
           </button>
@@ -68,8 +68,9 @@ export default {
   name: "navbar",
   methods: {
     logout() {
-      this.$store.dispatch("setToken", null),
-        this.$store.dispatch("setUser", null);
+      // this.$store.dispatch("user/setToken", null),
+      //   this.$store.dispatch("user/setUser", null);
+      this.$store.dispatch('user/logout');
       this.$router.push("/login");
     },
   },

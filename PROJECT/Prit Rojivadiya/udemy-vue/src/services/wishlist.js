@@ -1,11 +1,11 @@
 import http from '../http-common'
-import { userStore } from '../store/user.js';
+import store from '../store/index';
 
 class wishlistService{
     getwishlistItems(){
         return http.get("api/user/wishlist",{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         });
     }
@@ -13,7 +13,7 @@ class wishlistService{
     removeFromWishlist(id){
         return http.delete(`api/user/wishlist/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -21,7 +21,7 @@ class wishlistService{
     wishlistToCart(id){
         return http.post(`api/user/wishlist/${id}/addtocart`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }

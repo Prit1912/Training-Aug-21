@@ -1,6 +1,6 @@
 <template>
 
-  <div v-if="this.$store.state.isLoggedIn" class="container my-4">
+  <div v-if="this.$store.state.user.isLoggedIn" class="container my-4">
     <div class="row">
       <div class="col-sm-8 col-12">
         <h3>

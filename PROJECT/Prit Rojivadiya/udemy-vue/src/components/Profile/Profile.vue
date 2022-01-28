@@ -102,7 +102,7 @@ export default {
             success: ""
         }
     },
-    mounted(){
+    created (){
         userData.userInfo().then((res)=>{
             this.profile = res.data;
         })

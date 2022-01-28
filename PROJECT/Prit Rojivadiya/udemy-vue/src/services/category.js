@@ -1,5 +1,6 @@
 import http from '../http-common'
-import { userStore } from '../store/user.js';
+import store from '../store/index';
+// console.log(store)
 
 class categoryService{
     getAllCategories(){
@@ -9,7 +10,7 @@ class categoryService{
     getCategoryById(id){
         return http.get(`api/admin/category/${id}`,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -17,7 +18,7 @@ class categoryService{
     updateCategoyById(id,name){
         return http.put(`api/admin/category/${id}`,name,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }
@@ -29,7 +30,7 @@ class categoryService{
     addCategory(cname){
         return http.post(`api/admin/category`,cname,{
             headers:{
-                'x-access-token': userStore.state.token
+                'x-access-token': store.state.user.token
             }
         })
     }

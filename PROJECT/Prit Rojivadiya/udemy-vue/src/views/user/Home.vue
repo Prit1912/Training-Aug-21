@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="this.$store.state.isLoggedIn && this.$store.state.user.role == 'user'"
+    v-if="this.$store.state.user.isLoggedIn && this.$store.state.user.user.role == 'user'"
     class="container my-4"
   >
     <div class="row">
@@ -378,8 +378,8 @@ export default {
       userName: "",
     };
   },
-  mounted() {
-    if (this.$store.state.isLoggedIn && this.$store.state.user.role == "user") {
+  created() {
+    if (this.$store.state.user.isLoggedIn && this.$store.state.user.user.role == "user") {
       userData
         .userInfo()
         .then((res) => {
@@ -387,8 +387,8 @@ export default {
         })
         .catch((err) => {
           console.log(err.response.data);
-          this.$store.dispatch("setToken", null);
-          this.$store.dispatch("setUser", null);
+          this.$store.dispatch("user/setToken", null);
+          this.$store.dispatch("user/setUser", null);
         });
     }
   },

@@ -6,7 +6,6 @@
     </div>
     <div v-else>
       <CourseList v-bind:item="items" comp="cart" />
-
       <h4 class="my-3" v-if="amount" >Total : {{amount}}</h4>
       <button class="btn btn-warning" @click="purchase" >Buy</button>
     </div>
@@ -14,6 +13,7 @@
 </template>
 
 <script>
+import paymentData from '../../services/payment'
 import CourseList from "../../components/Courses/CourseList.vue";
 import cartData from "../../services/cart";
 export default {
@@ -27,7 +27,7 @@ export default {
       amount: 0
     };
   },
-  mounted() {
+  created() {
     cartData.getCartItems().then((res) => {
       console.log(res.data);
       this.items = res.data.courses;
@@ -40,12 +40,17 @@ export default {
   },
   methods:{
     purchase(){
-      cartData.purchaseCourse().then((res)=>{
+      paymentData.makePayment(this.items).then((res)=>{
         console.log(res.data);
-        this.items = [];
       }).catch((err)=>{
         console.log(err.response)
       })
+      // cartData.purchaseCourse().then((res)=>{
+      //   console.log(res.data);
+      //   this.items = [];
+      // }).catch((err)=>{
+      //   console.log(err.response)
+      // })
     }
   }
 };
