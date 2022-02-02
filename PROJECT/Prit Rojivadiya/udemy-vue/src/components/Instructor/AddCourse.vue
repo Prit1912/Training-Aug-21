@@ -144,7 +144,7 @@
         <button class="btn btn-success">Upload</button>
       </form>
       <br />
-      <progress max="100" :value.prop="uploadPercentage"></progress>
+      <!-- <progress max="100" :value.prop="uploadPercentage"></progress> -->
       <div v-if="message" class="alert alert-success" role="alert">
         {{ message }}
       </div>

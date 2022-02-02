@@ -1,5 +1,5 @@
 <template>
-  <div class="container my-5 text-center">
+  <div v-if="course" class="container my-5 text-center">
     <div class="imgContainer">
       <img :src="course.courseImage.url" class="img-fluid border border-5" />
     </div>
@@ -16,12 +16,30 @@
         <li>1 downloadable resource</li>
         <li>Access on mobile and TV</li>
       </ul>
+      <div v-if="comp != 'instructor'" >
       <button class="btn btn-dark m-2" :disabled="cartItems.includes(course._id)"  @click="addToCart(course._id)">
         Add to cart
       </button>
       <button class="btn btn-dark m-2" :disabled="wishlistItems.includes(course._id)" @click="addToWishlist(course._id)">
         Add to wishlist
       </button>
+      </div>
+    </div>
+    <div v-if="comp == 'instructor'" >
+      <div class="row my-5">
+              <div class="col-sm-9">
+        <video ref="myVideo" id="myVideo" :src="videoUrl" controls></video>
+      </div>
+      <div class="col-sm-3 links">
+        <div v-for="(video, index) of course.videos" :key="index">
+          <div class="wrapper bg-light border border- p-2">
+            <span class="videolink" @click="nextVideo(video, index)">
+               {{ video.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,15 +52,21 @@ export default {
   name: "courseInfo",
   props: {
     courseId: Number,
+    comp: String
   },
   data() {
     return {
-      course: {},
+      course: "",
       cartItems: [],
-      wishlistItems: []
+      wishlistItems: [],
+      videoUrl: ""
     };
   },
   created() {
+     courseData.getInstructorCourseById(this.courseId).then((res) => {
+      this.videoUrl = res.data.videos[0].url;
+    });
+
     courseData.getCourseById(this.courseId).then((res) => {
       console.log(res);
       this.course = res.data;
@@ -93,6 +117,10 @@ export default {
           this.$router.push({ name: "login" });
         });
     },
+     nextVideo(video, index){
+      this.videoUrl = video.url; 
+      this.clicked = index;
+    },
   },
 };
 </script>
@@ -104,5 +132,18 @@ export default {
 }
 .content {
   border: 2px solid blueviolet;
+}
+video {
+  width: 100%;
+}
+.videolink {
+  cursor: pointer;
+}
+.links {
+  height: 75vh;
+  overflow: auto;
+}
+.videolink:hover {
+  color: blueviolet;
 }
 </style>

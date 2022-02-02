@@ -36,8 +36,8 @@ export default {
     name: 'categorySubcategorySelect',
     data(){
         return{
-            cId: null,
-            sId: null,
+            cId: this.$store.state.courses.categoryId,
+            sId: this.$store.state.courses.subCategoryId,
             categories: [],
             subcategories: [],
             courses: []
@@ -47,19 +47,33 @@ export default {
         categoryData.getAllCategories().then((res)=>{
             this.categories = res.data;
         })
+        subCategoryData.getAllSubCategories(this.cId).then((res)=>{
+              this.subcategories = res.data
+              console.log(this.subcategories)
+        })
     },
     methods:{
-        selectCategory(){
+      selectCategory(){
+        this.$store.dispatch('courses/setCategoryId',this.cId)
+        this.$store.dispatch('courses/setSubCategoryId',null)
+        this.$store.dispatch('courses/setSearchedCourses',[])
+        this.$store.dispatch('courses/setSearchedString',"")
             courseData.getCategoryWiseCourses(this.cId).then((res)=>{
-                this.courses = res.data;
+              this.courses = res.data;
                 this.$emit('courses',this.courses);
             })
             subCategoryData.getAllSubCategories(this.cId).then((res)=>{
-                this.subcategories = res.data
-                this.sId = null;
+              this.subcategories = res.data
+              console.log(this.subcategories)
+              this.sId = null
+            }).catch(()=>{
+              this.subcategories = []
             })
         },
         selectSubCategory(){
+          this.$store.dispatch('courses/setSubCategoryId',this.sId)
+          this.$store.dispatch('courses/setSearchedCourses',[])
+          this.$store.dispatch('courses/setSearchedString',"")
             courseData.getSubCategoryWiseCourses(this.cId,this.sId).then((res)=>{
                 this.courses = res.data;
                 this.$emit('courses',this.courses);

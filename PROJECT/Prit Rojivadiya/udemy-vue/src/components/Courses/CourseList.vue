@@ -10,7 +10,8 @@
           />
           <div class="card-body">
             <h5 class="card-title">{{ i.name }}</h5>
-            <p v-if="i.price">Price : ₹{{ i.price }}</p>
+            <p v-if="i.offerPrice"> Offer Price: <span class="text-decoration-line-through" >₹{{i.price}}</span> ₹{{i.offerPrice}}</p>
+            <p v-else-if="i.price">Price : ₹{{ i.price }}</p>
             <p v-else>Price : Free</p>
             <p>Rating : {{ i.rating }}/5</p>
             <span v-if="comp == 'wishlist'">

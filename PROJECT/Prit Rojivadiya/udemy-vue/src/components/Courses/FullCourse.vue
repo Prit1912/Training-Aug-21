@@ -8,8 +8,10 @@
         <video ref="myVideo" id="myVideo" :src="videoUrl" controls></video>
       </div>
 
-      <div class="col-sm-3">
+      <div class="col-sm-3 links">
+        {{per}}%
         <div v-for="(video, index) of course.videos" :key="index">
+          <div class="wrapper bg-light border border- p-2 ">
           <span class="videolink" @click="nextVideo(video,index)">
             <input type="checkbox"> {{ video.name }}
           </span>
@@ -22,6 +24,7 @@
               aria-valuemax="100"
             ></div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -167,6 +170,7 @@ export default {
       rating: 5,
       review: "",
       clicked: 0,
+      per: 0,
       // widhtObject:{
       //   width:"0%"
       // }
@@ -180,17 +184,22 @@ export default {
   mounted() {
     let video = document.getElementById("myVideo");
     let id = this.courseId
-
+    let len;
+    let count = 0;
     store.state.courses.courses.map((course)=>{
        if(course.id == this.courseId){
+         len = course.videos.length;
          for(let i = 0;i<course.videos.length;i++){
               document.getElementById(course.videos[i].url).style.width = course.videos[i].progressPer+"%"
               if(course.videos[i].progressPer == 100){
+                count ++;
                 document.getElementById(course.videos[i].url).parentElement.parentElement.getElementsByTagName('input')[0].checked = true;
                }
           }
        }
      })
+     console.log(((count/len)*100).toFixed(2))
+     this.per = ((count/len)*100).toFixed(2)
 
       document.getElementById("myVideo").addEventListener("ended", () => {
       console.log("video ended");
@@ -339,7 +348,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped >
 .heading {
   height: 8vh;
   display: flex;
@@ -354,6 +363,10 @@ video {
 }
 .videolink {
   cursor: pointer;
+}
+.links{
+  height: 75vh;
+  overflow: auto;
 }
 .videolink:hover {
   color: blueviolet;

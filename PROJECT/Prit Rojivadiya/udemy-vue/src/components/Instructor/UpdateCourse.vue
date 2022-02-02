@@ -18,7 +18,7 @@
             class="form-control"
             id="formGroupExampleInput"
           />
-          <!-- <span class="error">{{ errorName }}</span> -->
+          <span class="error">{{ errorName }}</span>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label required"
@@ -30,7 +30,7 @@
             id="exampleFormControlTextarea1"
             rows="3"
           ></textarea>
-          <!-- <span class="error">{{ errorDescription }}</span> -->
+          <span class="error">{{ errorDescription }}</span>
         </div>
         <div class="mb-3">
           <label for="category" class="form-label required">Category</label>
@@ -49,7 +49,7 @@
               {{ category.name }}
             </option>
           </select>
-          <!-- <span class="error">{{ errorCategory }}</span> -->
+          <span class="error">{{ errorCategory }}</span>
         </div>
         <div class="mb-3">
           <label for="subcategory" class="form-label">Subcategory</label>
@@ -67,7 +67,7 @@
               {{ subcategory.name }}
             </option>
           </select>
-          <!-- <span class="error">{{ errorSubcategory }}</span> -->
+          <span class="error">{{ errorSubcategory }}</span>
         </div>
         <div class="mb-3">
           <label for="ispaid" class="form-label required">Paid(Yes/No)</label>
@@ -80,7 +80,7 @@
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
-          <!-- <span class="error">{{ errorIsPaid }}</span> -->
+          <span class="error">{{ errorIsPaid }}</span>
         </div>
         <div class="mb-3">
           <label for="price" class="form-label">Price</label>
@@ -90,7 +90,7 @@
             class="form-control"
             id="price"
           />
-          <!-- <span class="error">{{ errorPrice }}</span> -->
+          <span class="error">{{ errorPrice }}</span>
         </div>
         <br />
         <button class="btn btn-success">Update</button>
@@ -104,8 +104,8 @@
 </template>
 
 <script>
-// import { useField, useForm } from "vee-validate";
-// import * as yup from "yup";
+import { useField, useForm } from "vee-validate";
+import * as yup from "yup";
 import '../../assets/css/style.css'
 import categoryData from "../../services/category";
 import subcategoryData from '../../services/subcategory'
@@ -113,67 +113,65 @@ import courseData from "../../services/courses";
 export default {
   name: "updateCourse",
   data() {
-    //   let Course = {
-    //   name: "",
-    //   description: "",
-    //   category: "",
-    //   subcategory: "",
-    //   isPaid: "",
-    //   price: null,
-    // }
+      let course = {
+      name: "",
+      description: "",
+      category: "",
+      subcategory: "",
+      isPaid: "",
+      price: null,
+    }
 
-    // const validationSchema = yup.object({
-    //   name: yup.string().min(2,'atleast 2 character required').required(),
-    //   description: yup.string().required(),
-    //   category: yup.number().required(),
-    //   subcategory: yup.number(),
-    //   isPaid: yup.string().required(),
-    //   price: yup.number().when('isPaid',{
-    //     is:'true',
-    //     then: yup.number().required()
-    //   })
-    // })
+    const validationSchema = yup.object({
+      name: yup.string().min(2,'atleast 2 character required').required(),
+      description: yup.string().required(),
+      category: yup.number().required(),
+      subcategory: yup.number(),
+      isPaid: yup.string().required(),
+      price: yup.string().when('isPaid',{
+        is:'true',
+        then: yup.string().required(),
+      })
+    })
 
-    // const { handleSubmit } = useForm({
-    //   validationSchema
-    // })
+    const { handleSubmit } = useForm({
+      validationSchema
+    })
 
-    // // const {value: name, errorMessage: errorName} = useField('name');
+    const {value: name, errorMessage: errorName} = useField('name');
     // const {errorMessage: errorName} = useField('name');
-    // // const {value: description, errorMessage: errorDescription} = useField('description');
+    const {value: description, errorMessage: errorDescription} = useField('description');
     // const {errorMessage: errorDescription} = useField('description');
-    // // const {value: category, errorMessage: errorCategory} = useField('category');
+    const {value: category, errorMessage: errorCategory} = useField('category');
     // const {errorMessage: errorCategory} = useField('category');
-    // // const {value: subcategory, errorMessage: errorSubcategory} = useField('subcategory');
+    const {value: subcategory, errorMessage: errorSubcategory} = useField('subcategory');
     // const {errorMessage: errorSubcategory} = useField('subcategory');
-    // // const {value: isPaid, errorMessage: errorIsPaid} = useField('isPaid');
+    const {value: isPaid, errorMessage: errorIsPaid} = useField('isPaid');
     // const {errorMessage: errorIsPaid} = useField('isPaid');
-    // // const {value: price, errorMessage: errorPrice} = useField('price');
+    const {value: price, errorMessage: errorPrice} = useField('price');
     // const {errorMessage: errorPrice} = useField('price');
 
-    // Course.name = name;
-    // Course.description = description;
-    // Course.category = category;
-    // Course.subcategory = subcategory;
-    // Course.isPaid = isPaid;
-    // Course.price = price;
+    course.name = name;
+    course.description = description;
+    course.category = category;
+    course.subcategory = subcategory;
+    course.isPaid = isPaid;
+    course.price = price;
 
-    // const submit = handleSubmit((values)=>{
-    //     console.log(this.course)
-    //   console.log(values);
-    // //   this.submitCourse();
-    // })
+    const submit = handleSubmit((values)=>{
+      console.log(values);
+      this.submitCourse(values);
+    })
  
     return {
-    //   course:"",
-    //   submit,
-    //   errorName,
-    //   errorDescription,
-    //   errorCategory,
-    //   errorSubcategory,
-    //   errorIsPaid,
-    //   errorPrice,
-      course: {},
+      course,
+      submit,
+      errorName,
+      errorDescription,
+      errorCategory,
+      errorSubcategory,
+      errorIsPaid,
+      errorPrice,
       categoryArr: [],
       subcategoryArr: [],
       error: "",
@@ -183,7 +181,13 @@ export default {
   props: ["id"],
   created() {
     courseData.getInstructorCourseById(this.id).then((res) => {
-      this.course = res.data;
+      // this.course = res.data;
+      this.course.name = res.data.name
+      this.course.description = res.data.description
+      this.course.category = res.data.category
+      this.course.subcategory = res.data.subcategory
+      this.course.isPaid = res.data.isPaid
+      this.course.price = res.data.price
       subcategoryData.getAllSubCategories(this.course.category).then((res)=>{
           this.subcategoryArr = res.data;
       })
@@ -209,9 +213,8 @@ export default {
           this.subcategoryArr = res.data;
       })
     },
-    submit(){
-        console.log(this.course)
-        courseData.updateInstCourse(this.id,this.course).then((res)=>{
+    submitCourse(course){
+        courseData.updateInstCourse(this.id,course).then((res)=>{
             console.log(res.data);
             this.message = 'course updated successfully';
             this.error = ""

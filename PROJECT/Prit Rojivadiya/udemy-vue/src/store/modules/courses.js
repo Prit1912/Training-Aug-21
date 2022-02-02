@@ -4,19 +4,24 @@ export const courses = {
   state: {
     categoryId: null,
     subCategoryId: null,
-    // courses: [],
     // categoryArr: [],
     // subCategoryArr: [],
     percentage: 0,
-    courses: []
+    courses: [], // for courses id
+    allCourses: [],
+    updatedCourses: [],
+    filteredCourses: [],
+    searchedCourses: [],
+    searchedString: "",
+    filterApplied: false,
   },
   mutations: {
     setCategoryId(state, cId) {
       state.categoryId = cId;
-      state.subCategoryId = null;
+      // state.subCategoryId = null;
     },
     setSubCategoryId(state, sId) {
-      state.categoryId = sId;
+      state.subCategoryId = sId;
     },
     setPercentage(state,arg){
       // console.log(arg)
@@ -45,6 +50,25 @@ export const courses = {
       if(!idArr.includes(course.id)){
         state.courses.push(course)
       }
+    },
+    setAllCourses(state,courses){
+      state.allCourses = courses;
+      state.updatedCourses = courses;
+    },
+    setUpdatedCourses(state,courses){
+      state.updatedCourses = courses;
+    },
+    setFilteredCourses(state,courses){
+      state.filteredCourses = courses
+    },
+    setSearchedCourses(state,courses){
+      state.searchedCourses = courses
+    },
+    setSearchedString(state,str){
+      state.searchedString = str;
+    },
+    setFilterStatus(state,val){
+      state.filterApplied = val
     }
   },
   actions: {
@@ -60,6 +84,24 @@ export const courses = {
     setCourses({commit}, course){
         // console.log(course)
         commit('setCourses', course)
+    },
+    setAllCourses({commit}, courses){
+      commit('setAllCourses', courses)
+    },
+    setUpdatedCourses({commit}, courses){
+      commit('setUpdatedCourses', courses)
+    },
+    setFilteredCourses({commit}, courses){
+      commit('setFilteredCourses', courses)
+    },
+    setSearchedCourses({commit}, courses){
+      commit('setSearchedCourses', courses)
+    },
+    setSearchedString({commit}, str){
+      commit('setSearchedString', str)
+    },
+    setFilterStatus({commit}, val){
+      commit('setFilterStatus', val)
     }
   },
 };

@@ -67,7 +67,7 @@
                 </button>
                 <button
                   class="btn btn-dark"
-                  v-if="user.isActive"
+                  v-if="!blockedUsers.includes(user._id)"
                   @click="block(user._id)"
                 >
                   Block
@@ -92,12 +92,6 @@
         @update:modelValue="updateHandler(page)"
       />
     </div>
-    <!-- <div v-for="user of users" :key="user._id">
-    {{ user }} -
-    <button v-if="user.isActive" @click="block(user._id)">Block</button>
-    <button v-else @click="unblock(user._id)">Unblock</button>
-    <button @click="this.$router.push({name: 'updateUser',params: {id: user._id}})" >View / Update</button>
-  </div> -->
   </div>
 </template>
 
@@ -120,6 +114,7 @@ export default {
       pages: null,
       queryString: "",
       globalSearch: "",
+      blockedUsers: [],
     };
   },
   created() {
@@ -127,7 +122,19 @@ export default {
       this.users = res.data;
       this.usersList = this.users.slice(0, 10);
       this.pages = this.usersList.length / 10 + 1;
+
+      let blockedUser = this.users.filter((user)=>{
+        return user.isActive == false;
+      })
+      for(let user of blockedUser){
+        if(!this.blockedUsers.includes(user._id)){
+          this.blockedUsers.push(user._id);
+        }
+      }
+
     });
+
+     
   },
   computed: {
     filteredUsers: function () {
@@ -151,25 +158,15 @@ export default {
     block(id) {
       userData.blockUser(id).then((res) => {
         console.log(res.data);
-        userData.getAllUsers().then((res) => {
-          this.users = res.data;
-          this.usersList = this.users.slice(
-            10 * (this.page - 1),
-            this.page * 10
-          );
-        });
+        this.blockedUsers.push(id);
       });
     },
     unblock(id) {
       userData.unblockUser(id).then((res) => {
         console.log(res.data);
-        userData.getAllUsers().then((res) => {
-          this.users = res.data;
-          this.usersList = this.users.slice(
-            10 * (this.page - 1),
-            this.page * 10
-          );
-        });
+        this.blockedUsers = this.blockedUsers.filter((UserId)=>{
+          return UserId != id
+        })
       });
     },
     updateHandler(page) {

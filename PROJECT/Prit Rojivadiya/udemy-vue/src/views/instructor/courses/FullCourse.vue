@@ -1,13 +1,13 @@
 <template>
-  <FullCourse :courseId="this.$router.currentRoute.value.params.id" />
+  <CourseInfo :courseId="this.$router.currentRoute.value.params.id" comp="instructor" />
 </template>
 
 <script>
-import FullCourse from '../../../components/Courses/FullCourse.vue'
+import CourseInfo from '../../../components/Courses/CourseInfo.vue'
 export default {
     name: 'fullCourse',
     components:{
-        FullCourse
+        CourseInfo
     },
     created(){
         console.log(this.$router.currentRoute.value.params.id)

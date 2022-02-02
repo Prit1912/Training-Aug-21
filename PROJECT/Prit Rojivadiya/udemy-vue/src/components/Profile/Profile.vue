@@ -7,7 +7,7 @@
         <div v-if="error" class="alert alert-danger" role="alert">
           {{ error }}
         </div>
-        <form class="row row-cols-lg-auto g-3 align-items-center">
+        <form @submit="submit" class="row row-cols-lg-auto g-3 align-items-center">
           <div class="col-12">
             <label class="visually-hidden" for="name">name</label>
             <div class="input-group">
@@ -22,6 +22,7 @@
                 v-model="profile.name"
               />
             </div>
+              <span class="error" >{{errorName}}</span>
           </div>
 
           <div class="col-12">
@@ -38,6 +39,7 @@
                 v-model="profile.email"
               />
             </div>
+               <span class="error" >{{errorEmail}}</span>
           </div>
 
           <div class="col-12">
@@ -54,6 +56,7 @@
                 v-model="profile.phone"
               />
             </div>
+               <span class="error" >{{errorPhone}}</span>
           </div>
 
           <div class="col-12">
@@ -72,11 +75,17 @@
           </div>
 
           <div class="col-12">
-            <button
+            <!-- <button
               type="button"
               class="btn btn-primary d-block w-100"
               style="background-color: blueviolet"
               @click="update"
+            >
+              Update Profile
+            </button> -->
+            <button
+              class="btn btn-primary d-block w-100"
+              style="background-color: blueviolet"
             >
               Update Profile
             </button>
@@ -93,18 +102,58 @@
 
 <script>
 import userData from '../../services/users'
+import { useField, useForm } from "vee-validate";
+import * as yup from "yup";
 export default {
     name: 'profile',
     data(){
+      const validationSchema = yup.object({
+      email: yup
+        .string()
+        .email("must be a valid email")
+        .required("Email is required"),
+      name: yup.string().min(2, "minimum 2 character required").required('Name is required'),
+      phone: yup.number().required()
+    });
+
+    const { handleSubmit } = useForm({
+      validationSchema,
+    });
+
+        const { value: email, errorMessage: errorEmail } = useField("email");
+        const { value: name, errorMessage: errorName } = useField("name");
+        const { value: phone, errorMessage: errorPhone } = useField("phone");
+
+        let profile = {
+          name: name,
+          email: email,
+          phone: phone
+        }
+
+  const submit = handleSubmit((values) => {
+      console.log(values);
+      this.update(values);
+    });
+
         return{
-            profile:{},
+          errorEmail,
+          errorName,
+          errorPhone,
+          submit,
+          profile,
+            // profile:{},
             error: "",
             success: ""
         }
     },
     created (){
         userData.userInfo().then((res)=>{
-            this.profile = res.data;
+            // this.profile = res.data;
+            console.log(res.data)
+            this.profile.name = res.data.name
+            this.profile.email = res.data.email
+            this.profile.phone = res.data.phone
+            this.profile.role = res.data.role
         })
     },
     methods:{

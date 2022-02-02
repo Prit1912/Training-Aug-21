@@ -27,7 +27,13 @@ export const user = {
         setUser ({commit}, user) {
           commit('setUser', user)
         },
-        logout({commit}){
+        logout({commit, dispatch}){
+          dispatch('courses/setUpdatedCourses',[],{root: true})
+          dispatch('courses/setSearchedCourses',[],{root: true})
+          dispatch('courses/setFilteredCourses',[],{root: true})
+          dispatch('courses/setCategoryId',null,{root: true})
+          dispatch('courses/setSubCategoryId',null,{root: true})
+          dispatch('courses/setSearchedString',null,{root: true})
           commit('logout')
         }
       }

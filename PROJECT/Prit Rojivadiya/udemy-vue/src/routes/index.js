@@ -51,6 +51,7 @@ import UpdateCategory from "../views/admin/categories/EditCategory.vue";
 import UpdateSubCategory from '../views/admin/categories/EditSubCategory.vue';
 import AdminCourseSummary from '../views/admin/courses/Summary.vue';
 import AdminCourseBuyers from '../views/admin/courses/Buyers.vue';
+import AdminCourseUpdate from '../views/admin/courses/UpdateCourse.vue';
 import UpdateUser from '../views/admin/users/UpdateUser.vue';
 import AddOffer from '../views/admin/offers/AddOffer.vue';
 import UpdateOffer from '../views/admin/offers/UpdateOffer.vue';
@@ -281,6 +282,12 @@ const routes = [
         path: 'courses/:id/buyers',
         name: 'courseBuyers',
         component: AdminCourseBuyers,
+        props: true
+      },
+      {
+        path: 'courses/:id/update',
+        name: 'updateCourseByAdmin',
+        component: AdminCourseUpdate,
         props: true
       },
       {
