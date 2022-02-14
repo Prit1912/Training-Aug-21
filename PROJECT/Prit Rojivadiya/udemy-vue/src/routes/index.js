@@ -1,7 +1,5 @@
 import { createWebHashHistory, createRouter } from "vue-router";
-// import userStore from '../store/modules/user'
-import store from '../store'
-console.log(store.state)
+import store from '../store/index'
 
 // auth routes
 import Login from "../views/auth/Login.vue";
@@ -12,7 +10,6 @@ import ResetPassword from "../views/auth/ResetPassword.vue";
 // user routes
 import Main from "../views/user/Main.vue";
 import Home from "../views/user/Home.vue";
-import About from "../views/user/About.vue";
 import TeachOnUdemy from "../views/user/TeachOnUdemy.vue";
 import Cart from "../views/user/Cart.vue";
 import Wishlist from "../views/user/Wishlist.vue";
@@ -21,13 +18,10 @@ import MyCourses from "../views/user/MyCourses.vue";
 import FullCourse from "../views/user/EnrolledCourse.vue"
 import AllCourses from "../views/courses/AllCourses.vue";
 import CourseInfo from "../views/courses/CourseInfo.vue";
-import CategoryWiseCourses from "../views/courses/CategoryWiseCourses.vue";
-import SubCateWiseCourses from "../views/courses/SubCateWiseCourses.vue";
 
 // instructor routes
 import InstMain from "../views/instructor/Main.vue";
 import InstHome from "../views/instructor/Home.vue";
-import InstAbout from "../views/instructor/About.vue";
 import InstProfile from "../views/instructor/Profile.vue";
 import HowToTeach from "../views/instructor/HowToTeach.vue";
 import InstCourses from "../views/instructor/courses/MyCourses.vue";
@@ -45,6 +39,8 @@ import Categories from "../views/admin/categories/Home.vue";
 import Courses from "../views/admin/courses/Home.vue";
 import Offers from "../views/admin/offers/Home.vue";
 import Users from "../views/admin/users/Home.vue";
+import UpdateUser from '../views/admin/users/UpdateUser.vue';
+import AddUser from '../views/admin/users/AddUser.vue';
 import AddCategory from "../views/admin/categories/AddCategory.vue";
 import AddSubCategory from "../views/admin/categories/AddSubCategory.vue";
 import UpdateCategory from "../views/admin/categories/EditCategory.vue";
@@ -52,9 +48,11 @@ import UpdateSubCategory from '../views/admin/categories/EditSubCategory.vue';
 import AdminCourseSummary from '../views/admin/courses/Summary.vue';
 import AdminCourseBuyers from '../views/admin/courses/Buyers.vue';
 import AdminCourseUpdate from '../views/admin/courses/UpdateCourse.vue';
-import UpdateUser from '../views/admin/users/UpdateUser.vue';
 import AddOffer from '../views/admin/offers/AddOffer.vue';
 import UpdateOffer from '../views/admin/offers/UpdateOffer.vue';
+
+// error page
+import error from '../views/error.vue'
 
 const routes = [
   {
@@ -66,11 +64,6 @@ const routes = [
         path: "",
         name: "home",
         component: Home,
-      },
-      {
-        path: "about",
-        name: "about",
-        component: About,
       },
       {
         path: "teach-on-udemy",
@@ -133,16 +126,6 @@ const routes = [
         component: AllCourses,
       },
       {
-        path: 'courses/category/:cname',
-        name: 'categoryWiseCourses',
-        component: CategoryWiseCourses,
-      },
-      {
-        path: 'courses/category/:cname/subcategory/:sname',
-        name: 'subCategoryWiseCourses',
-        component: SubCateWiseCourses
-      },
-      {
         path: "courses/:id",
         name: "courseInfo",
         component: CourseInfo,
@@ -159,11 +142,6 @@ const routes = [
         path: "",
         name: "instHome",
         component: InstHome,
-      },
-      {
-        path: "about",
-        name: "instAbout",
-        component: InstAbout,
       },
       {
         path: "profile",
@@ -300,9 +278,19 @@ const routes = [
         name: 'updateUser',
         component: UpdateUser,
         props: true
+      },
+      {
+        path: 'users/add-user',
+        name: 'addUserByAdmin',
+        component: AddUser
       }
     ]
-  }
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "error",
+    component: error
+  },
 ];
 
 
@@ -311,7 +299,7 @@ const router = createRouter({
   routes,
 });
 
-
+// router guard
 router.beforeEach((to,from,next)=>{
   if(to.matched.some(record=>record.meta.requiresAuth)){
     let token = store.state.user.token;

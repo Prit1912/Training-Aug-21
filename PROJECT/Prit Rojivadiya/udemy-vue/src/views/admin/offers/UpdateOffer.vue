@@ -86,6 +86,8 @@ export default {
               console.log(res.data);
               this.message = 'offer updated successfully'
               this.error = ''
+              this.$store.dispatch("courses/setUpdatedCourses", []);
+              this.$store.dispatch("courses/setAllCourses", []);
           }).catch((err)=>{
               console.log(err.response)
               this.error = err.response.data;

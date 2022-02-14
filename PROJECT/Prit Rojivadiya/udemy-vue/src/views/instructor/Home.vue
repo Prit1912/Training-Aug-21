@@ -46,8 +46,17 @@ export default {
     created(){
       userData.userInfo().then((res)=>{
         this.name = res.data.name
+        console.log('info')
+        console.log(this.name)
       })
-    }
+    },
+    // updated(){
+    //   userData.userInfo().then((res)=>{
+    //     this.name = res.data.name
+    //     console.log('info')
+    //     console.log(this.name)
+    //   })
+    // }
 }
 </script>
 

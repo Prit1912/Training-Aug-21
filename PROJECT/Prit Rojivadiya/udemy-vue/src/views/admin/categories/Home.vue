@@ -8,82 +8,125 @@
       </p>
       <p>
         <router-link :to="{ name: 'addSubCategory' }">
-          <i class="fas fa-arrow-circle-right"></i> Add Sub Category</router-link
+          <i class="fas fa-arrow-circle-right"></i> Add Sub
+          Category</router-link
         >
       </p>
     </div>
-    <hr>
-    
+    <hr />
+
     <h3>Categories</h3>
-    <table class="table table-bordered text-center" >
-      <thead>
-        <tr>
-          <th>Index</th>
-          <th>Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="category of categories" :key="category._id" >
-          <td>{{category._id}}</td>
-          <td>{{category.name}}</td>
-          <td><button class="btn btn-dark" @click="this.$router.push({name: 'updateCategory',params: {id:category._id}})" >Edit</button></td>
-        </tr>
-      </tbody>
-    </table>
-  <!-- <div v-for="category of categories" :key="category._id" >
-      {{category._id}} - {{category.name}} - <button class="btn btn-dark" @click="this.$router.push({name: 'updateCategory',params: {id:category._id}})" >Edit</button>
-  </div> -->
-  <br><hr>
-  <h3>Sub Categories</h3>
-  <br>
-  <table class="table table-bordered text-center" >
-    <thead>
-      <tr>
-        <th>Index</th>
-        <th>Subcategory</th>
-        <th>Category</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    
-      <tbody v-for="subcategory of subCategories" :key="subcategory._id" >
-        <tr v-for="s of subcategory" :key="s._id" >
-          <td>{{s._id}}</td>
-          <td>{{s.name}}</td>
-          <td>{{s.category.name}}</td>
-          <td><button class="btn btn-dark" @click="this.$router.push({name: 'updateSubCategory', params:{cId:s.category._id, sId: s._id}})" >Edit</button></td>
-        </tr>
-      </tbody>
-  </table>
-  <!-- <div v-for="subcategory of subCategories" :key="subcategory._id" >
-    <ul> {{subcategory[0].category.name}} </ul>
-      <div v-for="s of subcategory" :key="s._id" >
-         <li> {{s._id}} - {{s.name}} - <button class="btn btn-dark" @click="this.$router.push({name: 'updateSubCategory', params:{cId:s.category._id, sId: s._id}})" >Edit</button> </li>
+    <div class="row my-3">
+      <div class="col-sm-4">
+        <NormalSearch @query="searchCategory" />
       </div>
-  </div> -->
+    </div>
+    <div class="categoryTable">
+      <div class="table-responsive">
+        <table class="table table-bordered border-dark table-light border-light table-hover text-center">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="category of updatedCategories" :key="category._id">
+              <td>{{ category._id }}</td>
+              <td>{{ category.name }}</td>
+              <td>
+                <button
+                  class="btn btn-dark"
+                  @click="
+                    this.$router.push({
+                      name: 'updateCategory',
+                      params: { id: category._id },
+                    })
+                  "
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <br />
+    <hr />
+    <h3>Sub Categories</h3>
+    <div class="row my-3">
+      <div class="col-sm-4">
+        <NormalSearch @query="searchSubcategory" />
+      </div>
+    </div>
+    <div class="subcategoryTable">
+      <div class="table-responsive">
+        <table class="table table-bordered border-dark table-light border-light table-hover text-center">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Subcategory</th>
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody v-for="subcategory of updatedSubcategories" :key="subcategory._id">
+            <tr v-for="s of subcategory" :key="s._id">
+              <td>{{ s._id }}</td>
+              <td>{{ s.name }}</td>
+              <td>{{ s.category.name }}</td>
+              <td>
+                <button
+                  class="btn btn-dark"
+                  @click="
+                    this.$router.push({
+                      name: 'updateSubCategory',
+                      params: { cId: s.category._id, sId: s._id },
+                    })
+                  "
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import categoryData from "../../../services/category";
 import subCategoryData from "../../../services/subcategory";
+import NormalSearch from '../../../components/Search/NormalSearch.vue'
 export default {
   name: "categories",
   data() {
     return {
-      categories: "",
+      categories: [],
       subCategories: [],
+      updatedCategories: [],
+      updatedSubcategories: []
     };
+  },
+  components:{
+    NormalSearch
   },
   created() {
     categoryData.getAllCategories().then((res) => {
       this.categories = res.data;
+      this.updatedCategories = res.data;
       for (let category of this.categories) {
         subCategoryData
           .getAllSubCategories(category._id)
           .then((res) => {
             this.subCategories.push(res.data);
+            this.updatedSubcategories.push(res.data);
           })
           .catch((err) => {
             console.log(err.response);
@@ -91,6 +134,27 @@ export default {
       }
     });
   },
+  methods:{
+    searchCategory(str){
+      str = str.toLowerCase();
+      this.updatedCategories = this.categories.filter((category)=>{
+        return(
+          category.name.match(str)
+        )
+      })
+    },
+    searchSubcategory(str){
+      str = str.toLowerCase();
+      this.updatedSubcategories = this.subCategories.filter((subCategory)=>{
+        for(let s of subCategory){
+          return(
+            s.name.match(str) ||
+            s.category.name.match(str)
+          )
+        }
+      })
+    }
+  }
 };
 </script>
 
@@ -101,5 +165,15 @@ a {
 }
 a:hover {
   font-size: 30px;
+}
+
+.categoryTable {
+  height: 50vh;
+  overflow: auto;
+}
+
+.subcategoryTable {
+  height: 50vh;
+  overflow: auto;
 }
 </style>

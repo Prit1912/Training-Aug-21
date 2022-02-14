@@ -7,8 +7,8 @@ const courseRoute = require('./courses/courses.controller');
 const userRoute = require('./users/user.controller');
 const offerRoute = require('./offers/offer.controller');
 
-router.use([auth,permit(Role.admin)])
 router.use('/category',categoryController);
+router.use([auth,permit(Role.admin)])
 router.use('/courses',courseRoute);
 router.use('/users',userRoute);
 router.use('/offers',offerRoute);

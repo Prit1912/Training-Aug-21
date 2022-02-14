@@ -19,6 +19,7 @@ mongoose.connect(`mongodb://${host}/${database}`)
     .then(()=>{console.log('connected to mongodb')})
     .catch((err)=>{console.log(err)})
 
+
 // middlewares
 app.use(express.json());
 app.use(cors());

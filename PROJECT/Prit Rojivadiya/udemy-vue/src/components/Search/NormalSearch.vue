@@ -13,12 +13,10 @@ export default {
     name: 'searchbar',
     data(){
       return{
-        search: this.$store.state.courses.searchedString
+        search: ""
       }
     },
     updated(){
-      this.$store.dispatch('courses/setSearchedString', this.search)
-      // sending searchedString from child to parent component
       this.$emit('query',this.search)
     }
 }

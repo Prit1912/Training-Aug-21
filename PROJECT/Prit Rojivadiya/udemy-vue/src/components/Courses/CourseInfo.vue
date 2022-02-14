@@ -1,11 +1,13 @@
 <template>
   <div v-if="course" class="container my-5 text-center">
     <div class="imgContainer">
-      <img :src="course.courseImage.url" class="img-fluid border border-5" />
+      <img :src="course.courseImage.url" class="img-fluid courseImage border border-5" />
     </div>
-    <div class="content w-75 ms-auto me-auto">
+    <div class="content w-75 ms-auto me-auto p-3">
       <h3 class="mt-5">{{ course.name }}</h3>
-      <p>{{ course.description }}</p>
+      <div class="text-center">
+        <p>{{ course.description }}</p>
+      </div>
       <p><b> Instructor </b>: {{ course.instructor.name }}</p>
       <p v-if="course.price"><b> Price </b>: ₹{{ course.price }}</p>
       <p v-else>Price: Free</p>
@@ -41,18 +43,28 @@
       </div>
       </div>
     </div>
+  <div v-if="comp != 'instructor'" >
+  <h3 class="mt-5" style="color: blueviolet" >Reviews</h3>
+  <hr>
+  <Reviews :courseId="courseId" />
   </div>
+  </div>
+
 </template>
 
 <script>
 import cartData from "../../services/cart";
 import wishlistData from "../../services/wishlist";
 import courseData from "../../services/courses";
+import Reviews from "../../components/Instructor/Reviews.vue"
 export default {
   name: "courseInfo",
   props: {
     courseId: Number,
     comp: String
+  },
+  components:{
+    Reviews
   },
   data() {
     return {
@@ -63,10 +75,13 @@ export default {
     };
   },
   created() {
+
+    // set first video url link to video tag on page created
      courseData.getInstructorCourseById(this.courseId).then((res) => {
       this.videoUrl = res.data.videos[0].url;
     });
 
+    // get course by id
     courseData.getCourseById(this.courseId).then((res) => {
       console.log(res);
       this.course = res.data;
@@ -93,6 +108,8 @@ export default {
     })
   },
   methods: {
+
+    // add course to cart
     addToCart(id) {
       courseData
         .addCourseToCart(id)
@@ -105,6 +122,8 @@ export default {
           this.$router.push({ name: "login" });
         });
     },
+
+    // add course to wishlist
     addToWishlist(id) {
       courseData
         .addCourseToWishlist(id)
@@ -117,6 +136,8 @@ export default {
           this.$router.push({ name: "login" });
         });
     },
+
+    // play next video 
      nextVideo(video, index){
       this.videoUrl = video.url; 
       this.clicked = index;
@@ -126,13 +147,26 @@ export default {
 </script>
 
 <style scoped>
-.imgContainer {
+/* .imgContainer {
   position: relative;
   top: 45px;
-}
+} */
 .content {
   border: 2px solid blueviolet;
+  position: relative;
+  z-index: 0;
+  animation: moveUp 2s forwards;
 }
+
+@keyframes moveUp {
+  from{
+    top: 500px;
+  }
+  to{
+    top: 0px;
+  }
+}
+
 video {
   width: 100%;
 }
@@ -145,5 +179,24 @@ video {
 }
 .videolink:hover {
   color: blueviolet;
+}
+
+.imgContainer{
+ position:relative;
+ top: 45px;
+ z-index: 1;
+ animation:animate 2s forwards;
+ transition: all 0.4s ease-in;
+}
+
+@keyframes animate{
+  from{
+  top:-100px;
+  transform: rotateX(0deg);
+  } 
+  to{
+  top:45px;
+  transform: rotateX(360deg);
+  }
 }
 </style>

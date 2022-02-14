@@ -60,22 +60,23 @@ router.use('/inst-courses',instCoursesrouter)
 router.get('/',courseController.get)
 
 // get categorywise course
-router.get('/:cId', courseController.getById)
+router.get('/category/:cId', courseController.getById)
 
 // sort by name / price / pouplarity
-router.get('/:cId/sort', courseController.sortBy)
+router.get('/category/:cId/sort', courseController.sortBy)
 
 // filter by price
-router.get('/:cId/filter',courseController.filter)
+router.get('/category/:cId/filter',courseController.filter)
 
 // get subcategorywise courses
-router.get('/:cId/:sId', courseController.getBySubId)
+router.get('/category/:cId/subcategory/:sId', courseController.getBySubId)
 
 // sorting in subcategory of courses
-router.get('/:cId/:sId/sort', courseController.sortBySub)
+router.get('/category/:cId/subcategory/:sId/sort', courseController.sortBySub)
 
 // get one course
-router.get('/:cId/:sId/:courseId', courseController.getByCourseId)
+// router.get('/:cId/:sId/:courseId', courseController.getByCourseId)
+router.get('/:courseId', courseController.getByCourseId)
 
 // add to wishlist
 router.post('/:courseId/addtowishlist', [auth, permit(role.user)], courseController.addToWishlist);

@@ -45,11 +45,6 @@
     </div>
   </div>
 
-
-  <!-- <form>
-      <input type="text" v-model="password" placeholder="Enter new password"><br>
-      <button type="button" @click="reset" >Resest</button>
-  </form> -->
 </template>
 
 <script>

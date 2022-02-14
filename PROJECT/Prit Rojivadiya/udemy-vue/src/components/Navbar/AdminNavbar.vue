@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import '../../assets/css/style.css'
 export default {
   name: "navbar",
   methods: {
@@ -91,53 +92,5 @@ export default {
 </script>
 
 <style>
-.logo {
-  width: 100px;
-}
 
-.router-link-exact-active {
-  color: blueviolet;
-  font-weight: bold;
-}
-
-nav {
-  box-shadow: 0px 3px 5px rgb(211, 210, 210);
-  position: sticky !important;
-  top: 0px;
-  z-index: 1;
-  line-height: 6vh;
-}
-a {
-  color: black;
-  text-decoration: none;
-  font-size: 1.1rem;
-}
-li {
-  padding: 5px;
-}
-.logo {
-  animation: rotate 3.5s linear infinite;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(20deg);
-  }
-
-  50% {
-    transform: rotate(0deg);
-  }
-
-  75% {
-    transform: rotate(-20deg);
-  }
-
-  100% {
-    transform: rotate(0deg);
-  }
-}
 </style>

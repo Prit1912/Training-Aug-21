@@ -48,13 +48,7 @@
       </div>
     </div>
   </div>
-
-<!-- <form @submit="sendMail">
-  <input type="email" v-model="email" required>
-  <br>
-  <button >Send mail</button>
-  </form>
-  {{error}} -->
+  
 </template>
 
 <script>
@@ -94,6 +88,7 @@ export default {
         }
     },
     methods:{
+      // send mail with token to reset password
         sendMail(user){
             userData.forgotPassword(user).then((res)=>{
                 console.log(res.data);

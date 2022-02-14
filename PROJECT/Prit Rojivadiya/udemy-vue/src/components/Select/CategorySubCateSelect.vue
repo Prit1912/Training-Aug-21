@@ -25,7 +25,6 @@
   </select>
   </div>
 </div>
-
 </template>
 
 <script>
@@ -50,6 +49,8 @@ export default {
         subCategoryData.getAllSubCategories(this.cId).then((res)=>{
               this.subcategories = res.data
               console.log(this.subcategories)
+        }).catch((err)=>{
+          console.log(err.response)
         })
     },
     methods:{

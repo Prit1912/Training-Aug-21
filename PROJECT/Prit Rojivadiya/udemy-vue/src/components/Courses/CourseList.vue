@@ -10,53 +10,60 @@
           />
           <div class="card-body">
             <h5 class="card-title">{{ i.name }}</h5>
-            <p v-if="i.offerPrice"> Offer Price: <span class="text-decoration-line-through" >₹{{i.price}}</span> ₹{{i.offerPrice}}</p>
+            <p v-if="i.offerPrice">
+              Offer Price:
+              <span class="text-decoration-line-through">₹{{ i.price }}</span>
+              ₹{{ i.offerPrice }}
+            </p>
             <p v-else-if="i.price">Price : ₹{{ i.price }}</p>
             <p v-else>Price : Free</p>
             <p>Rating : {{ i.rating }}/5</p>
             <span v-if="comp == 'wishlist'">
-          <button class="btn btn-dark me-2 mb-2" :disabled="cartItems.includes(i._id)" @click="addToCart(i._id)">Add to cart</button>
-          <button class="btn btn-outline-dark me-2 mb-2" @click="removeFromWishlist(i._id)">Remove</button>
-        </span>
-        <button v-if="comp == 'cart'" class="btn btn-outline-dark me-2 mb-2" @click="removeFromCart(i._id)">
-          Remove
-        </button>
-        <button v-if="(comp == 'myCourses')" class="btn btn-dark me-2 mb-2" @click="this.$router.push({name: 'enrolledCourse', params: {id: i._id}})">View Course</button>
-        <button v-else class="btn btn-dark me-2 mb-2" @click="viewCourse(i._id)">View Course</button>
+              <button
+                class="btn btn-dark me-2 mb-2"
+                :disabled="cartItems.includes(i._id)"
+                @click="addToCart(i._id)"
+              >
+                Add to cart
+              </button>
+              <button
+                class="btn btn-outline-dark me-2 mb-2"
+                @click="removeFromWishlist(i._id)"
+              >
+                Remove
+              </button>
+            </span>
+            <button
+              v-if="comp == 'cart'"
+              class="btn btn-outline-dark me-2 mb-2"
+              @click="removeFromCart(i._id)"
+            >
+              Remove
+            </button>
+            <button
+              v-if="comp == 'myCourses'"
+              class="btn btn-dark me-2 mb-2"
+              @click="
+                this.$router.push({
+                  name: 'enrolledCourse',
+                  params: { id: i._id },
+                })
+              "
+            >
+              View Course
+            </button>
+            <button
+              v-else
+              class="btn btn-dark me-2 mb-2"
+              @click="viewCourse(i._id)"
+            >
+              View Course
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- <div v-for="i in item" :key="i._id">
-     <div
-      class="d-flex flex-column flex-sm-row align-items-center main-container my-2"
-    >
-      <div class="flex-shrink-0 ">
-        <img
-          :src="i.courseImage.url"
-          class="img img-fluid courseImage"
-          alt="..."
-        />
-      </div>
-      <div class="flex-grow-1 ms-3 ps-2 content-container">
-        <h4 class="text-justify">{{ i.name }}</h4>
-        <p v-if="i.price" >Price : ₹{{ i.price }}</p>
-        <p v-else>Price : Free</p>
-        <p>Rating : {{ i.rating }}/5</p>
-        <span v-if="comp == 'wishlist'">
-          <button class="btn btn-dark me-2 mb-2" @click="addToCart(i._id)">Add to cart</button>
-          <button class="btn btn-outline-dark me-2 mb-2" @click="removeFromWishlist(i._id)">Remove</button>
-        </span>
-        <button v-if="comp == 'cart'" class="btn btn-outline-dark me-2 mb-2" @click="removeFromCart(i._id)">
-          Remove
-        </button>
-        <button v-if="(comp == 'myCourses')" class="btn btn-primary me-2 mb-2" @click="this.$router.push({name: 'enrolledCourse', params: {id: i._id}})">View Course</button>
-        <button v-else class="btn btn-dark me-2 mb-2" @click="viewCourse(i._id)">View Course</button>
-      </div>
-    </div> 
-  </div> -->
 </template>
 
 <script>
@@ -67,20 +74,25 @@ export default {
   props: ["item", "comp"],
   data() {
     return {
-      cartItems: []
+      cartItems: [],
     };
   },
-  created(){
-    cartData.getCartItems().then((res)=>{
-      let courses = res.data.courses;
-      for(let course of courses){
-        this.cartItems.push(course._id);
-      }
-    }).catch((err)=>{
-      console.log(err.response);
-    })
+  created() {
+    // get cart items
+    cartData
+      .getCartItems()
+      .then((res) => {
+        let courses = res.data.courses;
+        for (let course of courses) {
+          this.cartItems.push(course._id);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   },
   methods: {
+    // remove item from wishlist
     removeFromWishlist(id) {
       wishlistData
         .removeFromWishlist(id)
@@ -91,6 +103,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // add to cart
     addToCart(id) {
       wishlistData
         .wishlistToCart(id)
@@ -102,6 +116,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // remove item from cart
     removeFromCart(id) {
       cartData
         .removeCartItem(id)
@@ -113,6 +129,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // view course information
     viewCourse(id) {
       this.$router.push({ name: "courseInfo", params: { id: id } });
     },
@@ -120,17 +138,17 @@ export default {
 };
 </script>
 
-<style scoped >
-.card{
+<style scoped>
+.card {
   border: 1px solid blueviolet;
   height: 450px;
 }
-.card:hover{
+.card:hover {
   border: 2px solid black;
   box-shadow: 3px 3px 15px black;
 }
 
-.card-body{
+.card-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -152,5 +170,41 @@ export default {
 
 .Newcourses {
   overflow-x: auto;
+  padding-bottom: 20px;
+}
+
+::-webkit-scrollbar {
+  background-color: rgba(255, 255, 255, 1);
+}
+::-webkit-scrollbar-thumb {
+  background-color: blueviolet;
+  border-radius: 20px;
+}
+
+/* Buttons */
+::-webkit-scrollbar-button:single-button {
+  background-color: blueviolet;
+  display: block;
+  height: 13px;
+  width: 16px;
+}
+
+/* Up */
+::-webkit-scrollbar-button:single-button:horizontal:decrement {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+::-webkit-scrollbar-button:single-button:horizontal:decrement:hover {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+/* right */
+::-webkit-scrollbar-button:single-button:horizontal:increment {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+::-webkit-scrollbar-button:horizontal:single-button:increment:hover {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 </style>

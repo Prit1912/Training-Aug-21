@@ -25,7 +25,7 @@
                 v-model="user.email"
               />
             </div>
-          <span class="error"> {{ errorEmail }} </span>
+            <span class="error"> {{ errorEmail }} </span>
           </div>
           <div class="col-12">
             <label class="visually-hidden" for="password">Password</label>
@@ -49,7 +49,7 @@
               />
               <!-- <div class="input-group-text"> -->
               <button
-              type="button"
+                type="button"
                 class="btn btn-sm btn-light border border-2"
                 @click="showPassword = !showPassword"
               >
@@ -63,7 +63,7 @@
               </button>
               <!-- </div> -->
             </div>
-<p class="error">{{ errorPassword }}</p>
+            <p class="error">{{ errorPassword }}</p>
           </div>
           <div class="col-12">
             <button
@@ -92,32 +92,15 @@
               <router-link :to="{ name: 'signup' }">Sign up</router-link>
             </p>
           </div>
-
-          <!-- <div class="col-12 text-center">
-            <p class="text-center"><b> Other login options </b></p>
-            <div class="row">
-              <div class="col-4"><i class="fab fa-facebook fa-2x"></i></div>
-              <div class="col-4"><i class="fab fa-google fa-2x"></i></div>
-              <div class="col-4"><i class="fab fa-apple fa-2x"></i></div>
-            </div>
-          </div> -->
         </form>
       </div>
     </div>
   </div>
-  <!-- <br />
-  <input type="text" v-model="email" />
-  <br />
-  <input type="text" v-model="password" />
-  <br />
-  <button @click="login">Login</button>
-  <br />
-  {{ error }}
-  <router-link :to="{ name: 'forgotPassword' }">forgot password?</router-link> -->
+  
 </template>
 
 <script>
-import '../../assets/css/style.css'
+import "../../assets/css/style.css";
 import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
 import userData from "../../services/users";
@@ -133,7 +116,10 @@ export default {
         .string()
         .email("must be a valid email")
         .required("Email is required"),
-      password: yup.string().min(4, "minimum 4 character required").required('Password is required'),
+      password: yup
+        .string()
+        .min(4, "minimum 4 character required")
+        .required("Password is required"),
     });
 
     const { handleSubmit } = useForm({
@@ -162,19 +148,21 @@ export default {
     };
   },
   methods: {
+    // login method
     login(user) {
       userData
         .userLogin(user)
         .then((res) => {
           if (res.status == 200) {
-            setTimeout(()=>{
-              this.$store.dispatch('user/logout')
-              this.$router.push({name: 'login'})
-            }, 604800000)
+            // autologout function
+            setTimeout(() => {
+              this.$store.dispatch("user/logout");
+              this.$router.push({ name: "login" });
+            }, 604800000);
             this.error = "";
             this.$store.dispatch("user/setToken", res.data.token);
             this.$store.dispatch("user/setUser", res.data.user);
-            console.log(this.$store.state.user)
+            console.log(this.$store.state.user);
             if (res.data.user.role == "user") {
               this.$router.push("/");
             } else if (res.data.user.role == "instructor") {
@@ -192,6 +180,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped >
 
 </style>

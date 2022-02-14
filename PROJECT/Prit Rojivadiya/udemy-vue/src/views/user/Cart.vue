@@ -1,75 +1,22 @@
 <template>
   <div class="container my-5">
     <p class="display-6" style="color: blueviolet">Cart</p>
-    <div v-if="items.length == 0">
-      <h1>cart is empty</h1>
+    <div v-if="error || items.length == 0">
+      <h1>Cart is Empty</h1>
     </div>
-    <div v-else>
+    <div v-if="items.length != 0">
       <CourseList v-bind:item="items" comp="cart" />
-      <h4 class="my-3" v-if="amount">Total : {{ amount }}</h4>
+      <h4 class="my-3" v-if="amount">Total : ₹{{ amount }}</h4>
       <button class="btn btn-warning" @click="purchase">Buy</button>
     </div>
-    <!-- <div class="row my-5">
-      <div class="col-md-4 offset-md-4">
-        <div class="card">
-          <div class="card-body">
-            <form  @submit="purchase">
-              <div class="form-group">
-                <label for="">Name: </label>
-                <input v-model="name" class="form-control" type="text" name="name">
-              </div>
-              <div class="form-group">
-                <label for="">Email: </label>
-                <input v-model="email" class="form-control" type="text" name="email">
-              </div>
-              <div class="form-group">
-                <label for="">Phone: </label>
-                <input v-model="phone" class="form-control" type="text" name="phone">
-              </div>
-                <div class="form-group">
-                <label for="">Amount: </label>
-                <input class="form-control" disabled v-model="amount" type="text" name="amount">
-              </div>
-              <div class="form-group">
-                <button class="btn form-control btn-primary">Pay Now</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-// import $ from "jquery";
 import paymentData from "../../services/payment";
 import CourseList from "../../components/Courses/CourseList.vue";
 import cartData from "../../services/cart";
-
-// var orderId ;
-// $(document).ready(function(){
-//     var settings = {
-//   "url": "/api/payment",
-//   "method": "POST",
-//   "timeout": 0,
-//   "headers": {
-//     "Content-Type": "application/json"
-//   },
-//   "data": JSON.stringify({
-//     "amount": 5000
-//   }),
-// };
-
-// //creates new orderId everytime
-// $.ajax(settings).done(function (response) {
-
-//   orderId=response.orderId;
-//   console.log(orderId);
-//   $("button").show();
-// });
-// });
-
+import router from '../../routes/index'
 export default {
   name: "cart",
   components: {
@@ -77,17 +24,21 @@ export default {
   },
   data() {
     return {
-      items: [],
+      items: "",
       amount: 0,
       name: "",
       email: "",
       phone: "",
+      error: ""
     };
   },
   created() {
+
+    // get all cart items
     cartData.getCartItems().then((res) => {
       console.log(res.data);
       this.items = res.data.courses;
+      this.error = ""
       for (let c of this.items) {
         if (c.price) {
           if(c.offerPrice){
@@ -98,9 +49,15 @@ export default {
           }
         }
       }
-    });
+    }).catch((err)=>{
+      console.log(err.response.data)
+      this.error = err.response.data;
+    })
   },
+
   methods: {
+    
+    // load script for payment
     async loadScript(src) {
       return new Promise((resolve) => {
         const script = document.createElement("script");
@@ -119,14 +76,16 @@ export default {
         document.body.appendChild(script);
       });
     },
-    async purchase() {
 
+    // purchase course
+    async purchase() {
       if(this.amount == 0){
         cartData
         .purchaseCourse()
             .then((res) => {
               console.log(res.data);
               this.items = [];
+               router.push({name:'myCourses'})
               return;
             })
             .catch((err) => {
@@ -143,10 +102,6 @@ export default {
         return;
       }
 
-      // const data = await fetch("http://localhost:8000/api/payment", {
-      //   method: "POST",
-      // }).then((t) => t.json());
-
       let paymentObj = {
         amount: this.amount * 100,
       };
@@ -159,19 +114,21 @@ export default {
         currency: data.data.currency,
         amount: data.data.amount.toString(),
         order_id: data.data.id,
-        name: "Donation",
-        description: "Thank you for nothing. Please give us some money",
+        name: "Purchase Courses",
+        description: "Do not refress the page untill payment is done",
         handler: function (response) {
           alert(response.razorpay_payment_id);
           alert(response.razorpay_order_id);
           alert(response.razorpay_signature);
           alert("Transaction successful");
+
+          // if transaction is successfull items are removed from cart
           cartData
             .purchaseCourse()
             .then((res) => {
               console.log(res.data);
               this.items = [];
-              this.$router.go();
+              router.push({name:'myCourses'})
             })
             .catch((err) => {
               console.log(err.response);
@@ -185,6 +142,7 @@ export default {
       };
       const paymentObject = new window.Razorpay(options);
       console.log(paymentObject);
+      // opet razorpay payment window
       paymentObject.open();
     },
   },

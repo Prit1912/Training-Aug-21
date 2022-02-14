@@ -5,8 +5,8 @@ class WishlisitDomain{
 
     // get wishlist items
     async getWishlistItems(req,res){
-        const items = await wishlistItems.find({user: req.user._id});
-        if(items[0].courses.length == 0){
+        const items = await wishlistItems.find({user: req.user._id}).populate('courses');
+        if(items.length == 0){
             return res.status(500).send('your wishlist is empty')
         }
         res.send(items);
@@ -14,7 +14,7 @@ class WishlisitDomain{
 
     // get wishlist item by id
     async getWishlistItemById(req,res){
-        const item = await wishlistItems.findOne({user: req.user._id}).select('courses').populate('courses');
+        const item = await wishlistItems.findOne({user: req.user._id}).select('courses').populate('courses','-videos -resources');
         if(!item){
             return res.send('your wishlist is empty')
         }
@@ -29,7 +29,7 @@ class WishlisitDomain{
     async removeFromWishlist(req,res){
         const item = await wishlistItems.findOneAndUpdate({user: req.user._id},{
             $pull: {courses: req.params.id}
-        },{new:true})
+        },{new:true}).select('courses')
         // if(!item.courses.includes(req.params.id)){
         //     return res.send('course not in your wishlist')
         // }
@@ -57,6 +57,7 @@ class WishlisitDomain{
                 res.send(err);
             }
         }else{
+            console.log('called')
             try{
                 const item = await cartitems.findOneAndUpdate({user: req.user._id},{
                     $addToSet: {courses: req.params.id}

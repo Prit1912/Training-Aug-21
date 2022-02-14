@@ -10,7 +10,7 @@ const courseSchema = new mongoose.Schema(({
         type: String,
         required: true,
         minlength: 2,
-        maxlength: 50
+        maxlength: 100
     },
     description: {
         type: String,
@@ -73,7 +73,10 @@ function validateCourse(course){
         category: Joi.number().required(),
         subcategory: Joi.number(),
         isPaid: Joi.string().required(),
-        price: Joi.number()
+        price: Joi.number(),
+        image: Joi.string(),
+        resources: Joi.string(),
+        videos: Joi.string()
     })
     return schema.validate(course);
 }

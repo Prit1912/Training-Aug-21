@@ -147,8 +147,9 @@ export default {
         }
     },
     created (){
+
+      // get user information
         userData.userInfo().then((res)=>{
-            // this.profile = res.data;
             console.log(res.data)
             this.profile.name = res.data.name
             this.profile.email = res.data.email

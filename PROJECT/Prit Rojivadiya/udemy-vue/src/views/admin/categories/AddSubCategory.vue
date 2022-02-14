@@ -8,8 +8,12 @@
       Sub category : <input type="text" v-model="subcategory" /> <br /><br />
       <button @click="addSubCategory" class="btn btn-dark">Add</button>
     </form>
-    {{error}}
-    {{message}}
+    <div v-if="message" class="alert alert-success col-sm-4" role="alert">
+      {{ message }}
+    </div>
+    <div v-if="error" class="alert alert-danger col-sm-4" role="alert">
+      {{ error }}
+    </div>
   </div>
 </template>
 

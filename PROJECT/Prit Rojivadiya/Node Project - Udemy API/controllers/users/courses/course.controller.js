@@ -16,6 +16,11 @@ class courseController{
         courseDomain.getEnrolledCourseById(req,res);
     }
 
+    static async update(req,res){
+        const courseDomain = new CourseDomain();
+        courseDomain.updateProgress(req,res);
+    }
+
     static async rate(req,res){
         const courseDomain = new CourseDomain();
         courseDomain.rateCourse(req,res);
@@ -29,6 +34,9 @@ router.get('/',courseController.get);
 
 // get course by id
 router.get('/:id',courseController.getById);
+
+// update course video progress 
+router.put('/:id',courseController.update)
 
 // rate course
 router.post('/:id/review',courseController.rate);

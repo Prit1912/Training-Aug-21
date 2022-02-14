@@ -4,9 +4,19 @@ class SubcategoryDomain{
 
     // get all subcategories
     async getSubCategory(req,res){
-        const allSubCategories = await subcategories.find({category: req.params.cId});
+        if(req.params.cId == 'null'){
+            return;
+        }
+        const allSubCategories = await subcategories.find({category: req.params.cId}).populate('category');
         if(allSubCategories.length == 0) return res.status(404).send('There are no sub categories added yet');
         res.send(allSubCategories);
+    }
+
+    // get subcategory info by name
+    async getSubCateInfo(req,res){
+        const subCate = await subcategories.findOne({name: req.params.sname});
+        if(!subCate) return res.status(404).send('not subcategory found');
+        res.send(subCate);
     }
 
     // get category by id
@@ -29,7 +39,7 @@ class SubcategoryDomain{
         // validation
         let {error} = validateSubCategory(req.body);
         if(error){
-            return res.send(error.details[0].message);
+            return res.status(500).send(error.details[0].message);
         }
 
         // checking that subcategory name already exists or not

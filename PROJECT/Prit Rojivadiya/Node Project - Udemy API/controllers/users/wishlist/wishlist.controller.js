@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const WishlisitDomain = require('../../../domains/wishlist.domain');
-const {auth,permit} = require('../../../middleware/auth.middleware')
-const role = require('../../../config/roles')
+const {auth,permit} = require('../../../middleware/auth.middleware');
+const role = require('../../../config/roles');
 
 class WishlistController{
 

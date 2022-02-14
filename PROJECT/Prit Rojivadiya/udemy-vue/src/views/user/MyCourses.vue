@@ -21,10 +21,13 @@ export default {
     components: {
       CourseList
     },
-    mounted(){
+    created(){
+      // get list of enrolled courses
       courseData.getEnrolledCourses().then((res)=>{
         console.log(res.data[0].courses);
         this.items = res.data[0].courses
+      }).catch((err)=>{
+        console.log(err.response.data)
       })
     }
 }

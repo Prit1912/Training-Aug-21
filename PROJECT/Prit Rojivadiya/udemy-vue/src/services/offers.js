@@ -2,6 +2,8 @@ import http from '../http-common'
 import store from '../store/index';
 
 class offerServices{
+    
+    // get all offers
     getAllOffers(){
         return http.get("api/admin/offers",{
             headers:{
@@ -10,6 +12,7 @@ class offerServices{
         });
     }
 
+    // get offer by id
     getOfferById(id){
         return http.get(`api/admin/offers/${id}`,{
             headers:{
@@ -18,6 +21,7 @@ class offerServices{
         })
     }
 
+    // update offer by id
     updateOffer(id,offer){
         return http.put(`api/admin/offers/${id}`,offer,{
             headers:{
@@ -26,6 +30,7 @@ class offerServices{
         })
     }
 
+    // delete offer
     deleteOffer(id){
         return http.delete(`api/admin/offers/${id}/delete`,{
             headers:{
@@ -34,6 +39,7 @@ class offerServices{
         })
     }
 
+    // add offer
     addOffer(offer){
         return http.post('api/admin/offers',offer,{
             headers:{
@@ -42,6 +48,7 @@ class offerServices{
         })
     }
 
+    // make offer live
     goLive(id){
         return http.put(`api/admin/offers/${id}/golive`,{
             headers:{
@@ -50,6 +57,7 @@ class offerServices{
         })
     }
 
+    // remove offer
     removeOffer(id){
         return http.put(`api/admin/offers/${id}/remove`,{
             headers:{

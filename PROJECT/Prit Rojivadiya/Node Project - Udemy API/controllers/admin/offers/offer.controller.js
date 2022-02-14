@@ -39,6 +39,11 @@ class offerController{
         offerDomain.removeOffer(req,res);
     }
 
+    static async deleteById(req,res){
+        const offerDomain = new OfferDomain();
+        offerDomain.deleteOffer(req,res);
+    }
+
 }
 
 // see all offers
@@ -60,7 +65,10 @@ router.put('/:id/golive', offerController.goLive);
 router.put('/:id', offerController.update);
 
 // remove offer
-router.delete('/:id', offerController.remove);
+router.put('/:id/remove', offerController.remove);
+
+// delete offer
+router.delete('/:id/delete', offerController.deleteById)
 
 
 module.exports = router

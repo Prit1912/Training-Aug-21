@@ -15,7 +15,7 @@ class UserDomain{
         if(error) return res.status(500).send(error.details[0].message)
     
         const usr = await users.findOne({email: c.email})
-        if(usr) return res.status(400).send('user already registered')
+        if(usr) return res.status(400).send('email already registered')
     
         const allUser = await users.find().sort({_id:-1});
         let id;
@@ -54,12 +54,10 @@ class UserDomain{
     async signinUser(req,res){
         const c = req.body
         console.log(c)
-        const { error } = validateUser(c);
-        if(error) return res.status(400).send(error.details[0].message)
-    
+
         const user = await users.findOne({email: c.email})
         if(!user) return res.status(400).send('invalid user or password')
-    
+        
         if(user.isActive == false){
             return res.status(403).send('acount cannot be accessed')
         }
@@ -74,7 +72,8 @@ class UserDomain{
         console.log(token)
         res.json({
             token,
-            user
+            user,
+            expiresIn: "7d"
         });
     }
 
@@ -94,20 +93,20 @@ class UserDomain{
         if(!user) return res.status(404).send('user not found');
     
         const token = jwt.sign({email: userEmail},config.secretKey,{expiresIn: "15m"})
-        const link = `http://localhost:8000/api/users/reset-password/${token}`;
+        const link = `http://${process.env.Host}:${process.env.Port}/reset-password/${token}`;
     
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
               user: 'pritrojivadiya@gmail.com',
-              pass: xxxxxxxx
+              pass: 'cywhubqmgvodibji'
             }
           });
           
           var mailOptions = {
             from: 'pritrojivadiya@gmail.com',
+            // to: 'dilipkumavat1807@gmail.com',
             to: userEmail,
-            // to: 'manrojivadiya@gmail.com',
             subject: 'Sending Email using Node.js',
             html: `<a href = ${link}>Click here to reset password</a>`
           };
@@ -127,10 +126,13 @@ class UserDomain{
     // reset password
     async resetUserPassword(req,res){
         const token = req.params.token;
+        console.log(req.params)
+        console.log(req.body)
         try{
         const decoded = jwt.verify(token,config.secretKey);
         req.user = decoded;
         }catch(err){
+            console.log(err)
             return res.send(err)
         }
         
@@ -232,8 +234,8 @@ class UserDomain{
     // edit user
     async editUser(req,res){
 
-        const { error } = validateUser(req.body);
-        if(error) return res.status(500).send(error.details[0].message)
+        // const { error } = validateUser(req.body);
+        // if(error) return res.status(500).send(error.details[0].message)
 
         const id = req.params.id;
         const datas = await users.find();
@@ -245,12 +247,14 @@ class UserDomain{
 
         try{
             const user = await users.findByIdAndUpdate(id, {
-                $set: {
-                    name: req.body.name,
-                    email: req.body.email,
-                    phone: req.body.phone,
-                    isActive: req.body.isActive
-                }
+                $set: req.body
+                    // {
+                    // name: req.body.name,
+                    // email: req.body.email,
+                    // phone: req.body.phone,
+                    // isActive: req.body.isActive,
+                    // role: req.body.role
+                    // }
             },{new: true})
             res.send(user);
         }catch(e){

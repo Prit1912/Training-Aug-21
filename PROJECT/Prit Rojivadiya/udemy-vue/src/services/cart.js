@@ -1,8 +1,9 @@
 import http from '../http-common'
 import store from '../store/index';
-// console.log(store.state)
 
 class cartServices{
+
+    // get all cart items
     getCartItems(){
         return http.get("api/user/cart",{
             headers:{
@@ -11,6 +12,7 @@ class cartServices{
         });
     }
 
+    // remove course from cart
     removeCartItem(id){
         return http.delete(`api/user/cart/${id}`,{
             headers:{
@@ -19,6 +21,7 @@ class cartServices{
         })
     }
 
+    // purchase course
     purchaseCourse(){
         return http.post(`api/user/cart/buy`,{
             headers:{

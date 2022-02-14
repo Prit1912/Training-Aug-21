@@ -2,6 +2,8 @@ import http from '../http-common'
 import store from '../store/index';
 
 class subcategoryService{
+
+    // get all subcategory
     getAllSubCategories(id){
         return http.get(`api/admin/category/${id}/subcategory`,{
             headers:{
@@ -10,6 +12,7 @@ class subcategoryService{
         })
     }
 
+    // get subcategory by id
     getSubCategoryById(cId,sId){
         return http.get(`api/admin/category/${cId}/subcategory/${sId}`,{
             headers:{
@@ -18,6 +21,7 @@ class subcategoryService{
         })
     }
 
+    // update subcategory by id
     updateSubCategoryById(cId,sId,name){
         return http.put(`api/admin/category/${cId}/subcategory/${sId}`,name,{
             headers:{
@@ -26,10 +30,12 @@ class subcategoryService{
         })
     }
 
+    // get subcategory information by name
     getSubCateInfoByName(sname){
         return http.get(`api/admin/category/:cId/subcategory/name/${sname}`)
     }
 
+    // add subcategory
     addSubCategory(cId,subCategory){
         return http.post(`api/admin/category/${cId}/subcategory`,subCategory,{
             headers:{

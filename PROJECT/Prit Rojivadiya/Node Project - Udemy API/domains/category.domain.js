@@ -9,6 +9,14 @@ class CategoryDomain{
         res.send(allCategories);
     }
 
+    // get category id by its name
+    async getCategoryIdFromName(req,res){
+        let name = req.params.cname;
+        let category = await categories.findOne({name: name});
+        if(!category) return res.status(404).send('not such category available')
+        res.send(category);
+    }
+
     // get category by id
     async getCategory(req,res){
         const category = await categories.findById(req.params.id);
@@ -19,6 +27,7 @@ class CategoryDomain{
 
     // add category
     async addCategory(req,res){
+        console.log(req.body)
         const ct = await categories.find().sort({_id:-1});
         let id;
         if(ct.length == 0){

@@ -21,12 +21,18 @@ export const user = {
         }
       },
       actions: {
+
+        // set token
         setToken ({commit}, token) {
           commit('setToken', token)
         },
+
+        // set user 
         setUser ({commit}, user) {
           commit('setUser', user)
         },
+
+        // logout
         logout({commit, dispatch}){
           dispatch('courses/setUpdatedCourses',[],{root: true})
           dispatch('courses/setSearchedCourses',[],{root: true})
@@ -34,6 +40,7 @@ export const user = {
           dispatch('courses/setCategoryId',null,{root: true})
           dispatch('courses/setSubCategoryId',null,{root: true})
           dispatch('courses/setSearchedString',null,{root: true})
+          dispatch('courses/setSelectedFilter',"all",{root: true})
           commit('logout')
         }
       }

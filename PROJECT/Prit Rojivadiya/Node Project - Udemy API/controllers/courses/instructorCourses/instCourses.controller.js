@@ -37,7 +37,8 @@ var storage = multer.diskStorage({
             cb('image file type is invalid',false)
         }
       } else if (file.fieldname == "resources") {
-        if (file.mimetype === "application/zip") {
+        if (file.mimetype === "application/x-zip-compressed") {
+        // if (file.mimetype === "application/zip") {
           filetype = "zip";
           cb(null, Date.now() + "." + filetype);
         } else {
@@ -86,9 +87,27 @@ class courseController{
       const courseDomain = new CourseDomain();
       courseDomain.seeCourseReview(req,res);
     }
+
+    static async changeImage(req,res){
+      const courseDomain = new CourseDomain();
+      courseDomain.changeCourseImage(req,res);
+    }
+
+    static async changeResources(req,res){
+      const courseDomain = new CourseDomain();
+      courseDomain.changeCourseResources(req,res);
+    }
+
+    static async changeVideos(req,res){
+      const courseDomain = new CourseDomain();
+      courseDomain.changeCourseVideos(req,res);
+    }
 }
 
-router.use(auth,permit(role.instructor))
+// see reviews
+router.get('/:id/reviews', courseController.seeReview);
+
+router.use(auth,permit(role.instructor, role.admin))
 
 // get courses
 router.get('/',courseController.getInstCourses);
@@ -99,18 +118,27 @@ router.post('/', upload.fields([{name: 'image',maxCount: 1},{name: 'videos',maxC
   if(err){
     res.status(500).send(err);
   }else{
-    next()
+    next();
   }
 })
 
 // check who buy the course
 router.get('/:id/summary', courseController.buyersSummary)
 
-// see reviews
-router.get('/:id/reviews', courseController.seeReview);
+// // see reviews
+// router.get('/:id/reviews', courseController.seeReview);
 
 // get course by id
 router.get('/:id',courseController.getInstCourseById);
+
+// update course resources
+router.put('/:id/update/resources',upload.fields([{name: 'resources', maxCount: 1}]),courseController.changeResources)
+
+// update course image
+router.put('/:id/update/image',upload.fields([{name: 'image', maxCount: 1}]),courseController.changeImage)
+
+// update course videos
+router.put('/:id/update/videos', upload.fields([{name: 'videos',maxCount: 8}]), courseController.changeVideos)
 
 // update specific course by id
 router.put('/:id',courseController.updateInstCourse)

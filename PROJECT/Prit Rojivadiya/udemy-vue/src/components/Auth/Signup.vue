@@ -103,22 +103,6 @@
     </div>
   </div>
 
-  <!-- name: <input type="text" v-model="name" >
-  <br>
-  email: <input type="text" v-model="email" >
-  <br>
-  phone: <input type="number" v-model="phone" >
-  <br>
-  password: <input type="password" v-model="password" >
-  <br>
-  role: <select name="role" id="" v-model="role" >
-      <option value="user">User</option>
-      <option value="instructor">Instructor</option>
-  </select>
-  <br>
-  <button @click="signup" >Signup</button>
-  <br>
-  <p v-if="error">{{error}}</p> -->
 </template>
 
 <script>
@@ -137,11 +121,12 @@ export default {
       role: "user",
     }
 
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
     const validationSchema = yup.object({
-      name: yup.string().min(2).required(),
+      name: yup.string().min(2).required('name is required'),
       email: yup.string().email('must be a valid email').required('email is required'),
-      phone: yup.number().required(),
+      phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').max(10, 'max 10 digits are allowed').required('phone number is required'),
       password: yup.string().min(4, "minimum 4 character required").required('Password is required'),
       role: yup.string().required()
     })
@@ -178,7 +163,12 @@ export default {
       error: "",
     };
   },
+  unMounted(){
+    this.$router.go();
+  },
   methods: {
+
+    // signup method
     signup(user) {
       console.log(user);
       userData

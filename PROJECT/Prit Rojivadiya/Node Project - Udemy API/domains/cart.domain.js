@@ -7,10 +7,10 @@ class CartDomain{
     async seeMyCart(req,res){
         const id = req.user._id;
         const items = await cartitems.findOne({user: id})
-            .select('courses -_id')
-            .populate('courses','name price -_id')
+            .select('courses')
+            .populate('courses')
         if(!items){
-            return res.send('your cart is empty');
+            return res.status(500).send('your cart is empty');
         }
         res.send(items);
     }

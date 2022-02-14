@@ -18,7 +18,7 @@
     </div>
     <div class="header-content">
       <h5>
-        Festival Season Sale
+        Enhance your skills
         <span style="color: blueviolet">
           <div class="spinner-grow" role="status">
             <span class="visually-hidden"></span>
@@ -26,40 +26,11 @@
         </span>
       </h5>
       <p>
-        Stock up on courses and boost your skills for as little as ₹455 through
-        Feb 15
+        Find the courses here that will improve your skills and make you industry ready!!
       </p>
-      <!-- <div class="input-group">
-        <span
-          class="input-group-text"
-          style="background: none"
-          id="basic-addon1"
-          ><i class="fas fa-search"></i
-        ></span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="What do you want to learn"
-          aria-label="Username"
-          aria-describedby="basic-addon1"
-        />
-      </div> -->
-      <button class="btn btn-dark">Explore</button>
+      <button class="btn btn-dark" @click="this.$router.push({name: 'allCourses'})" >Explore</button>
     </div>
   </div>
-
-  <!-- <div class="container my-5">
-    <h3 style="color: blueviolet" class="border-bottom mb-3">Search Courses</h3>
-    <div class="row">
-      <div class="col-sm-3">
-      <button class="btn btn-dark" @click="this.$router.push({name: 'allCourses'})" >All Courses</button>
-      <br><b class="ms-5" > OR </b> <br>
-        <CategorySelect />
-      </div>
-    </div>
-     <b class="ms-5" > OR </b> <br>
-    <SearchBar />
-  </div> -->
 
   <div class="container-fluid bg-light p-3 my-5">
     <h2 class="text-center d-sm-none">Why learn on udemy?</h2>
@@ -83,168 +54,6 @@
         <div>
           Learn at your own pace, with lifetime access on mobile and desktop
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- categories -->
-  <div class="container mt-5" id="categories">
-    <h2 class="mb-3">Top categories</h2>
-    <div class="row text-center">
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/design.jpg"
-          alt="design"
-        />
-        <b>Design</b>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/development.jpg"
-          alt="development"
-        />
-        <b>Development</b>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/marketing.jpg"
-          alt="marketing"
-        />
-        <b>Marketing</b>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/software.jpg"
-          alt="software"
-        />
-        <b>Software</b>
-      </div>
-    </div>
-    <div class="row text-center">
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/pd.jpg"
-          alt="pd"
-        />
-        <b>Personal Development</b>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/business.jpg"
-          alt="business"
-        />
-        <b>Business</b>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/photography.jpg"
-          alt="photography"
-        />
-        <b>Photography</b>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3 p-2">
-        <img
-          class="img-fluid d-none d-sm-block"
-          src="../../assets/images/categories/music.jpg"
-          alt="music"
-        />
-        <b>Music</b>
-      </div>
-    </div>
-  </div>
-
-  <!-- featured course -->
-
-  <div class="container-fluid bg-light my-5 p-5" id="featuredCourse">
-    <h3>Featured topics by category</h3>
-    <br />
-    <div class="row mt-3">
-      <div class="col-12 col-sm-6 col-md-3">
-        <ul class="list-unstyled">
-          <h5>Development</h5>
-          <li>
-            <span> Python </span> <br />
-            31,554,265 students
-          </li>
-          <br />
-          <li>
-            <span> Web Development </span> <br />
-            10,015,608 students
-          </li>
-          <br />
-          <li>
-            <span> Machine learning </span> <br />
-            6,258,477 students
-          </li>
-          <br />
-        </ul>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <ul class="list-unstyled">
-          <h5>Business</h5>
-          <li>
-            <span> Financial analysis </span> <br />
-            1,081,277 students
-          </li>
-          <br />
-          <li>
-            <span> SQL </span> <br />
-            4,822,795 students
-          </li>
-          <br />
-          <li>
-            <span> PMP </span> <br />
-            1,453,204 students
-          </li>
-          <br />
-        </ul>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <ul class="list-unstyled">
-          <h5>IT and Software</h5>
-          <li>
-            <span> AWS Certification </span> <br />
-            4,703,605 students
-          </li>
-          <br />
-          <li>
-            <span> Ethical Hacking </span> <br />
-            9,758,901 students
-          </li>
-          <br />
-          <li>
-            <span> Cyber Security </span> <br />
-            3,460,815 students
-          </li>
-          <br />
-        </ul>
-      </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <ul class="list-unstyled">
-          <h5>Design</h5>
-          <li>
-            <span> Photoshop </span> <br />
-            10,076,226 students
-          </li>
-          <br />
-          <li>
-            <span> Graphic Design </span> <br />
-            2,963,264 students
-          </li>
-          <br />
-          <li>
-            <span> Drawing </span> <br />
-            2,275,952 students
-          </li>
-          <br />
-        </ul>
       </div>
     </div>
   </div>
@@ -367,6 +176,7 @@
 </template>
 
 <script>
+
 import userData from "../../services/users";
 export default {
   name: "home",
@@ -379,6 +189,8 @@ export default {
     };
   },
   created() {
+
+    // display user name if user is loggedin
     if (this.$store.state.user.isLoggedIn && this.$store.state.user.user.role == "user") {
       userData
         .userInfo()
@@ -387,8 +199,8 @@ export default {
         })
         .catch((err) => {
           console.log(err.response.data);
-          this.$store.dispatch("user/setToken", null);
-          this.$store.dispatch("user/setUser", null);
+          // this.$store.dispatch("user/setToken", null);
+          // this.$store.dispatch("user/setUser", null);
         });
     }
   },
@@ -407,10 +219,6 @@ export default {
     left: 30%;
     transform: translate(-50%, -50%);
   }
-}
-
-#categories img:hover {
-  transform: scale(1.04);
 }
 
 #head {

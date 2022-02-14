@@ -1,6 +1,8 @@
 const express = require('express');
-const CategoryDomain = require('../../../domains/category.domain')
+const roles = require('../../../config/roles')
+const CategoryDomain = require('../../../domains/category.domain');
 const router = express.Router();
+const {auth,permit} = require('../../../middleware/auth.middleware')
 const subcategoryController = require('./subcategory/subcategory.controller')
 
 class categoryController{
@@ -8,6 +10,11 @@ class categoryController{
     static async get(req,res){
         const categoryDomain = new CategoryDomain();
         categoryDomain.getCategories(req,res);
+    }
+
+    static async getCategoryId(req,res){
+        const categoryDomain = new CategoryDomain();
+        categoryDomain.getCategoryIdFromName(req,res); 
     }
 
     static async getById(req,res){
@@ -36,6 +43,11 @@ router.use('/:cId/subcategory',subcategoryController);
 
 // get all categories
 router.get('/',categoryController.get);
+
+// get category id by name
+router.get('/name/:cname',categoryController.getCategoryId);
+
+router.use([auth,permit(roles.admin)])
 
 // add category
 router.post('/',categoryController.add);

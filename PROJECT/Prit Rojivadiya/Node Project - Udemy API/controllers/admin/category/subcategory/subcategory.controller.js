@@ -1,5 +1,7 @@
 const express = require('express');
+const roles = require('../../../../config/roles');
 const SubcategoryDomain = require('../../../../domains/subcategory.domain')
+const {auth,permit} = require('../../../../middleware/auth.middleware')
 const router = express.Router({mergeParams: true});
 
 class subcategoryController{
@@ -7,6 +9,11 @@ class subcategoryController{
     static async get(req,res){
         const subcategoryDomain = new SubcategoryDomain();
         subcategoryDomain.getSubCategory(req,res);
+    }
+
+    static async getByName(req,res){
+        const subcategoryDomain = new SubcategoryDomain();
+        subcategoryDomain.getSubCateInfo(req,res);
     }
 
     static async getById(req,res){
@@ -32,6 +39,11 @@ class subcategoryController{
 
 // get subcategories
 router.get('/',subcategoryController.get)
+
+// get subcategory info by name
+router.get('/name/:sname',subcategoryController.getByName)
+
+router.use([auth,permit(roles.admin)])
 
 // add subcategory
 router.post('/',subcategoryController.add)

@@ -20,6 +20,11 @@ class paymentController{
         paymentDomain.addPayment(req,res);
     }
 
+    static async callback(req,res){
+        const paymentDomain = new PaymentDomain();
+        paymentDomain.callback(req,res);
+    }
+
     static async update(req,res){
         const paymentDomain = new PaymentDomain();
         paymentDomain.updatePayment(req,res);
@@ -51,6 +56,9 @@ router.get("/",[auth,permit(role.admin)],paymentController.getAll);
 
 //make payment
 router.post("/",[auth,permit(role.user,role.admin)],paymentController.pay);
+
+// callback
+router.post("/callback",paymentController.callback);
 
 // failed payments
 router.get("/failed-payments",[auth,permit(role.admin)],paymentController.getFailed);

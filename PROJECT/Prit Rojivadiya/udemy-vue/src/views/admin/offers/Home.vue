@@ -8,7 +8,11 @@
       Add Offer
     </button>
     <div class="offersDiv border border-2 p-3">
-    <SearchBar @query="searchOffer" />
+      <div class="row">
+        <div class="col-sm-4">
+          <NormalSearch @query="searchOffer" />
+        </div>
+      </div>
     <br>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -28,7 +32,7 @@
             <td>{{ offer.courses }}</td>
             <td>{{ offer.discount }}</td>
             <td>
-              <span v-if="offer.isLive">
+              <span v-if="liveOffer.includes(offer._id)">
                 <button
                   class="btn btn-outline-dark me-2"
                   @click="removeOffer(offer._id)"
@@ -46,7 +50,7 @@
               </span>
               <button
                 class="btn text-light me-2"
-                :disabled="offer.isLive"
+                :disabled="liveOffer.includes(offer._id)"
                 @click="
                   this.$router.push({
                     name: 'updateOffer',
@@ -59,7 +63,7 @@
               </button>
               <button
                 class="btn btn-danger text-light"
-                :disabled="offer.isLive"
+                :disabled="liveOffer.includes(offer._id)"
                 @click="deleteOffer(offer._id)"
               >
                 Delete
@@ -83,8 +87,9 @@
 <script>
 import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
-import SearchBar from '../../../components/Search/SearchBar.vue';
+import NormalSearch from '../../../components/Search/NormalSearch.vue';
 import offerData from "../../../services/offers";
+
 export default {
   name: "offers",
   data() {
@@ -93,16 +98,22 @@ export default {
       offersList: "",
       queryString: "",
       page: 1,
-      pages: null
+      pages: null,
+      liveOffer: []
     };
   },
   components:{
     VPagination,
-    SearchBar
+    NormalSearch
   },
   created() {
     offerData.getAllOffers().then((res) => {
       this.offers = res.data;
+      for(let offer of this.offers){
+        if(offer.isLive == true){
+          this.liveOffer.push(offer._id)
+        }
+      }
       this.offersList = this.offers.slice(0,10)
       this.pages = this.offersList.length / 10 + 1;
     });
@@ -124,6 +135,7 @@ export default {
           console.log(res.data);
           offerData.getAllOffers().then((res) => {
             this.offers = res.data;
+            this.offersList = this.offers.slice(10 * (this.page - 1), this.page * 10);
           });
         })
         .catch((err) => {
@@ -136,9 +148,9 @@ export default {
         .goLive(id)
         .then((res) => {
           console.log(res.data);
-          offerData.getAllOffers().then((res) => {
-            this.offers = res.data;
-          });
+          this.liveOffer.push(id)
+           this.$store.dispatch("courses/setUpdatedCourses", []);
+        this.$store.dispatch("courses/setAllCourses", []);
         })
         .catch((err) => {
           console.log(err.response);
@@ -149,9 +161,11 @@ export default {
         .removeOffer(id)
         .then((res) => {
           console.log(res.data);
-          offerData.getAllOffers().then((res) => {
-            this.offers = res.data;
-          });
+         this.liveOffer = this.liveOffer.filter((offerId)=>{
+           return offerId != id;
+         })
+          this.$store.dispatch("courses/setUpdatedCourses", []);
+        this.$store.dispatch("courses/setAllCourses", []);
         })
         .catch((err) => {
           console.log(err.response);

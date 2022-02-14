@@ -1,7 +1,7 @@
 <template>
   <div v-if="course" class="container my-5">
     <div class="imgContainer">
-      <img :src="course.courseImage.url" class="img-fluid border border-5" />
+      <img :src="course.courseImage.url" class="img-fluid courseImage border border-dark" />
     </div>
     <div class="content">
       <h3 class="mt-5">{{ course.name }}</h3>
@@ -10,7 +10,7 @@
         <div class="col-md-3 col-sm-4 col-11 info">
           <h5><b> Basic Details: </b></h5>
           <p v-if="course.price"><b> Price </b>: ₹{{ course.price }}</p>
-          <p v-else>Price: Free</p>
+          <p v-else> <b> Price</b>: Free</p>
           <p><b>Category: </b>{{ course.category.name }}</p>
           <p v-if="course.subcategory">
             <b>SubCategory: </b>{{ course.subcategory.name }}
@@ -80,12 +80,50 @@ export default {
 </script>
 
 <style scoped>
+
+.courseImage{
+ position:relative;
+ left:100%;
+ animation:animate 3s forwards;
+ transition: all 0.4s ease-in;
+}
+
+@keyframes animate{
+  from{
+  left:100%;
+  transform: rotate3d(1,1,1,0deg);
+  } 
+  to{
+  left:0%;
+  transform: rotate3d(1,1,1,360deg);
+  }
+}
+
 .info {
   background: rgb(255, 255, 255);
   padding: 10px;
   margin: 10px;
   box-shadow: 5px 5px 15px black;
+  position: relative;
+  z-index: 0;
 }
+
+.info::before{
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 5px;
+  background-color: rgba(132, 0, 255, 0.404);
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  transition: all 0.8s ease-in-out;
+}
+
+.info:hover::before{
+  width: 100%;
+}
+
 video {
   width: 100%;
 }

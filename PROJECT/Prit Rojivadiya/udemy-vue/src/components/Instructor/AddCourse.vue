@@ -1,6 +1,6 @@
 <template>
   <div class="row my-5">
-    <div class="col-6 ms-auto me-auto">
+    <div class="col-10 col-sm-6 ms-auto me-auto">
       <h1 style="color: blueviolet" class="mb-5">Add Course</h1>
 
       <div v-if="error" class="alert alert-danger" role="alert">
@@ -35,7 +35,7 @@
         <div class="mb-3">
           <label for="category" class="form-label required">Category</label>
           <select
-            @change="course.selectCategory"
+            @change="selectCategory"
             v-model="course.category"
             class="form-select"
             id="category"
@@ -144,7 +144,6 @@
         <button class="btn btn-success">Upload</button>
       </form>
       <br />
-      <!-- <progress max="100" :value.prop="uploadPercentage"></progress> -->
       <div v-if="message" class="alert alert-success" role="alert">
         {{ message }}
       </div>
@@ -171,11 +170,10 @@
 import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
 import '../../assets/css/style.css'
-import http from "../../http-common";
-import { userStore } from "../../store/modules/user";
-// import courseData from "../../services/courses";
+// import http from "../../http-common";
 import categoryData from "../../services/category";
 import subcategoryData from "../../services/subcategory";
+import courseData from '../../services/courses'
 export default {
   name: "addCourse",
   data() {
@@ -194,10 +192,10 @@ export default {
       category: yup.number().required(),
       subcategory: yup.number(),
       isPaid: yup.string().required(),
-      price: yup.number().when('isPaid',{
-        is:'true',
-        then: yup.number().required()
-      })
+      price: yup.string().when("isPaid", {
+        is: "true", 
+        then: yup.string().required(),
+      }),
     })
 
     const { handleSubmit } = useForm({
@@ -246,6 +244,8 @@ export default {
     };
   },
   created() {
+
+    // get all categories
     categoryData
       .getAllCategories()
       .then((res) => {
@@ -256,13 +256,18 @@ export default {
         console.log(err);
       });
   },
+
   methods: {
+
+    // select category onchange
     selectCategory() {
-      console.log(this.category);
-      subcategoryData.getAllSubCategories(this.category).then((res) => {
+      console.log(this.course.category);
+      subcategoryData.getAllSubCategories(this.course.category).then((res) => {
         this.subcategoryArr = res.data;
       });
     },
+
+    // remove video from selected videos
     remove(index) {
       console.log(index);
       console.log(this.videos[index]);
@@ -277,11 +282,12 @@ export default {
       this.videos = newVideos;
     },
     onSelect() {
+
+      // check file type is valid or not on client side
       console.log(this.$refs);
       this.image = this.$refs.img.files[0];
       console.log(this.image);
       if(this.image && !["image/jpeg","image/jpg","image/png"].includes(this.image.type)){
-        // console.log(this.image.type.includes(["image/jpeg","image/jpg","image/png"]))
         this.imgError = 'error'
       }else{
         this.imgError = ''
@@ -295,28 +301,23 @@ export default {
       }
       this.videos = this.$refs.videos.files;
       console.log(this.videos);
-      // const videos = this.$refs.videos.files;
-      // console.log(videos.length)
-      // for(let i = 0;i<videos.length;i++){
-      //     this.videos[i] = videos[i];
-      // }
     },
     submitCourse() {
       const formData = new FormData();
       formData.append("name", this.course.name);
       formData.append("description", this.course.description);
       formData.append("category", this.course.category);
-      if (this.subcategory) {
+      if (this.course.subcategory) {
         formData.append("subcategory", this.course.subcategory);
       }
       formData.append("isPaid", this.course.isPaid);
-      if (this.isPaid == "true") {
-        if (!this.price) {
+      if (this.course.isPaid == "true") {
+        if (!this.course.price) {
           return (this.error = "price is required");
         }
         formData.append("price", this.course.price);
       } else {
-        if (this.price) {
+        if (this.course.price) {
           return (this.error = "price is not required");
         }
       }
@@ -327,18 +328,19 @@ export default {
         formData.append("videos", file);
       }
       this.progress = "uploading files to server";
-      http
-        .post(`api/courses/inst-courses`, formData, {
-          headers: {
-            "x-access-token": userStore.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          onUploadProgress: function (progressEvent) {
-            this.uploadPercentage = parseInt(
-              Math.round((progressEvent.loaded / progressEvent.total) * 100)
-            );
-          }.bind(this),
-        })
+      courseData.uploadCourse(formData)
+      // http
+      //   .post(`api/courses/inst-courses`, formData, {
+      //     headers: {
+      //       "x-access-token": this.$store.state.user.token,
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //     onUploadProgress: function (progressEvent) {
+      //       this.uploadPercentage = parseInt(
+      //         Math.round((progressEvent.loaded / progressEvent.total) * 100)
+      //       );
+      //     }.bind(this),
+      //   })
         .then((res) => {
           console.log(res.data);
           this.error = "";
@@ -354,19 +356,6 @@ export default {
         .finally(() => {
           this.uploadPercentage = 0;
         });
-      //   formData.append('videos',this.videos)
-      // courseData
-      //   .uplodadCourse(formData)
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     this.error = "";
-      //     this.message = "Files uploaded successfully"
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.response);
-      //     this.error = err.response.data
-      //     this.message = "";
-      //   });
     },
   },
 };

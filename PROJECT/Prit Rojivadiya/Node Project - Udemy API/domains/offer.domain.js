@@ -22,6 +22,21 @@ class OfferDomain{
         res.send(offer);
     }
 
+    // delete offer by id
+    async deleteOffer(req,res){
+        const offer = await offers.findOne({_id: req.params.id});
+        if(!offer){
+            return res.status(404).send('no offer found for this id')
+        }
+        try{
+            const result = await offers.findByIdAndDelete({_id: req.params.id})
+            console.log(result)
+            res.send('offer deleted')
+        }catch(err){
+            res.status(500).send(err)
+        }
+    }
+
     // get live offers only
     async getLiveOffers(req,res){
         const offer = await offers.find({isLive: true});
@@ -43,7 +58,7 @@ class OfferDomain{
 
         let {error} = validateOffer(req.body);
         if(error){
-            return res.send(error.details[0].message)
+            return res.status(500).send(error.details[0].message)
         }
 
         // check that course is not inactive nor free
@@ -51,7 +66,7 @@ class OfferDomain{
         for(let courseId of courseIds){
             let courseData = await courses.findById(courseId).select('isPaid isActive');
             if(courseData.isPaid == false || courseData.isActive == false){
-                return res.status(500).send('cannot apply offer on free or inactive course');
+                return res.status(500).send( `cannot apply offer on free or inactive course with id ${courseId}`);
             }
         }
 
@@ -72,10 +87,18 @@ class OfferDomain{
 
     // update offer details
     async updateOffer(req,res){
+        console.log(req.body)
 
         const ofr = await offers.findById(req.params.id);
         if(!ofr){
             return res.status(404).send('offer not found')
+        }
+        const courseIds = req.body.courses;
+        for(let courseId of courseIds){
+            let courseData = await courses.findById(courseId).select('isPaid isActive');
+            if(courseData.isPaid == false || courseData.isActive == false){
+                return res.status(500).send( `cannot apply offer on free or inactive course with id ${courseId}`);
+            }
         }
 
         try{
@@ -101,10 +124,16 @@ class OfferDomain{
             return res.status(404).send('offer not found')
         }
         const courseIds = offer.courses
+        console.log(courseIds)
+        console.log(req.body)
         try{
             for(let courseId of courseIds){
                 const course = await courses.findById(courseId);
-                const Price = course.price
+                console.log(course)
+                if(course.isPaid == 'false'){
+                    return res.status(500).send('offer cannot be applied on free courses')
+                }
+                const Price = parseInt(course.price)
                 await courses.findOneAndUpdate({_id: courseId},{
                     $set: {
                         offerPrice: (Price - Price*offer.discount/100)
@@ -113,12 +142,13 @@ class OfferDomain{
             }
             res.send("offer is live")
         }catch(err){
-            res.send(err.message);
+            res.status(500).send(err);
         }
     }
 
     // remove offer
     async removeOffer(req,res){
+        console.log(req.body)
         const offer = await offers.findOneAndUpdate({_id: req.params.id},{
             $set: {isLive: false}
         },{new: true})
@@ -134,7 +164,7 @@ class OfferDomain{
             }
             res.send("offer removed successfully")
         }catch(err){
-            res.send(err.message);
+            res.status(500).send(err.message);
         }
     }
 
