@@ -75,14 +75,6 @@
           </div>
 
           <div class="col-12">
-            <!-- <button
-              type="button"
-              class="btn btn-primary d-block w-100"
-              style="background-color: blueviolet"
-              @click="update"
-            >
-              Update Profile
-            </button> -->
             <button
               class="btn btn-primary d-block w-100"
               style="background-color: blueviolet"

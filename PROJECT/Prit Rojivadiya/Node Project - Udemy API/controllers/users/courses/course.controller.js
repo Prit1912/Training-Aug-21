@@ -16,6 +16,16 @@ class courseController{
         courseDomain.getEnrolledCourseById(req,res);
     }
 
+    static async setVideoProgress(req,res){
+        const courseDomain = new CourseDomain();
+        courseDomain.setVideoProgress(req,res);
+    }
+
+    static async getProgress(req,res){
+        const courseDomain = new CourseDomain();
+        courseDomain.getVideoProgress(req,res);
+    }
+
     static async update(req,res){
         const courseDomain = new CourseDomain();
         courseDomain.updateProgress(req,res);
@@ -35,7 +45,13 @@ router.get('/',courseController.get);
 // get course by id
 router.get('/:id',courseController.getById);
 
-// update course video progress 
+// get video progress of course
+router.get('/:id/getProgress', courseController.getProgress)
+
+// set video progress of course
+router.post('/:id/setProgress', courseController.setVideoProgress)
+
+// update course video progress of course
 router.put('/:id',courseController.update)
 
 // rate course

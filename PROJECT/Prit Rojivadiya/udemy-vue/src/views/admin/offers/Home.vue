@@ -29,7 +29,9 @@
           <tr v-for="(offer, index) in filteredOffer" :key="index">
             <td>{{ index + 1 }}</td>
             <td>{{ offer.offerName }}</td>
-            <td>{{ offer.courses }}</td>
+            <td>
+              <span v-for="(course,index) of offer.courses" :key="course.id">{{course.id}}<span v-if="index != offer.courses.length-1" >,</span></span>
+            </td>
             <td>{{ offer.discount }}</td>
             <td>
               <span v-if="liveOffer.includes(offer._id)">
@@ -128,6 +130,8 @@ export default {
     }
   },
   methods: {
+
+    // delete offer permenantly
     deleteOffer(id) {
       offerData
         .deleteOffer(id)
@@ -142,6 +146,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // make offer live
     makeOfferLive(id) {
       console.log(id);
       offerData
@@ -156,6 +162,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // remove offer
     removeOffer(id) {
       offerData
         .removeOffer(id)
@@ -171,9 +179,13 @@ export default {
           console.log(err.response);
         });
     },
+
+    // search offer
     searchOffer(str){
       this.queryString = str.toLowerCase();
     },
+
+    // update list of offer to display on different pages
     updateHandler(page) {
       console.log(page);
       this.offersList = this.offers.slice(10 * (page - 1), page * 10);

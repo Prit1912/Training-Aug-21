@@ -93,7 +93,8 @@ class UserDomain{
         if(!user) return res.status(404).send('user not found');
     
         const token = jwt.sign({email: userEmail},config.secretKey,{expiresIn: "15m"})
-        const link = `http://${process.env.Host}:${process.env.Port}/reset-password/${token}`;
+        // const link = `http://${process.env.Host}:${process.env.Port}/reset-password/${token}`;
+        const link = `http://localhost:8081/#/reset-password/${token}`;
     
         var transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -105,7 +106,6 @@ class UserDomain{
           
           var mailOptions = {
             from: 'pritrojivadiya@gmail.com',
-            // to: 'dilipkumavat1807@gmail.com',
             to: userEmail,
             subject: 'Sending Email using Node.js',
             html: `<a href = ${link}>Click here to reset password</a>`

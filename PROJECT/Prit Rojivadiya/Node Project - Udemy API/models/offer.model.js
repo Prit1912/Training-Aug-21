@@ -11,7 +11,7 @@ const offerSchema = new mongoose.Schema({
         required: true
     },
     courses: {
-        type: [Number],
+        type: [Object],
         ref: 'course',
         required: true
     },

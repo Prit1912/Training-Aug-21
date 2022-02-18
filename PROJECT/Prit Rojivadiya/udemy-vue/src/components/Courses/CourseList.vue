@@ -143,6 +143,7 @@ export default {
   border: 1px solid blueviolet;
   height: 450px;
 }
+
 .card:hover {
   border: 2px solid black;
   box-shadow: 3px 3px 15px black;
@@ -189,7 +190,7 @@ export default {
   width: 16px;
 }
 
-/* Up */
+/* left */
 ::-webkit-scrollbar-button:single-button:horizontal:decrement {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;

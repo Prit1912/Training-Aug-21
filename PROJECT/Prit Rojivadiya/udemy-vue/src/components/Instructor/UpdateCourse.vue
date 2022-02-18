@@ -361,12 +361,16 @@ export default {
       });
   },
   methods: {
+
+    // select category
     selectCategory() {
       console.log(this.course.category);
       subcategoryData.getAllSubCategories(this.course.category).then((res) => {
         this.subcategoryArr = res.data;
       });
     },
+
+    // submit updated data
     submitCourse(course) {
       courseData
         .updateInstCourse(this.id, course)
@@ -382,6 +386,8 @@ export default {
           this.message = "";
         });
     },
+
+    // check file type on file select
     onSelect() {
       // check file type is valid or not on client side
       console.log(this.$refs);
@@ -405,6 +411,8 @@ export default {
       this.newVideos = this.$refs.videos.files;
       console.log(this.newVideos);
     },
+
+    // update course thumbnail
     changeImage() {
       const formData = new FormData();
       this.updatingImage = 'changing image'
@@ -421,6 +429,8 @@ export default {
           this.imgError = err.response
         });
     },
+
+    // update resource file
     changeResources() {
       console.log(this.id);
       const formData = new FormData();
@@ -437,6 +447,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // download zip file
     forceFileDownload(response, title) {
       console.log(title);
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -457,6 +469,8 @@ export default {
         })
         .catch(() => console.log("error occured"));
     },
+
+    // remove from uploaded videos
     remove(index) {
       console.log(index);
       let arr = [];
@@ -467,6 +481,8 @@ export default {
       }
       this.videos = arr;
     },
+
+    // remove from new added videos
     removeFromNewVideos(index) {
       let arr = [];
       for (let i = 0; i < this.newVideos.length; i++) {
@@ -476,6 +492,8 @@ export default {
       }
       this.newVideos = arr;
     },
+
+    // update videos
     changeVideos() {
       let formData = new FormData();
       for (let i = 0; i < this.newVideos.length; i++) {

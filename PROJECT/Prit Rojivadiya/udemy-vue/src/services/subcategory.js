@@ -43,6 +43,15 @@ class subcategoryService{
             }
         })
     }
+
+    // delete subCategory
+    deleteSubCategory(cId,sId){
+        return http.delete(`api/admin/category/${cId}/subcategory/${sId}`,{
+            headers:{
+                'x-access-token': store.state.user.token
+            }
+        })
+    }
 }
 
 export default new subcategoryService();

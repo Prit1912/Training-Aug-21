@@ -82,8 +82,6 @@ export default {
   name: "navbar",
   methods: {
     logout() {
-      // this.$store.dispatch("user/setToken", null),
-      // this.$store.dispatch("user/setUser", null);
       this.$store.dispatch("user/logout");
       this.$router.push("/login");
     },

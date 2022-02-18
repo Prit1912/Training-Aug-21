@@ -15,7 +15,7 @@
         </div>
       </div>
       <br /><br />
-      <CategorySubCateSelect @courses="getCourses" />
+      <CategorySubCateSelect @courses="getCourses" comp="user" />
       <br /><br />
     </div>
     <div class="row">
@@ -257,8 +257,8 @@ export default {
 
     // get all courses when page user first time visit page
     if (this.$store.state.courses.updatedCourses.length == 0) {
-      this.$store.state.courses.categoryId = null;
-      this.$store.state.courses.subCategoryId = null;
+      this.$store.state.courses.categoryId = "all";
+      this.$store.state.courses.subCategoryId = "all";
       courseData
         .getAllCourses()
         .then((res) => {
@@ -266,7 +266,7 @@ export default {
           this.finalCourses = this.courses;
           this.updatedFinalCourses = "";
           this.newCourses = this.courses.slice(0, this.coursesPerPage);
-          this.pages = this.newCourses.length / this.coursesPerPage + 1;
+          this.pages = this.courses.length / this.coursesPerPage + 1;
           this.$store.dispatch("courses/setAllCourses", res.data);
           this.$store.dispatch("courses/setSelectedFilter", "all");
           this.$refs.all.checked = true;
@@ -326,6 +326,8 @@ export default {
   },
 
   methods: {
+
+    // get all courses
     getAllCourses() {
       this.page = 1;
       this.$store.dispatch(
@@ -334,8 +336,8 @@ export default {
       );
       this.$store.dispatch("courses/setSearchedCourses", []);
       this.$store.dispatch("courses/setFilteredCourses", []);
-      this.$store.dispatch("courses/setCategoryId", null);
-      this.$store.dispatch("courses/setSubCategoryId", null);
+      this.$store.dispatch("courses/setCategoryId", "all");
+      this.$store.dispatch("courses/setSubCategoryId", "all");
       this.$store.dispatch("courses/setSearchedString", null);
       this.$store.dispatch("courses/setFilterStatus", false);
       this.$refs.all.checked = true;
@@ -350,6 +352,8 @@ export default {
         this.$store.state.courses.allCourses.length / this.coursesPerPage + 1;
       this.$router.go();
     },
+
+    // add course to wishlist
     addToWishlist(id) {
       console.log(id);
       courseData
@@ -360,9 +364,12 @@ export default {
         })
         .catch((err) => {
           console.log(err.response);
+          localStorage.setItem('redirectTo','courses')
           this.$router.push({ name: "login" });
         });
     },
+
+    // add course to cart
     addToCart(id) {
       console.log(id);
       courseData
@@ -373,12 +380,17 @@ export default {
         })
         .catch((err) => {
           console.log(err.response);
+          localStorage.setItem('redirectTo','courses')
           this.$router.push({ name: "login" });
         });
     },
+
+    // view course description
     viewCourse(courseId) {
       this.$router.push({ name: "courseInfo", params: { id: courseId } });
     },
+
+    // see all reviews
     getReviews(courseId){
       let reviews = courseData.courseReview(courseId).then((res)=>{
         console.log(res.data);
@@ -387,6 +399,8 @@ export default {
       })
       return reviews.length
     },
+
+    // search course
     searchCourse(str) {
       this.queryString = str;
       let courses;
@@ -416,6 +430,8 @@ export default {
       this.newCourses = courses.slice(0, this.coursesPerPage);
       this.pages = courses.length / this.coursesPerPage + 1;
     },
+
+    // apply filter on courses
     applyFilter() {
       this.page = 1;
       let filteredCourses;
@@ -458,6 +474,8 @@ export default {
       // this.filterAppliedCourses = filteredCourses
       this.pages = filteredCourses.length / this.coursesPerPage + 1;
     },
+
+    // remove filter
     removeFilter() {
       // this.newCourses = this.$store.state.courses.updatedCourses
       this.$store.dispatch("courses/setFilteredCourses", []);
@@ -496,6 +514,8 @@ export default {
       this.$store.dispatch("courses/setFilterStatus", false);
       this.page = 1;
     },
+
+    // get category and subcategorywise courses
     getCourses(data) {
       this.$store.dispatch("courses/setSearchedString", "");
       if (data == "no course found") {
@@ -515,8 +535,14 @@ export default {
         this.pages = data.length / this.coursesPerPage + 1;
         this.finalCourses = data;
         this.updatedFinalCourses = ""
+        this.$router.go();
       }
     },
+
+    // sort courses based on
+    // price low to high
+    // price high to low
+    // most rated to least rated
     sort(event) {
       console.log(event.target.value);
       let courses = this.finalCourses;
@@ -554,6 +580,8 @@ export default {
       this.page = 1;
       this.newCourses = this.updatedFinalCourses.slice(0, this.coursesPerPage);
     },
+
+    // pagination function to change pages
     updateHandler(page) {
       console.log(page);
       if (this.updatedFinalCourses) {

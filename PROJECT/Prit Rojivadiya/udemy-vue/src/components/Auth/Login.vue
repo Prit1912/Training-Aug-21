@@ -164,7 +164,12 @@ export default {
             this.$store.dispatch("user/setUser", res.data.user);
             console.log(this.$store.state.user);
             if (res.data.user.role == "user") {
-              this.$router.push("/");
+              if(localStorage.getItem('redirectTo') == 'courses'){
+                this.$router.push({name: 'allCourses'})
+                localStorage.removeItem('redirectTo')
+              }else{
+                this.$router.push("/");
+              }
             } else if (res.data.user.role == "instructor") {
               this.$router.push("/instructor");
             } else if (res.data.user.role == "admin") {

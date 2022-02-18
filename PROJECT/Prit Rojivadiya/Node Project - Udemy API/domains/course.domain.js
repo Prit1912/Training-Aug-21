@@ -4,6 +4,7 @@ const { reviews, validateReview } = require("../models/review.model");
 const { cartitems } = require("../models/cart.model");
 const { purchases } = require("../models/purchase.model");
 const { wishlistItems } = require("../models/wishlist.model");
+const { videoProgress } = require("../models/videoProgress.model")
 // const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
@@ -272,16 +273,89 @@ class CourseDomain {
     res.send(course);
   }
 
+  // get video progress
+  async getVideoProgress(req,res){
+    const progressData = await videoProgress.findOne({user: req.user._id, courses: {$elemMatch:{courseId: req.params.id}}})
+    if(!progressData){
+      res.status(404).send('progress data not found');
+    }else{
+      res.send(progressData)
+    }
+  }
+
+  // set video progress for first time
+  async setVideoProgress(req,res){
+    const progressData = await videoProgress.findOne({user: req.user._id})
+    if(!progressData){
+      let progress = {
+        user: req.user._id,
+        courses: [
+          {
+            courseId: req.params.id,
+            videos: req.body.videos
+          }
+        ]
+      }
+      try{
+        console.log(progress)
+        let data = new videoProgress(progress);
+        let result = await data.save();
+        console.log(result)
+        res.send(result);
+        return;
+      }catch(err){
+        console.log(err);
+        res.status(500).send('something went wrong')
+      }
+    }else{
+      this.updateProgress(req,res);
+    }
+  }
+
   // update video watched progress
   async updateProgress(req,res){
-    console.log(req.body);
-    console.log(req.params.id)
-    const course = await purchases
-      .find({ user: req.user._id ,courses: req.params.id })
-      .populate("courses")
-      .select({courses: req.params.id})
-      course[0].courses[0].videos = req.body;
-      res.send(course)
+    const progressData = await videoProgress.findOne({user: req.user._id, courses: {$elemMatch:{courseId: req.params.id}}})
+    if(!progressData){
+      // res.status(404).send('progress data not found');
+      let data = {
+        courseId: req.params.id,
+        videos: req.body.videos
+      }
+      try{
+      let result = await videoProgress.findOneAndUpdate({user: req.user._id},{
+        $addToSet:{
+          courses: data
+        }
+      },{new: true})
+      await result.save();
+      console.log(result);
+      res.send(result);
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send('something went wrong')
+    }
+    }else{
+      try{
+      const progressData = await videoProgress.findOneAndUpdate({user: req.user._id, "courses.courseId": req.params.id},{
+        $set:{
+          "courses.$.videos": req.body.videos
+        }
+      },{new:true})
+      await progressData.save();
+      console.log(progressData);
+      res.send(progressData);
+    }catch(err){
+      console.log(err);
+      res.status(500).send('something went wrong')
+    }
+      // res.send('course videos data are there')
+    }
+    // const course = await purchases
+    //   .find({ user: req.user._id ,courses: req.params.id })
+    //   .populate("courses")
+    //   .select({courses: req.params.id})
+    //   course[0].courses[0].videos = req.body;
+    //   res.send(course)
   }
 
   // rate & give review course

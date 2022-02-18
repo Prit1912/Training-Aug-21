@@ -11,7 +11,7 @@
         <h5>{{name}}</h5>
       </div>
     </div>
-    <div class="row">
+    <div class="row"> 
       <div class="col-md-9">
         <video ref="myVideo" id="myVideo" :src="videoUrl" controls></video>
       </div>
@@ -182,26 +182,38 @@ export default {
       clicked: 0,
       per: 0,
       name: "",
-      // widhtObject:{
-      //   width:"0%"
-      // }
     };
   },
-  // computed: {
-  //   proper: function () {
-  //     return localStorage.getItem("progressPercentage");
-  //   },
-  // },
+
   created() {
     userData.userInfo().then((res)=>{
       this.name = res.data.name;
     })
-    courseData
+
+    userData.getProgress(this.courseId).then((res)=>{
+      console.log(res.data);
+      let obj = res.data;
+      let courses = obj.courses
+      let myCourse = {}
+      for(let course of courses){
+        if(course.courseId == this.courseId){
+          myCourse = course;
+        }
+      }
+      let myVideos = myCourse.videos;
+      console.log(myVideos)
+      store.state.courses.courses = [];
+      store.dispatch("courses/setCourses", {
+          id: this.courseId,
+          videos: myVideos,
+        });
+      courseData
       .getCourseById(this.courseId)
       .then((res) => {
         this.course = res.data;
+        console.log(this.course)
         res.data.videos = res.data.videos.map((data) => {
-          return { ...data, progressPer: 0 };
+            return { ...data, progressPer: 0 };
         });
         // console.log(res.data.videos)
         store.dispatch("courses/setCourses", {
@@ -213,27 +225,37 @@ export default {
       .catch((err) => {
         console.log(err.response);
       });
+    }).catch(()=>{
+      courseData
+      .getCourseById(this.courseId)
+      .then((res) => {
+        this.course = res.data;
+        console.log(this.course)
+        res.data.videos = res.data.videos.map((data) => {
+            return { ...data, progressPer: 0 };
+        });
+        // console.log(res.data.videos)
+        store.dispatch("courses/setCourses", {
+          id: this.courseId,
+          videos: res.data.videos,
+        });
+        this.videoUrl = this.course.videos[0].url;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+    })
   },
   mounted(){
        document.getElementById("myVideo").addEventListener("ended", () => {
         console.log("video ended");
         console.log(this.clicked);
         document.getElementsByClassName("videolink")[this.clicked + 1].click();
-        // this.videoUrl = this.course.videos[1].url;
-        // console.log(this.videoUrl)
-        // if (this.clicked < this.course.videos.length) {
-        //   console.log(
-        //     document.getElementsByClassName("videolink")[this.clicked].nextSibling
-        //   );
-        //     // document.getElementsByClassName("videolink")[this.clicked].nextSibling.setAttribute("hidden",true)
-        //    document.getElementsByClassName("videolink")[this.clicked + 1].nextSibling.removeAttribute("hidden")
-        //  this.clicked ++;
-        // console.log(this.clicked)
-        // }
       });
   },
   updated() {
     let id = this.courseId;
+
     if (this.course) {
       let video = document.getElementById("myVideo");
       store.state.courses.courses.map((course)=>{
@@ -275,18 +297,9 @@ export default {
       this.per = ((count / len) * 100).toFixed(2);
       setInterval(function () {
         if (video.readyState > 0) {
-          var minutes = parseInt(video.duration / 60, 10);
-          var seconds = video.duration % 60;
-          console.log(video.duration, minutes, seconds, video.currentTime);
-          // this.progressPercentage = parseInt(
-          //   (video.currentTime / video.duration) * 100
-          // );
-          // localStorage.setItem(
-          //   "progressPercentage",
-          //   parseInt((video.currentTime / video.duration) * 100)
-          // );
-          // this.$store.dispatch('courses/setPercentage',parseInt((video.currentTime / video.duration) * 100))
-          // console.log(this.progressPercentage);
+          // var minutes = parseInt(video.duration / 60, 10);
+          // var seconds = video.duration % 60;
+          // console.log(video.duration, minutes, seconds, video.currentTime);
           let percentage = Math.ceil(
             (video.currentTime / video.duration) * 100
           );
@@ -309,12 +322,6 @@ export default {
               if (course.videos[i].url == video.src) {
                 document.getElementById(video.src).style.width =
                   course.videos[i].progressPer + "%";
-                //  console.log('matched on number ',i)
-                //  console.log(document.getElementById(video.src).parentElement.parentElement.getElementsByTagName('input')[0])
-                // document.getElementsByClassName(video.src)[0].value = course.videos[i].progressPer
-                //  this.widhtObject = {
-                //    width: course.videos[i].progressPer+"%"
-                //  }
               }
             }
           }
@@ -323,6 +330,19 @@ export default {
     }
   },
   unmounted() {
+    let course = this.$store.state.courses.courses.filter((course)=>{
+      return course.id == this.courseId
+    })
+    console.log(course[0].videos)
+    let data = {
+      'videos': course[0].videos
+    }
+    console.log(data);
+    userData.setProgress(this.courseId,data).then((res)=>{
+      console.log(res.data);
+    }).catch((err)=>{
+      console.log(err.response.data);
+    })
     this.$router.go();
   },
   methods: {
@@ -346,11 +366,15 @@ export default {
         })
         .catch(() => console.log("error occured"));
     },
+
+    // play next video
     nextVideo(video, index) {
       this.videoUrl = video.url;
       this.clicked = index;
       console.log(this.clicked)
     },
+
+    // give review to course
     rateCourse() {
       let review = {
         review: this.review,
@@ -367,6 +391,8 @@ export default {
           console.log(err.response);
         });
     },
+
+    // convert html to pdf
     exportToPDF(){
       html2pdf(this.$refs.document, {
 					margin: 1,

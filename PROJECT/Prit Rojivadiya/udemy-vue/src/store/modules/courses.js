@@ -2,8 +2,8 @@ export const courses = {
   namespaced: true,
   strict: true,
   state: {
-    categoryId: null,
-    subCategoryId: null,
+    categoryId: "all",
+    subCategoryId: "all",
     percentage: 0,
     courses: [],
     allCourses: [],

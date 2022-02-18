@@ -346,6 +346,9 @@ export default {
           this.error = "";
           this.message = "Course uploaded successfully";
           this.progress = "";
+          setTimeout(()=>{
+            this.$router.push({name: 'instCourses'})
+          },1000)
         })
         .catch((err) => {
           console.log(err.response);

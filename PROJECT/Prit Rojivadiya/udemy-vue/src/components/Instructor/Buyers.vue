@@ -74,13 +74,7 @@ export default {
     },
     created(){
 
-        // get list of course buyers
-        courseData.courseBuyers(this.courseId).then((res)=>{
-            this.buyers = res.data;
-        }).catch((err)=>{
-            this.error = err.response.data;
-        })
-
+      // get list of course buyers
       courseData
       .courseBuyers(this.courseId)
       .then((res) => {
@@ -97,13 +91,18 @@ export default {
         this.error = err.response.data;
       });
     },
-      methods: {
+
+    methods: {
+
+    // update buyers to diplay on different pages
     updateHandler(page) {
       this.buyersList = this.updatedBuyersList.slice(
         this.buyersPerPage * (page - 1),
         page * this.buyersPerPage
       );
     },
+
+    // get buyers of particular course
     searchUser(str) {
       console.log(str);
       this.page = 1;
@@ -123,6 +122,8 @@ export default {
           ? buyers.length / this.buyersPerPage
           : Math.ceil(buyers.length / this.buyersPerPage);
     },
+
+    // update number of buyers to display per page
     updateBuyersPerPage(){
         this.page = 1;
         this.buyersPerPage = this.$refs['numInput'].value <= 0 ? 1 : this.$refs['numInput'].value;

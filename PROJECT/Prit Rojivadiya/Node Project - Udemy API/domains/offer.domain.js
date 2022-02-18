@@ -62,11 +62,22 @@ class OfferDomain{
         }
 
         // check that course is not inactive nor free
-        const courseIds = req.body.courses;
+        let courseIds = [];
+        const Courses = req.body.courses;
+        for(let course of Courses){
+            courseIds.push(course.id);
+        }
+        
         for(let courseId of courseIds){
             let courseData = await courses.findById(courseId).select('isPaid isActive');
             if(courseData.isPaid == false || courseData.isActive == false){
-                return res.status(500).send( `cannot apply offer on free or inactive course with id ${courseId}`);
+                let crs = {};
+                for(let course of Courses){
+                    if(course.id == courseId){
+                        crs = course
+                    }
+                }
+                return res.status(500).send( `cannot apply offer on free or inactive course with id - ${crs.id} and name - ${crs.name}`);
             }
         }
 
@@ -93,7 +104,13 @@ class OfferDomain{
         if(!ofr){
             return res.status(404).send('offer not found')
         }
-        const courseIds = req.body.courses;
+        
+        let courseIds = [];
+        const Courses = req.body.courses;
+        for(let course of Courses){
+            courseIds.push(course.id);
+        }
+
         for(let courseId of courseIds){
             let courseData = await courses.findById(courseId).select('isPaid isActive');
             if(courseData.isPaid == false || courseData.isActive == false){
@@ -123,8 +140,11 @@ class OfferDomain{
         if(!offer){
             return res.status(404).send('offer not found')
         }
-        const courseIds = offer.courses
-        console.log(courseIds)
+        let courseIds = [];
+        const Courses = offer.courses;
+        for(let course of Courses){
+            courseIds.push(course.id);
+        }
         console.log(req.body)
         try{
             for(let courseId of courseIds){
@@ -155,7 +175,11 @@ class OfferDomain{
         if(!offer){
             return res.status(404).send('offer not found')
         }
-        const courseIds = offer.courses
+        let courseIds = [];
+        const Courses = offer.courses;
+        for(let course of Courses){
+            courseIds.push(course.id);
+        }
         try{
             for(let courseId of courseIds){
                 await courses.findOneAndUpdate({_id: courseId},{

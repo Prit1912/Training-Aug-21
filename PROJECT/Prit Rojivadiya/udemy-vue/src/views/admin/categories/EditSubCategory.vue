@@ -88,6 +88,9 @@ export default {
           console.log(res.data);
           this.error = "";
           this.message = "updated successfully";
+          setTimeout(()=>{
+            this.$router.push({name: 'categories'})
+          },1000)
         })
         .catch((err) => {
           this.error = err.response.data;

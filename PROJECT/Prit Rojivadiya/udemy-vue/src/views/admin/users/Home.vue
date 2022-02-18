@@ -138,6 +138,8 @@ export default {
     };
   },
   created() {
+
+    // get all users when page is created
     userData.getAllUsers().then((res) => {
       this.users = res.data;
       this.updatedUsersList = res.data;
@@ -159,12 +161,18 @@ export default {
   },
 
   methods: {
+
+    // block user by id
     block(id) {
-      userData.blockUser(id).then((res) => {
-        console.log(res.data);
-        this.blockedUsers.push(id);
-      });
+      if(confirm("Do you really want to block this user?")){
+        userData.blockUser(id).then((res) => {
+          console.log(res.data);
+          this.blockedUsers.push(id);
+        });
+      }
     },
+
+    // unblock user by id
     unblock(id) {
       userData.unblockUser(id).then((res) => {
         console.log(res.data);
@@ -173,6 +181,8 @@ export default {
         });
       });
     },
+
+    // changes list of users to display on different page
     updateHandler(page) {
       console.log(page);
       this.usersList = this.updatedUsersList.slice(
@@ -180,6 +190,8 @@ export default {
         page * this.usersPerPage
       );
     },
+
+    // search user globally
     searchUser(str) {
       this.queryString = str.toLowerCase();
       let filteredUsers = this.users.filter((user) => {
@@ -199,18 +211,8 @@ export default {
           ? filteredUsers.length / this.usersPerPage
           : filteredUsers.length / this.usersPerPage + 1;
     },
-    searchGlobbaly() {
-      this.page = 1;
-      this.updatedUsersList = this.globallyFilteredUsers;
-      this.usersList = this.globallyFilteredUsers.slice(
-        this.usersPerPage * (this.page - 1),
-        this.page * this.usersPerPage
-      );
-      this.pages =
-        (this.globallyFilteredUsers.length / this.usersPerPage) % 1 == 0
-          ? this.globallyFilteredUsers.length / this.usersPerPage
-          : this.globallyFilteredUsers.length / this.usersPerPage + 1;
-    },
+
+    // list of blocked user
     searchBlockedUser() {
       this.page = 1;
       let blockedUser = this.users.filter((user) => {
@@ -226,6 +228,8 @@ export default {
         this.page * this.usersPerPage
       );
     },
+
+    // get list of normal user
     searchNormalUser() {
       this.page = 1;
       let normalUsers = this.users.filter((user) => {
@@ -241,6 +245,8 @@ export default {
         this.page * this.usersPerPage
       );
     },
+
+    // get all users
     allUsers() {
       this.page = 1;
       let allUsers = this.users;
@@ -254,6 +260,8 @@ export default {
         this.page * this.usersPerPage
       );
     },
+
+    // get list of instructors
     searchInstructor() {
       this.page = 1;
       let instructors = this.users.filter((user) => {
@@ -269,6 +277,8 @@ export default {
         this.page * this.usersPerPage
       );
     },
+
+    // get list of all admins
     searchAdmin() {
       this.page = 1;
       let admins = this.users.filter((user) => {
@@ -284,6 +294,8 @@ export default {
         this.page * this.usersPerPage
       );
     },
+
+    // change number of users to display per page
     changeUsersPerPage() {
       console.log(this.updatedUsersList)
       this.page = 1;

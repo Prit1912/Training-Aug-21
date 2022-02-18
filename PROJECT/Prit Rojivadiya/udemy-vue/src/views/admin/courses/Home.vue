@@ -2,32 +2,32 @@
   <div class="container my-5">
     <div class="rounded bg-light p-5">
       <div class="row">
-      <div class="col-sm-10">
-      <CategorySubCateSelect @courses="getCourses" />
-      <br>
-      <div class="row">
-        <div class="col-sm-4">
-          <h5 style="color: blueviolet">Search:</h5>
-          <NormalSearch @query="searchCourse" />
+        <div class="col-sm-10">
+          <CategorySubCateSelect @courses="getCourses" />
+          <br />
+          <div class="row">
+            <div class="col-sm-4">
+              <h5 style="color: blueviolet">Search:</h5>
+              <NormalSearch @query="searchCourse" />
+            </div>
+            <div class="col-sm-4">
+              <h5 style="color: blueviolet">Filter:</h5>
+              <select
+                class="form-select"
+                @change="filterCourse"
+                aria-label="Default select example"
+              >
+                <option value="0" selected>All Courses</option>
+                <option value="1">Active Courses</option>
+                <option value="2">Inactive Courses</option>
+              </select>
+            </div>
+          </div>
+          <br />
         </div>
-        <div class="col-sm-4">
-          <h5 style="color: blueviolet">Filter:</h5>
-          <select
-            class="form-select"
-            @change="filterCourse"
-            aria-label="Default select example"
-          >
-            <option value="0" selected>All Courses</option>
-            <option value="1">Active Courses</option>
-            <option value="2">Inactive Courses</option>
-          </select>
-        </div>
-      </div>
-      <br />
-      </div>
       </div>
     </div>
-    <hr>
+    <hr />
     <div v-if="!coursesList">
       <h1>no course found</h1>
     </div>
@@ -153,18 +153,9 @@ export default {
       }
     });
   },
-  computed: {
-    filteredCourses: function () {
-      return this.courses.filter((course) => {
-        return (
-          course.name.toLowerCase().match(this.queryString) ||
-          course.description.toLowerCase().match(this.queryString) ||
-          course.category.name.toLowerCase().match(this.queryString)
-        );
-      });
-    },
-  },
+
   methods: {
+    // get all courses on page load
     getAllCourses() {
       courseData.getCoursesByAdmin().then((res) => {
         this.page = 1;
@@ -180,6 +171,8 @@ export default {
             : Math.ceil(this.updatedCourseList.length / this.coursesPerPage);
       });
     },
+
+    // search globally
     searchCourse(str) {
       console.log(str);
       this.queryString = str.toLowerCase();
@@ -202,14 +195,20 @@ export default {
           ? courses.length / this.coursesPerPage
           : Math.ceil(courses.length / this.coursesPerPage);
     },
+
+    // deactivate course
     deActivate(id) {
-      courseData.deactivateCourse(id).then((res) => {
-        console.log(res.data);
-        this.inActiveCourses.push(id);
-        this.$store.dispatch("courses/setUpdatedCourses", []);
-        this.$store.dispatch("courses/setAllCourses", []);
-      });
+      if(confirm("Do you really want to deactivate this course?")){
+        courseData.deactivateCourse(id).then((res) => {
+          console.log(res.data);
+          this.inActiveCourses.push(id);
+          this.$store.dispatch("courses/setUpdatedCourses", []);
+          this.$store.dispatch("courses/setAllCourses", []);
+        });
+      }
     },
+
+    // activate course
     activate(id) {
       courseData.activateCourse(id).then((res) => {
         console.log(res.data);
@@ -220,6 +219,8 @@ export default {
         this.$store.dispatch("courses/setAllCourses", []);
       });
     },
+
+    // get all courses
     getCourses(data) {
       console.log(data);
       this.globalSearch = "";
@@ -239,6 +240,8 @@ export default {
             : Math.ceil(data.length / this.coursesPerPage);
       }
     },
+
+    // get all active courses globally
     searchActiveCourses() {
       this.page = 1;
       let activeCourses = this.courses.filter((course) => {
@@ -254,6 +257,8 @@ export default {
           ? activeCourses.length / this.coursesPerPage
           : Math.ceil(activeCourses.length / this.coursesPerPage);
     },
+
+    // get list of inactive courses
     searchInactiveCourses() {
       this.page = 1;
       let inActiveCourses = this.courses.filter((course) => {
@@ -269,16 +274,23 @@ export default {
           ? inActiveCourses.length / this.coursesPerPage
           : Math.ceil(inActiveCourses.length / this.coursesPerPage);
     },
+
+    // filter course
     filterCourse(event) {
       console.log(event.target.value);
       if (event.target.value == 0) {
+        this.$store.dispatch("courses/setCategoryId", "all");
+        this.$store.dispatch("courses/setSubCategoryId", "all");
         this.getAllCourses();
+        this.$router.go();
       } else if (event.target.value == 1) {
         this.searchActiveCourses();
       } else if (event.target.value == 2) {
         this.searchInactiveCourses();
       }
     },
+
+    // change list of courses to display on different pages
     updateHandler(page) {
       this.coursesList = this.updatedCourseList.slice(
         this.coursesPerPage * (page - 1),

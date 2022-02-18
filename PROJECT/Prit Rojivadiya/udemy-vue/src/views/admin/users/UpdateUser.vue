@@ -1,17 +1,5 @@
 <template>
-  <!-- {{user}}
-  <form @submit.prevent >
-      <input type="text" v-model="user.name" ><br>
-      <input type="text" v-model="user.email" ><br>
-      <input type="number" v-model="user.phone"><br>
-        <select v-model="user.role">
-            <option value="user">User</option>
-            <option value="instructor">Instructor</option>
-            <option value="admin">Admin</option>
-        </select>
-        <br>
-        <button @click="update(user._id)" >Update</button>
-  </form> -->
+
   <div class="container my-5">
     <h4 v-if="error" >{{error}}</h4>
     <div class="row">
@@ -127,6 +115,8 @@ export default {
     };
   },
   created() {
+
+    // get user information
     userData.getUserInfo(this.id).then((res) => {
       console.log(res.data);
       this.profile = res.data;
@@ -135,6 +125,8 @@ export default {
     })
   },
   methods: {
+
+    // update user by admin
     update(id) {
         this.message = ""
       userData

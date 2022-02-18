@@ -23,7 +23,7 @@
                 v-model="user.password"
               />
             </div>
-            {{errorPassword}}
+            <span style="color: red" >{{errorPassword}}</span>
           </div>
 
           <div>

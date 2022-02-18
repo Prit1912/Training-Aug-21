@@ -124,6 +124,8 @@ export default {
     });
   },
   methods:{
+
+    // search course
     searchCourses(str){
       console.log(str);
       let courses = this.courses.filter((course)=>{
@@ -137,12 +139,16 @@ export default {
       this.page = 1;
       this.pages = (courses.length/this.coursesPerPage)%1 == 0 ? courses.length/this.coursesPerPage : Math.ceil(courses.length/this.coursesPerPage)
     },
+
+    // udpate number of courses to display per page
     updateCoursesPerPage(){
       this.page = 1;
       this.coursesPerPage = this.$refs['setNum'].value>0 ? this.$refs['setNum'].value : 1;
       this.pages = (this.updatedCoursesList.length/this.coursesPerPage)%1 == 0 ? this.updatedCoursesList.length/this.coursesPerPage : Math.ceil(this.updatedCoursesList.length/this.coursesPerPage)
       this.coursesList = this.updatedCoursesList.slice(this.coursesPerPage*(this.page-1),this.coursesPerPage*this.page)
     },
+
+    // update courselist to display on page change
     updateHandler(page){
       this.coursesList = this.updatedCoursesList.slice(this.coursesPerPage*(page-1), this.coursesPerPage*page)
     }

@@ -36,6 +36,9 @@ export default {
           console.log(res);
           this.error = "";
           this.message = "category added successfully";
+          setTimeout(()=>{
+            this.$router.push({name: 'categories'})
+          },1000)
         })
         .catch((err) => {
           this.error = err.response.data;

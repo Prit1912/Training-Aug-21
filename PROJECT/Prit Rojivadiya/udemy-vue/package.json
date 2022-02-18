@@ -22,6 +22,7 @@
     "vue": "^3.0.0",
     "vue-core-video-player": "^0.2.0",
     "vue-html2pdf": "^1.8.0",
+    "vue-multiselect": "^3.0.0-alpha.2",
     "vue-router": "^4.0.12",
     "vue-video-player": "^5.0.2",
     "vuex": "^4.0.2",

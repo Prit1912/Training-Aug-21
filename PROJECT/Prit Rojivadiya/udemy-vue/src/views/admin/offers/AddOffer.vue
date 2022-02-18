@@ -1,5 +1,9 @@
 <template>
   <div class="container my-5">
+    <!-- <input type="datetime-local" id="meeting-time"
+       name="meeting-time" value="2018-06-12T19:30"
+       min="2018-06-07T00:00" max="2018-06-14T00:00"> -->
+    <!-- <pre class="language-json"><code>{{ value  }}</code></pre> -->
     <h3 style="color: blueviolet">Add Offer</h3>
     <div class="row">
       <div class="col-md-4 border border-dark p-4">
@@ -21,13 +25,26 @@
             <label for="formGroupExampleInput2" class="form-label"
               >Course IDs</label
             >
-            <input
+            <multiselect
+              v-model="offer.courses"
+              :options="options"
+              :multiple="true"
+              :close-on-select="false"
+              :clear-on-select="false"
+              :preserve-search="true"
+              placeholder="Select multiple courses"
+              label="name"
+              track-by="name"
+              :preselect-first="false"
+            >
+            </multiselect>
+            <!-- <input
               v-model="offer.courses"
               type="text"
               class="form-control"
               id="formGroupExampleInput2"
-              placeholder="Another input placeholder"
-            />
+              placeholder="Enter course Ids'"
+            /> -->
             <span class="error">{{ errorIds }}</span>
           </div>
           <div class="mb-3">
@@ -69,12 +86,17 @@
 </template>
 
 <script>
+import Multiselect from "vue-multiselect";
 import offerData from "../../../services/offers";
+import courseData from "../../../services/courses";
 import "../../../assets/css/style.css";
 import { useField, useForm } from "vee-validate";
 import * as yup from "yup";
 export default {
   name: "addOffer",
+  components: {
+    Multiselect,
+  },
   data() {
     let offer = {
       offerName: "",
@@ -102,7 +124,7 @@ export default {
     offer.discount = discount;
 
     const submit = handleSubmit((values) => {
-      values.courses = JSON.parse(values.courses);
+      // values.courses = JSON.parse(values.courses);
       console.log(values);
       this.addOffer(values);
     });
@@ -115,7 +137,24 @@ export default {
       errorDiscount,
       message: "",
       error: "",
+      value: [],
+      options: [],
     };
+  },
+  created() {
+    courseData.getAllCourses().then((res) => {
+      console.log(res.data);
+      let courses = res.data;
+      let coursesArr = [];
+      for (let course of courses) {
+        let obj = {
+          id: course._id,
+          name: course.name,
+        };
+        coursesArr.push(obj);
+      }
+      this.options = coursesArr;
+    });
   },
   methods: {
     addOffer(offer) {
@@ -127,6 +166,9 @@ export default {
           console.log(res.data);
           this.message = "offer added successfully";
           this.error = "";
+          setTimeout(() => {
+            this.$router.push({ name: "offers" });
+          }, 1000);
         })
         .catch((err) => {
           console.log(err.response);
@@ -138,4 +180,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

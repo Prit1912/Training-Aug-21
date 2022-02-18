@@ -40,6 +40,15 @@ class categoryService{
         })
     }
 
+    // delete category
+    deleteCategory(id){
+        return http.delete(`api/admin/category/${id}`,{
+            headers:{
+                'x-access-token': store.state.user.token
+            }
+        })
+    }
+
 }
 
 export default new categoryService();

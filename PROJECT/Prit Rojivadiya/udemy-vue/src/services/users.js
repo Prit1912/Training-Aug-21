@@ -95,6 +95,24 @@ class userServices{
             }
         })
     }
+
+    // get video Progress
+    getProgress(id){
+        return http.get(`api/user/courses/${id}/getProgress`,{
+            headers:{
+                'x-access-token': store.state.user.token
+            }
+        })
+    }
+
+    // set video progress
+    setProgress(id,data){
+        return http.post(`api/user/courses/${id}/setProgress`,data,{
+            headers:{
+                'x-access-token': store.state.user.token
+            }
+        })
+    }
 }
 
 export default new userServices();

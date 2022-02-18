@@ -50,6 +50,9 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.message = "Name updated successfully";
+          setTimeout(()=>{
+            this.$router.push({name: 'categories'})
+          },1000)
         })
         .catch((err) => {
           console.log(err.response);
